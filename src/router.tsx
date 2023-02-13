@@ -7,6 +7,8 @@ import Detail from './pages/Detail';
 import Home from './pages/Home';
 import MyPage from './pages/MyPage';
 import Search from './pages/Search';
+import Recommend from './pages/Recommend';
+import AllProducts from './pages/AllProducts';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
       {
         path: 'mypage',
         element: <MyPage />,
+      },
+      {
+        path: 'recommend',
+        element: <Recommend />,
+      },
+      {
+        path: 'allproducts',
+        element: <AllProducts />,
       },
     ],
   },
