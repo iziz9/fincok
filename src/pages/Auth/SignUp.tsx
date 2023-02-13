@@ -40,15 +40,29 @@ const SignUp = () => {
 
   return (
     <Main className="signUpMain">
-      <H1>회원가입</H1>
+      <Div>
+        <img
+          src="../../../public/logo_fincok.png"
+          style={{ margin: '20px auto' }}
+        />
+      </Div>
+      <h1 style={{ paddingBottom: '20px' }}>Sign up</h1>
       <form>
         <Div>
-          <Span>아이디</Span>
-          <span>아이디로 사용할 이메일을 입력해 주세요.</span>
+          <div>
+            <Required>*</Required>
+            <CategoryTitle>아이디</CategoryTitle>
+            <span style={{ marginLeft: '10px', color: '#f74440' }}>
+              아이디로 사용할 이메일을 입력해 주세요.
+            </span>
+          </div>
           <input id="id" type="text" placeholder="abc@google.com" />
         </Div>
         <Div>
-          <Span>비밀번호</Span>
+          <div>
+            <Required>*</Required>
+            <CategoryTitle>비밀번호</CategoryTitle>
+          </div>
           <input
             id="password"
             type="password"
@@ -56,30 +70,44 @@ const SignUp = () => {
           />
         </Div>
         <Div>
-          <Span>직업</Span>
-          <Flexdiv>
+          <div>
+            <Required>*</Required>
+            <CategoryTitle>직업</CategoryTitle>
+          </div>
+          <RadioDiv>
             {jobList.map((job, index) => (
               <Label htmlFor={job} key={index}>
                 {job}
-                <HiddenInput type="radio" id={job} name="job" value={job} />
+                <input
+                  type="radio"
+                  id={job}
+                  name="job"
+                  value={job}
+                  style={{ display: 'none' }}
+                />
               </Label>
             ))}
-          </Flexdiv>
+          </RadioDiv>
         </Div>
         <Div>
-          <span>지역</span>
+          <div>
+            <Required>*</Required>
+            <CategoryTitle>지역</CategoryTitle>
+          </div>
           <select id="address">
             {addressList.map((address, index) => (
               <option key={index} value={address}>
                 {address}
               </option>
             ))}
-            <option>지역</option>
           </select>
         </Div>
         <Div>
-          <Span>선호 은행</Span>
-          <select id="address">
+          <div>
+            <Required>*</Required>
+            <CategoryTitle>선호 은행</CategoryTitle>
+          </div>
+          <select id="bank">
             {bankList.map((bank, index) => (
               <option key={index} value={bank}>
                 {bank}
@@ -87,16 +115,34 @@ const SignUp = () => {
             ))}
           </select>
         </Div>
-        <Span>추천받고싶은 상품</Span>
-        <Flexdiv>
-          {recommendList.map((list, index) => (
-            <Label htmlFor={list} key={index}>
-              {list}
-              <input type="radio" name="recommend" id={list} value={list} />
-            </Label>
-          ))}
-        </Flexdiv>
-        <button type="submit">회원가입</button>
+        <Div>
+          <div>
+            <Required>*</Required>
+            <CategoryTitle>관심있는 상품</CategoryTitle>
+          </div>
+          <RadioDiv>
+            {recommendList.map((list, index) => (
+              <Label htmlFor={list} key={index}>
+                {list}
+                <input
+                  type="radio"
+                  name="recommend"
+                  id={list}
+                  value={list}
+                  style={{ display: 'none' }}
+                />
+              </Label>
+            ))}
+          </RadioDiv>
+        </Div>
+        <SubmitButton
+          type="submit"
+          onClick={() => {
+            window.confirm('');
+          }}
+        >
+          회원가입
+        </SubmitButton>
       </form>
     </Main>
   );
@@ -104,37 +150,53 @@ const SignUp = () => {
 
 const Main = styled.main`
   width: 500px;
-  height: 1000px;
   margin: auto;
   box-sizing: border-box;
   padding: 30px;
-  background-color: beige;
 `;
-const H1 = styled.h1`
-  margin: 30px 0;
-  font-size: 30px;
-`;
-
 const Div = styled.div`
   margin: 30px 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
-const Label = styled.label`
+const Required = styled.span`
+  font-size: 20px;
   font-weight: 700;
-  width: 300px;
-  background-color: black;
-  color: white;
+  margin-right: 5px;
+  color: #f74440;
 `;
-const Span = styled.span`
-  font-color: blue;
+const Label = styled.label`
+  font-size: 20px;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  margin: auto;
+  text-align: center;
+  font-weight: 600;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-stroke);
+  border-radius: 8px;
+
+  :hover {
+    background-color: black;
+    color: white;
+  }
 `;
-const Flexdiv = styled.div`
+const CategoryTitle = styled.span`
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+`;
+const RadioDiv = styled.div`
   display: flex;
-  gap: 5px;
+  flex-wrap: wrap;
+  gap: 10px;
 `;
-const HiddenInput = styled.input`
-  // visibility: hidden;
+export const SubmitButton = styled.button`
+  width: 400px;
+  margin: 50px auto;
+  font-size: 20px;
 `;
 export default SignUp;
