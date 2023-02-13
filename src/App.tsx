@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Reset } from 'styled-reset';
-import CategoryBar from './components/CategoryBar';
+import CategoryBar from './components/common/CategoryBar';
+import GlobalStyle from './style/globalStyles';
 import { useLocation } from 'react-router-dom'
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <>
       <Reset />
       <Outlet />
+      <GlobalStyle />
       { location.pathname.includes('auth') ? null : <CategoryBar/>}
     </>
   );
