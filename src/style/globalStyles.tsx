@@ -56,7 +56,7 @@ const GlobalStyles = createGlobalStyle`
     color: var(--color-white);
 
     :hover {
-      border: none;
+      border-color: var(--color-orange);
       background-color: var(--color-orange);
     }
   };
