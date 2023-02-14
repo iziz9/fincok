@@ -32,6 +32,11 @@ const GlobalStyles = createGlobalStyle`
     background-color: var(--color-white);
     color: var(--color-black);
   }
+  h1 {
+    font-size: 35px;
+    margin: 30px 0 0 5px;
+    font-weight: 600;
+  }
   ul, li {
     list-style: none;
   }
@@ -49,12 +54,17 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     background-color: var(--color-black);
     color: var(--color-white);
+
+    :hover {
+      border: none;
+      background-color: var(--color-orange);
+    }
   };
   input {
     display: flex;
     outline: none;
     height: 50px;
-    padding-left: 10px;
+    padding-left: 20px;
     border: 1px solid var(--color-stroke);
     border-radius: 8px;
     background-color: var(--color-background);
@@ -62,6 +72,16 @@ const GlobalStyles = createGlobalStyle`
   ::selection {
     color: white;
     background-color: var(--color-orange);
+  }
+  select {
+    height: 40px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 15px;
+
+    :focus {
+     outline: none;
+    }
   }
   .react-confirm-alert-overlay {
     background: rgba(0, 0, 0, 0.4);
