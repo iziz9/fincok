@@ -4,14 +4,12 @@ import { useForm } from 'react-hook-form';
 import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
 import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
-import { SlLock } from 'react-icons/sl';
 
-interface SigninForm {
+type SigninForm = {
   id: string;
-  pw: string;
-}
+};
 
-const SignIn = () => {
+const FindPassword = () => {
   const {
     register,
     handleSubmit,
@@ -25,11 +23,19 @@ const SignIn = () => {
       <Div>
         <img
           src="/logo_fincok.png"
-          style={{ margin: '30px auto', cursor: 'pointer' }}
+          style={{ margin: '20px auto', cursor: 'pointer' }}
           onClick={() => navigate('/')}
         />
       </Div>
-      <h1 style={{ padding: '30px 0 50px' }}>Login</h1>
+      <Flexdiv>
+        <h1 style={{ margin: '0 0 30px', color: '#f74440', fontSize: '30px' }}>
+          비밀번호 찾기
+        </h1>
+      </Flexdiv>
+      <FlexText>
+        핀콕에 가입했던 이메일주소를 입력해주세요. <br />
+        비밀번호 재설정 메일을 보내드립니다.
+      </FlexText>
       <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
         <Div>
           <div>
@@ -43,7 +49,7 @@ const SignIn = () => {
               </span>
             ) : null}
           </div>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', marginBottom: '30px' }}>
             <IoMailOutline
               style={{ position: 'absolute', top: '20px', left: '20px' }}
             />
@@ -62,45 +68,8 @@ const SignIn = () => {
             />
           </div>
         </Div>
-        <Div>
-          <div>
-            <CategoryTitle>비밀번호</CategoryTitle>
-            {errors?.pw ? (
-              <span
-                className="error"
-                style={{ marginLeft: '10px', color: '#f74440' }}
-              >
-                {errors.pw?.message}
-              </span>
-            ) : null}
-          </div>
-          <div style={{ position: 'relative' }}>
-            <SlLock
-              style={{ position: 'absolute', top: '20px', left: '20px' }}
-            />
-            <input
-              id="pw"
-              type="password"
-              placeholder="8글자 이상 입력해 주세요"
-              style={{ width: '380px', paddingLeft: '45px' }}
-              {...register('pw', {
-                minLength: {
-                  value: 8,
-                  message: '8글자 이상 입력해주세요.',
-                },
-                required: '필수 입력란입니다.',
-              })}
-            />
-          </div>
-        </Div>
-        <SubmitButton type="submit">로그인</SubmitButton>
+        <SubmitButton type="submit">비밀번호 재설정하기</SubmitButton>
       </form>
-      <Flexdiv>
-        <NavSpan onClick={() => navigate('/auth/findpassword')}>
-          비밀번호 찾기
-        </NavSpan>{' '}
-        / <NavSpan onClick={() => navigate('/auth/signup')}>회원가입</NavSpan>
-      </Flexdiv>
     </Main>
   );
 };
@@ -109,11 +78,14 @@ const Flexdiv = styled.div`
   display: flex;
   gap: 10px;
   justify-content: center;
-`;
-const NavSpan = styled.span`
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
+  text-align: center;
 `;
 
-export default SignIn;
+const FlexText = styled(Flexdiv)`
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  margin: 20px 0 50px;
+`;
+
+export default FindPassword;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { productList, jobList, bankList, addressList } from '../../utils/list';
 
 interface SignupForm {
@@ -26,7 +26,7 @@ const SignUp = () => {
       <Div>
         <img src="/logo_fincok.png" style={{ margin: '20px auto' }} />
       </Div>
-      <h1 style={{ paddingBottom: '20px' }}>Sign up</h1>
+      <h1 style={{ paddingBottom: '30px' }}>Sign up</h1>
       <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
         <Div>
           <div>
@@ -184,13 +184,13 @@ const SignUp = () => {
   );
 };
 
-const Main = styled.main`
+export const Main = styled.main`
   width: 500px;
   margin: auto;
   box-sizing: border-box;
   padding: 30px;
 `;
-const Div = styled.div`
+export const Div = styled.div`
   margin: 30px 0;
   display: flex;
   flex-direction: column;
@@ -204,7 +204,7 @@ const Required = styled.span`
 `;
 const Label = styled.label`
   display: block;
-  font-size: 20px;
+  font-size: 16px;
   width: 200px;
   height: 50px;
   line-height: 50px;
@@ -225,7 +225,7 @@ const Label = styled.label`
     color: white;
   }
 `;
-const CategoryTitle = styled.span`
+export const CategoryTitle = styled.span`
   display: inline-block;
   margin-bottom: 8px;
   font-size: 18px;
@@ -237,7 +237,7 @@ const RadioDiv = styled.div`
   gap: 10px;
 `;
 export const SubmitButton = styled.button`
-  width: 400px;
+  width: 100%;
   margin: 50px auto;
   font-size: 20px;
 `;
