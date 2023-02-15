@@ -9,6 +9,7 @@ import MyPage from './pages/MyPage';
 import Search from './pages/Search';
 import Recommend from './pages/Recommend';
 import AllProducts from './pages/AllProducts';
+import FindPassword from './pages/Auth/FindPassword';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: 'auth/signin',
         element: <SignIn />,
+      },
+      {
+        path: 'auth/findpassword',
+        element: <FindPassword />,
       },
       {
         path: 'auth/signup',
