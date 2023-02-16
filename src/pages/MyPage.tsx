@@ -7,12 +7,15 @@ import styled from 'styled-components';
 
 const MyPage = () => {
   return (
-    <div>
+    <PageWrap>
       <UserProfile />
       <Setting />
       <CartList />
-    </div>
+    </PageWrap>
   )
 };
+const PageWrap = styled.div`
+  padding: 24px;
+`;
 
 export default MyPage;
