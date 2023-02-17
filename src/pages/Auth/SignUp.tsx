@@ -22,7 +22,7 @@ const SignUp = () => {
   const [result, setResult] = useState('');
 
   return (
-    <Main className="signUpMain">
+    <Main>
       <Div>
         <img src="/logo_fincok.png" style={{ margin: '20px auto' }} />
       </Div>

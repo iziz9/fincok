@@ -5,6 +5,7 @@ import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
 import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
 import { SlLock } from 'react-icons/sl';
+import { requestLogin } from '../../api/request';
 
 interface SigninForm {
   id: string;
@@ -30,7 +31,8 @@ const SignIn = () => {
         />
       </Div>
       <h1 style={{ padding: '30px 0 50px' }}>Login</h1>
-      <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+      {/* <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}> */}
+      <form onSubmit={handleSubmit((data) => requestLogin(data.id, data.pw))}>
         <Div>
           <div>
             <CategoryTitle>아이디</CategoryTitle>
