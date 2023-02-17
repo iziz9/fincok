@@ -4,10 +4,14 @@ import { TiHeartOutline, TiHeart } from 'react-icons/ti';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { FcSalesPerformance } from 'react-icons/fc';
 import { FcMoneyTransfer } from 'react-icons/fc';
+import { GoHome } from 'react-icons/go';
+import { useNavigate } from 'react-router-dom';
 
 const Detail = () => {
+  const navigate = useNavigate();
   // redux로 추후 관심상품 상태관리 변경
   const [likeState, setLikeState] = useState<boolean>(false);
+
   // 컬러차트도 헤더에 똑같이 적용하기
   const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
   const tagColor: Array<string> = [
@@ -21,6 +25,14 @@ const Detail = () => {
   const colorIndex: number = Math.floor(Math.random() * bgColor.length);
   const setColor: object = { backgroundColor: bgColor[colorIndex] };
   const setDeepColor: object = { backgroundColor: tagColor[colorIndex] };
+
+  const [colorState, setColorState] = useState<object>(setColor);
+  const [deepColorState, setDeepColorState] = useState<object>(setDeepColor);
+  useEffect(() => {
+    setColorState(setColor);
+    setDeepColorState(setDeepColor);
+  }, []);
+
   const heartStyle: object = {
     backgroundColor: '#fff',
     width: '35px',
@@ -40,10 +52,21 @@ const Detail = () => {
 
   return (
     <main>
-      <ColoredSection style={setColor}>
-        <div style={{ padding: '10px 0 0 10px' }}>
+      <ColoredSection style={colorState}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
           <IoMdArrowRoundBack
             onClick={() => history.back()}
+            style={{
+              cursor: 'pointer',
+              backgroundColor: '#fff',
+              width: '15px',
+              height: '15px',
+              padding: '10px',
+              borderRadius: '100%',
+            }}
+          />
+          <GoHome
+            onClick={() => navigate('/')}
             style={{
               cursor: 'pointer',
               backgroundColor: '#fff',
@@ -59,9 +82,9 @@ const Detail = () => {
         </H1>
         <TagDiv>
           {/* 옵셔널체이닝으로 응답값에 태그 있을 경우에만 */}
-          <Tag style={setDeepColor}>상품종류</Tag>
-          <Tag style={setDeepColor}>지역</Tag>
-          <Tag style={setDeepColor}>직종</Tag>
+          <Tag style={deepColorState}>상품종류</Tag>
+          <Tag style={deepColorState}>지역</Tag>
+          <Tag style={deepColorState}>직종</Tag>
         </TagDiv>
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <ColDiv>
@@ -86,7 +109,22 @@ const Detail = () => {
           )}
         </Heart>
       </ColoredSection>
-      <FlatSection>상세설명</FlatSection>
+      <FlatSection>
+        <ProductDetailTitle>
+          {/* target: null이 아니면 `~을 위한` */}
+          직장인을 위한 신한은행 정기적금
+        </ProductDetailTitle>
+        <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
+          `영업점, 인터넷, 스마트폰` 을 통해 가입할 수 있습니다.
+        </span>
+        <ProductDesc>
+          만기 후 이자율은? <br />
+          -1개월 이하:(일반) 정기예금 기본금리 1/2 -1개월 초과~6개월 이하: (일반) 정기예금
+          기본금리의 1/4 -6개월 초과 0.2% -1개월 이하:(일반) 정기예금 기본금리 1/2 -1개월 초과~6개월
+          이하: (일반) 정기예금 기본금리의 1/4 -6개월 초과 0.2% -1개월 이하:(일반) 정기예금 기본금리
+          1/2 -1개월 초과~6개월 이하: (일반) 정기예금 기본금리의 1/4 -6개월 초과 0.2%
+        </ProductDesc>
+      </FlatSection>
     </main>
   );
 };
@@ -96,8 +134,7 @@ const ColoredSection = styled.section`
   position: relative;
 `;
 const FlatSection = styled.section`
-  text-align: center;
-  padding-top: 30px;
+  padding: 50px 35px;
 `;
 const H1 = styled.h1`
   font-size: 30px;
@@ -150,5 +187,19 @@ const SummaryContent = styled.span`
   font-size: 20px;
   font-weight: 600;
   margin-top: 10px;
+`;
+const ProductDetailTitle = styled.div`
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c6880;
+  margin-bottom: 20px;
+`;
+const ProductDesc = styled.div`
+  font-size: 15px;
+  line-height: 22px;
+  margin-top: 28px;
+  padding-bottom: 60px;
+  color: #5b5e63;
+  font-weight: 600;
 `;
 export default Detail;
