@@ -8,6 +8,7 @@ interface SignupForm {
   id: string;
   pw: string;
   job: string;
+  birth: string;
   address: string;
   bank: string;
   product: string;
@@ -33,10 +34,7 @@ const SignUp = () => {
             <Required>*</Required>
             <CategoryTitle>이름</CategoryTitle>
             {errors?.name ? (
-              <span
-                className="error"
-                style={{ marginLeft: '10px', color: '#f74440' }}
-              >
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
                 {errors.name?.message}
               </span>
             ) : null}
@@ -59,10 +57,7 @@ const SignUp = () => {
             <Required>*</Required>
             <CategoryTitle>아이디</CategoryTitle>
             {errors?.id ? (
-              <span
-                className="error"
-                style={{ marginLeft: '10px', color: '#f74440' }}
-              >
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
                 {errors.id?.message}
               </span>
             ) : null}
@@ -97,10 +92,7 @@ const SignUp = () => {
             <Required>*</Required>
             <CategoryTitle>비밀번호</CategoryTitle>
             {errors?.pw ? (
-              <span
-                className="error"
-                style={{ marginLeft: '10px', color: '#f74440' }}
-              >
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
                 {errors.pw?.message}
               </span>
             ) : null}
@@ -113,6 +105,29 @@ const SignUp = () => {
               minLength: {
                 value: 8,
                 message: '8글자 이상 입력해주세요.',
+              },
+              required: '필수 입력란입니다.',
+            })}
+          />
+        </Div>
+        <Div>
+          <div>
+            <Required>*</Required>
+            <CategoryTitle>생년월일</CategoryTitle>
+            {errors?.pw ? (
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                {errors.pw?.message}
+              </span>
+            ) : null}
+          </div>
+          <input
+            id="birth"
+            type="text"
+            placeholder="yyyy-mm-dd 형식으로 입력해주세요."
+            {...register('birth', {
+              minLength: {
+                value: 9,
+                message: '형식에 맞게 입력해주세요.',
               },
               required: '필수 입력란입니다.',
             })}
