@@ -7,17 +7,17 @@ import { IoMailOutline } from 'react-icons/io5';
 import { SlLock } from 'react-icons/sl';
 import { requestLogin } from '../../api/api';
 
-interface SigninForm {
+interface LoginForm {
   id: string;
   pw: string;
 }
 
-const SignIn = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SigninForm>();
+  } = useForm<LoginForm>();
 
   const navigate = useNavigate();
 
@@ -106,4 +106,4 @@ const NavSpan = styled.span`
   font-weight: 600;
 `;
 
-export default SignIn;
+export default Login;
