@@ -5,7 +5,7 @@ import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
 import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
 import { SlLock } from 'react-icons/sl';
-import { requestLogin } from '../../api/request';
+import { requestLogin } from '../../api/api';
 
 interface SigninForm {
   id: string;
@@ -37,18 +37,13 @@ const SignIn = () => {
           <div>
             <CategoryTitle>아이디</CategoryTitle>
             {errors?.id ? (
-              <span
-                className="error"
-                style={{ marginLeft: '10px', color: '#f74440' }}
-              >
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
                 {errors.id?.message}
               </span>
             ) : null}
           </div>
           <div style={{ position: 'relative' }}>
-            <IoMailOutline
-              style={{ position: 'absolute', top: '20px', left: '20px' }}
-            />
+            <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
             <input
               id="id"
               type="text"
@@ -68,18 +63,13 @@ const SignIn = () => {
           <div>
             <CategoryTitle>비밀번호</CategoryTitle>
             {errors?.pw ? (
-              <span
-                className="error"
-                style={{ marginLeft: '10px', color: '#f74440' }}
-              >
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
                 {errors.pw?.message}
               </span>
             ) : null}
           </div>
           <div style={{ position: 'relative' }}>
-            <SlLock
-              style={{ position: 'absolute', top: '20px', left: '20px' }}
-            />
+            <SlLock style={{ position: 'absolute', top: '20px', left: '20px' }} />
             <input
               id="pw"
               type="password"
@@ -98,10 +88,8 @@ const SignIn = () => {
         <SubmitButton type="submit">로그인</SubmitButton>
       </form>
       <Flexdiv>
-        <NavSpan onClick={() => navigate('/auth/findpassword')}>
-          비밀번호 찾기
-        </NavSpan>{' '}
-        / <NavSpan onClick={() => navigate('/auth/signup')}>회원가입</NavSpan>
+        <NavSpan onClick={() => navigate('/auth/findpassword')}>비밀번호 찾기</NavSpan> /{' '}
+        <NavSpan onClick={() => navigate('/auth/signup')}>회원가입</NavSpan>
       </Flexdiv>
     </Main>
   );
