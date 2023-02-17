@@ -28,7 +28,7 @@ const Cart = () => {
 };
 
 const CartWrap = styled.div`
-  padding: 24px;
+  padding: 35px;
   h2{
     font-size: 32px;
     margin-bottom: 20px;

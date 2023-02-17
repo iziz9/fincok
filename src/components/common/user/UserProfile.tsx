@@ -11,7 +11,7 @@ function UserProfile() {
         <FaUserCircle size="80" color="var(--color-light-grey)" />
         <MoreBox to="/">
           <UserText>
-            <strong>유저명</strong>&nbsp;님
+            <strong>USER</strong>&nbsp;님
           </UserText>
           <p>
             내 정보 확인하기

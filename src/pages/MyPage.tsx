@@ -1,7 +1,7 @@
 import React from 'react';
-import CartList from '../components/common/profile/CartList';
-import UserProfile from '../components/common/profile/UserProfile';
-import Setting from '../components/common/profile/Setting';
+import CartList from '../components/common/user/CartList';
+import UserProfile from '../components/common/user/UserProfile';
+import Setting from '../components/common/user/Setting';
 import styled from 'styled-components';
 
 
@@ -15,7 +15,7 @@ const MyPage = () => {
   )
 };
 const PageWrap = styled.div`
-  padding: 24px;
+  padding: 35px;
 `;
 
 export default MyPage;

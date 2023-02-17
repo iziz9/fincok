@@ -47,6 +47,15 @@ const LinkBox = styled(Link)`
 `;
 const Logout = styled.button`
   ${buttonStyle}
+  width : 100%;
+  font-size: 15px;
+  background-color: #fff;
+  color: var(--color-black);
+  border: transparent;
+  padding: 0;
+  :hover {
+    background-color: #fff;
+  }
 `;
 const FelxBox = styled.div`
   display: flex;
