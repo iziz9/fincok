@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Reset } from 'styled-reset';
 import CategoryBar from './components/common/CategoryBar';
 import Header from './components/common/layout/Header';
 import GlobalStyle from './style/globalStyles';
@@ -12,7 +11,7 @@ function App() {
 
   return (
     <>
-      <Reset />
+      {/* <Reset /> */}
       <Header />
       <Outlet />
       <GlobalStyle />

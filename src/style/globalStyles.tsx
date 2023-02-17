@@ -16,6 +16,10 @@ const GlobalStyles = createGlobalStyle`
     --color-orange: #f74440;
     --color-stroke: #e9e9f2;
     --color-background: #fafaff;
+    --color-bank-yellow: #fedC32;
+    --color-bank-blue: #4091dc;
+    --color-bank-green: #1bd760;
+    --color-bank-puple: #bb90f4;
   }
   @font-face {
     font-family: 'S-CoreDream-3Light';
