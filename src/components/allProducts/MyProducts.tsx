@@ -29,6 +29,7 @@ const BoxWrap = styled.div`
   box-sizing: border-box;
   margin-top: 40px;
   border-radius: 20px; 
+  box-shadow: 0px 4px 4px 0px #00000040;
   h3 {
     font-size: 20px;
   }

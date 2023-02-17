@@ -73,7 +73,7 @@ const Navigation = (props: Props) => {
         </SearchForm>
         <ul>
           <h2>메뉴</h2>
-          <Link to={'/'} onClick={closeNav}>
+          <Link to={'/user'} onClick={closeNav}>
             <li>
               <HiOutlineHeart color="var(--color-black)" />
               마이페이지

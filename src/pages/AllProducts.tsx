@@ -1,14 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import MyProducts from '../components/allProducts/MyProducts'
-import ProductMenu from '../components/allProducts/ProductMenu'
+import ProductsMenu from '../components/allProducts/ProductsMenu'
 
 function AllProducts() {
   return (
     <AllProductsWrap>
       <h2>전체 상품</h2>
       <MyProducts /> 
-      <ProductMenu/>
+      <ProductsMenu/>
     </AllProductsWrap>
   )
 }

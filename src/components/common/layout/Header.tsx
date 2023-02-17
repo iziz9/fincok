@@ -20,7 +20,7 @@ const Header = () => {
         </Logo>
         <Icon>
           <Cart>
-            <Link to={'/'}>
+            <Link to={'/cart'}>
               <AiOutlineShoppingCart size="28" color="var(--color-black)" />
             </Link>
           </Cart>
