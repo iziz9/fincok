@@ -13,7 +13,7 @@ const Cart = () => {
   }
   return (
     <CartWrap>
-      <h2>관심상품</h2>
+      <h2>장바구니</h2>
       <p>n개의 관심 상품이 있습니다.</p>
       <ButtonBox>
         <button onClick={allChecked}>
