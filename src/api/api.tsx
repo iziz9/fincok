@@ -1,15 +1,18 @@
 import axios from 'axios';
 import { instance } from './axios';
+import { useNavigate } from 'react-router-dom';
 
-export const requestLogin = async (id: string, pw: string) => {
+const navigate = useNavigate();
+
+export const requestLogin = async (formData: FormData) => {
   try {
-    const res = await instance.post('login', {
-      id,
-      pw,
-    });
+    const res = await instance.post('login', formData);
     console.log(res);
     if (res.data.resultCode === 'failed') {
       throw new Error('존재하지 않는 회원정보입니다.');
+    } else {
+      alert('로그인 완료');
+      navigate('/');
     }
   } catch (err) {
     alert(err);
@@ -22,30 +25,15 @@ export const getProducts = async () => {
 };
 
 // 회원가입
-export const requestSignUp = async (
-  memberid: string,
-  password: string,
-  name: string,
-  birth: string,
-  job: string,
-  district: string,
-  bank: string,
-  category: String,
-) => {
+export const requestSignUp = async (formData: FormData) => {
   try {
-    const res = await instance.post('signup', {
-      memberid,
-      password,
-      name,
-      birth,
-      job,
-      district,
-      bank,
-      category,
-    });
+    const res = await instance.post('signup', formData);
     console.log(res);
     if (res.data.resultCode === 'failed') {
-      throw new Error('존재하지 않는 회원정보입니다.');
+      throw new Error('정상적인 가입 요청이 아닙니다.');
+    } else {
+      alert('회원가입이 완료되었습니다!');
+      navigate('/login');
     }
   } catch (err) {
     alert(err);

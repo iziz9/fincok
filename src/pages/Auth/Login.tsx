@@ -31,8 +31,14 @@ const Login = () => {
         />
       </Div>
       <h1 style={{ padding: '30px 0 50px' }}>Login</h1>
-      {/* <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}> */}
-      <form onSubmit={handleSubmit((data) => requestLogin(data.id, data.pw))}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          const formData = new FormData();
+          formData.append('memberId', data.id);
+          formData.append('password', data.pw);
+          requestLogin(formData);
+        })}
+      >
         <Div>
           <div>
             <CategoryTitle>아이디</CategoryTitle>
