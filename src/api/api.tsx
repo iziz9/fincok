@@ -2,8 +2,6 @@ import axios from 'axios';
 import { instance } from './axios';
 import { useNavigate } from 'react-router-dom';
 
-const navigate = useNavigate();
-
 export const requestLogin = async (formData: FormData) => {
   try {
     const res = await instance.post('login', formData);
@@ -12,7 +10,6 @@ export const requestLogin = async (formData: FormData) => {
       throw new Error('존재하지 않는 회원정보입니다.');
     } else {
       alert('로그인 완료');
-      navigate('/');
     }
   } catch (err) {
     alert(err);
@@ -33,7 +30,6 @@ export const requestSignUp = async (formData: FormData) => {
       throw new Error('정상적인 가입 요청이 아닙니다.');
     } else {
       alert('회원가입이 완료되었습니다!');
-      navigate('/login');
     }
   } catch (err) {
     alert(err);
