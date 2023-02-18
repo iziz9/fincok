@@ -17,8 +17,8 @@ interface LoginForm {
 const Login = () => {
   const navigate = useNavigate();
   const formSchema = yup.object({
-    memberId: yup.string().required('필수 입력란입니다.').email('이메일 형식에 맞지 않습니다.'),
-    password: yup
+    id: yup.string().required('필수 입력란입니다.').email('이메일 형식에 맞지 않습니다.'),
+    pw: yup
       .string()
       .required('필수 입력란입니다.')
       .min(8, '영문, 숫자 포함 8자 이상 입력해주세요.')

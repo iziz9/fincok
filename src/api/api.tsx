@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { instance } from './axios';
-import { useNavigate } from 'react-router-dom';
 
 export const requestLogin = async (formData: FormData) => {
   try {
