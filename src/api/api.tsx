@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { instance } from './axios';
-import { setCookie, getCookie } from '../utils/cookie';
+import { setCookie, getCookie, removeCookie } from '../utils/cookie';
 
+//로그인
 export const requestLogin = async (formData: FormData) => {
   try {
     const res = await instance.post('login', formData);
@@ -17,6 +18,25 @@ export const requestLogin = async (formData: FormData) => {
     }
   } catch (err) {
     alert(err);
+  }
+};
+
+// 로그아웃
+export const requestLogout = async () => {
+  try {
+    const accessToken = getCookie('accessToken');
+    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    const res = await instance.post('/logout');
+    console.log(res);
+    if (res.data.resultCode === 'failed') {
+      throw new Error('로그아웃 에러');
+    } else {
+      removeCookie();
+      alert('로그아웃 되었습니다.');
+      location.pathname = '/';
+    }
+  } catch (err) {
+    alert('로그아웃에 실패했습니다.');
   }
 };
 
