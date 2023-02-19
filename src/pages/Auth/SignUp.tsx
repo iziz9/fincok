@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { productList, jobList, bankList, addressList } from '../../utils/list';
 import { requestSignUp } from '../../api/api';
+import { checkIdAvailable } from '../../api/api';
 
 interface SignupForm {
   name: string;
@@ -44,11 +45,13 @@ const SignUp = () => {
     register,
     handleSubmit,
     watch,
+    getValues,
     formState: { errors },
   } = useForm<SignupForm>({
     mode: 'onChange',
     resolver: yupResolver(formSchema),
   });
+  const watchId = watch('memberId');
 
   let yearArr: Array<string> = [];
   let monthArr: Array<string> = [];
@@ -134,7 +137,7 @@ const SignUp = () => {
               style={{ fontWeight: 600 }}
               onClick={(e) => {
                 e.preventDefault();
-                console.log('중복확인 API 연결');
+                checkIdAvailable(watchId);
               }}
             >
               중복 확인
