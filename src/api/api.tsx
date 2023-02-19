@@ -48,9 +48,11 @@ export const getProducts = async () => {
 // 회원가입
 export const requestSignUp = async (formData: FormData) => {
   try {
+    const isExistId = await instance.post(`api/duplication/${formData.get('memberId')}`);
     const res = await instance.post('signup', formData);
-    console.log(res);
-    if (res.data.resultCode === 'failed') {
+    if (isExistId.data) {
+      alert('이미 존재하는 아이디로는 가입할 수 없습니다. 비밀번호 찾기를 이용해주세요.');
+    } else if (res.data.resultCode === 'failed') {
       throw new Error('정상적인 가입 요청이 아닙니다.');
     } else {
       alert('회원가입이 완료되었습니다!');
@@ -65,12 +67,25 @@ export const requestSignUp = async (formData: FormData) => {
 export const checkIdAvailable = async (id: string) => {
   try {
     const res = await instance.post(`api/duplication/${id}`);
-    console.log(res);
     if (res.data === true) {
       alert('이미 존재하는 아이디입니다. 비밀번호 찾기를 이용해주세요.');
-      // true일때 해당 아이디로 등록 못 하게?
     } else {
       alert('사용 가능한 아이디입니다.');
+    }
+  } catch (err) {
+    alert(err);
+  }
+};
+
+// 비밀번호 재설정 메일 전송
+export const requestFindPw = async (id: string, name: string) => {
+  try {
+    const isCorrectUser = await instance.get(`findPw?memberId=${id}&name=${name}`);
+    if (isCorrectUser.data.resultCode === 'failed') {
+      alert('일치하는 회원정보가 없습니다. 다시 확인해주세요.');
+    } else {
+      const res = await instance.post(`findPw/sendMail?memberId=${id}&name=${name}`);
+      alert('비밀번호 재설정 메일이 전송되었습니다. 메일함을 확인해주세요.');
     }
   } catch (err) {
     alert(err);

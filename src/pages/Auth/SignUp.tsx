@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { productList, jobList, bankList, addressList } from '../../utils/list';
 import { requestSignUp } from '../../api/api';
 import { checkIdAvailable } from '../../api/api';
+import { instance } from '../../api/axios';
 
 interface SignupForm {
   name: string;
@@ -45,7 +46,6 @@ const SignUp = () => {
     register,
     handleSubmit,
     watch,
-    getValues,
     formState: { errors },
   } = useForm<SignupForm>({
     mode: 'onChange',

@@ -107,7 +107,7 @@ const Flexdiv = styled.div`
   gap: 10px;
   justify-content: center;
 `;
-const NavSpan = styled.span`
+export const NavSpan = styled.span`
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;

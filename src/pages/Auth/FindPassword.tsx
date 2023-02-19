@@ -1,22 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
 import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
+import { requestFindPw } from '../../api/api';
 
-type SigninForm = {
-  id: string;
+type findForm = {
+  memberId: string;
+  name: string;
 };
 
 const FindPassword = () => {
+  const navigate = useNavigate();
+  const formSchema = yup.object({
+    name: yup
+      .string()
+      .required('필수 입력란입니다.')
+      .matches(/^[가-힣]+$/, '이름을 정확히 입력해주세요.')
+      .min(2, '이름을 정확히 입력해주세요.'),
+    memberId: yup.string().required('필수 입력란입니다.').email('이메일 형식에 맞지 않습니다.'),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SigninForm>();
-
-  const navigate = useNavigate();
+  } = useForm<findForm>({
+    mode: 'onBlur',
+    resolver: yupResolver(formSchema),
+  });
 
   return (
     <Main>
@@ -31,33 +45,49 @@ const FindPassword = () => {
         <h1 style={{ margin: '0 0 30px', color: '#f74440', fontSize: '30px' }}>비밀번호 찾기</h1>
       </Flexdiv>
       <FlexText>
-        핀콕에 가입했던 이메일주소를 입력해주세요. <br />
+        핀콕에 가입했던 회원정보를 입력해주세요. <br />
         비밀번호 재설정 메일을 보내드립니다.
       </FlexText>
-      <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          requestFindPw(data.memberId, data.name);
+        })}
+      >
         <Div>
           <div>
-            <CategoryTitle>아이디</CategoryTitle>
-            {errors?.id ? (
+            <CategoryTitle>이름</CategoryTitle>
+            {errors?.name ? (
               <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                {errors.id?.message}
+                {errors.name?.message}
               </span>
             ) : null}
           </div>
           <div style={{ position: 'relative', marginBottom: '30px' }}>
             <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
             <input
-              id="id"
+              id="name"
+              type="text"
+              placeholder="김핀콕"
+              style={{ width: '380px', paddingLeft: '45px' }}
+              {...register('name')}
+            />
+          </div>
+          <div>
+            <CategoryTitle>아이디</CategoryTitle>
+            {errors?.memberId ? (
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                {errors.memberId?.message}
+              </span>
+            ) : null}
+          </div>
+          <div style={{ position: 'relative', marginBottom: '30px' }}>
+            <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
+            <input
+              id="memberId"
               type="text"
               placeholder="abc@google.com"
               style={{ width: '380px', paddingLeft: '45px' }}
-              {...register('id', {
-                pattern: {
-                  value: /\S+@\S+\.\S+/,
-                  message: '이메일 형식에 맞지 않습니다.',
-                },
-                required: '필수 입력란입니다.',
-              })}
+              {...register('memberId')}
             />
           </div>
         </Div>
