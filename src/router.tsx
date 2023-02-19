@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import SignIn from './pages/Auth/SignIn';
+import Login from './pages/Auth/Login';
 import SignUp from './pages/Auth/SignUp';
 import Cart from './pages/Cart';
 import Detail from './pages/Detail';
@@ -33,15 +33,15 @@ const router = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path: 'auth/signin',
-        element: <SignIn />,
+        path: 'login',
+        element: <Login />,
       },
       {
-        path: 'auth/findpassword',
+        path: 'findpassword',
         element: <FindPassword />,
       },
       {
-        path: 'auth/signup',
+        path: 'signup',
         element: <SignUp />,
       },
       {
