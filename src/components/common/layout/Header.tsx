@@ -15,7 +15,7 @@ const Header = () => {
       <Inner>
         <Logo>
           <Link to={'/'}>
-            <img src="./logo_fincok.png" alt="로고" />
+            <img src="/logo_fincok.png" alt="로고" />
           </Link>
         </Logo>
         <Icon>
