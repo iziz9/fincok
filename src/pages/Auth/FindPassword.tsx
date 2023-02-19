@@ -28,9 +28,7 @@ const FindPassword = () => {
         />
       </Div>
       <Flexdiv>
-        <h1 style={{ margin: '0 0 30px', color: '#f74440', fontSize: '30px' }}>
-          비밀번호 찾기
-        </h1>
+        <h1 style={{ margin: '0 0 30px', color: '#f74440', fontSize: '30px' }}>비밀번호 찾기</h1>
       </Flexdiv>
       <FlexText>
         핀콕에 가입했던 이메일주소를 입력해주세요. <br />
@@ -41,18 +39,13 @@ const FindPassword = () => {
           <div>
             <CategoryTitle>아이디</CategoryTitle>
             {errors?.id ? (
-              <span
-                className="error"
-                style={{ marginLeft: '10px', color: '#f74440' }}
-              >
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
                 {errors.id?.message}
               </span>
             ) : null}
           </div>
           <div style={{ position: 'relative', marginBottom: '30px' }}>
-            <IoMailOutline
-              style={{ position: 'absolute', top: '20px', left: '20px' }}
-            />
+            <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
             <input
               id="id"
               type="text"

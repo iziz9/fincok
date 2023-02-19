@@ -13,8 +13,8 @@ export const requestLogin = async (formData: FormData) => {
       const accessToken = res.data.accessToken;
       setCookie('accessToken', accessToken);
       alert('로그인 완료');
-      console.log(getCookie('accessToken'));
       location.pathname = '/';
+      console.log(getCookie('accessToken'));
     }
   } catch (err) {
     alert(err);
