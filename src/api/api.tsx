@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { instance } from './axios';
 import { setCookie, getCookie, removeCookie } from '../utils/cookie';
+import { SetStateAction } from 'react';
 
 //로그인
 export const requestLogin = async (formData: FormData) => {
@@ -78,16 +79,21 @@ export const checkIdAvailable = async (id: string) => {
 };
 
 // 비밀번호 재설정 메일 전송
-export const requestFindPw = async (id: string, name: string) => {
+export const requestFindPw = async (id: string, name: string, setLoading: any) => {
   try {
     const isCorrectUser = await instance.get(`findPw?memberId=${id}&name=${name}`);
     if (isCorrectUser.data.resultCode === 'failed') {
       alert('일치하는 회원정보가 없습니다. 다시 확인해주세요.');
     } else {
+      //로딩애니메이션 시작
+      setLoading(true);
       const res = await instance.post(`findPw/sendMail?memberId=${id}&name=${name}`);
+      setLoading(false);
       alert('비밀번호 재설정 메일이 전송되었습니다. 메일함을 확인해주세요.');
     }
   } catch (err) {
     alert(err);
+  } finally {
+    //로딩애니메이션 중지
   }
 };

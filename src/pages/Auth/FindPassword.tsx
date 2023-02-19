@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,6 +7,7 @@ import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
 import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
 import { requestFindPw } from '../../api/api';
+import { BeatLoader } from 'react-spinners';
 
 type findForm = {
   memberId: string;
@@ -14,6 +15,7 @@ type findForm = {
 };
 
 const FindPassword = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const formSchema = yup.object({
     name: yup
@@ -50,7 +52,7 @@ const FindPassword = () => {
       </FlexText>
       <form
         onSubmit={handleSubmit((data) => {
-          requestFindPw(data.memberId, data.name);
+          requestFindPw(data.memberId, data.name, setLoading);
         })}
       >
         <Div>
@@ -91,6 +93,11 @@ const FindPassword = () => {
             />
           </div>
         </Div>
+        {loading && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <BeatLoader size="20px" margin="2px" />
+          </div>
+        )}
         <SubmitButton type="submit">비밀번호 재설정하기</SubmitButton>
       </form>
     </Main>
