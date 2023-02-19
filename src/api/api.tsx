@@ -9,6 +9,7 @@ export const requestLogin = async (formData: FormData) => {
       throw new Error('존재하지 않는 회원정보입니다.');
     } else {
       alert('로그인 완료');
+      location.pathname = '/';
     }
   } catch (err) {
     alert(err);
@@ -29,6 +30,23 @@ export const requestSignUp = async (formData: FormData) => {
       throw new Error('정상적인 가입 요청이 아닙니다.');
     } else {
       alert('회원가입이 완료되었습니다!');
+      location.pathname = '/login';
+    }
+  } catch (err) {
+    alert(err);
+  }
+};
+
+// 이메일 중복검사
+export const checkIdAvailable = async (id: string) => {
+  try {
+    const res = await instance.post(`api/duplication/${id}`);
+    console.log(res);
+    if (res.data === true) {
+      alert('이미 존재하는 아이디입니다. 비밀번호 찾기를 이용해주세요.');
+      // true일때 해당 아이디로 등록 못 하게?
+    } else {
+      alert('사용 가능한 아이디입니다.');
     }
   } catch (err) {
     alert(err);
