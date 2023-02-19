@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { instance } from './axios';
+import { setCookie, getCookie } from '../utils/cookie';
 
 export const requestLogin = async (formData: FormData) => {
   try {
@@ -8,7 +9,10 @@ export const requestLogin = async (formData: FormData) => {
     if (res.data.resultCode === 'failed') {
       throw new Error('존재하지 않는 회원정보입니다.');
     } else {
+      const accessToken = res.data.accessToken;
+      setCookie('accessToken', accessToken);
       alert('로그인 완료');
+      console.log(getCookie('accessToken'));
       location.pathname = '/';
     }
   } catch (err) {
