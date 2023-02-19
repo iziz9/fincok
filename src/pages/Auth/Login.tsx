@@ -6,20 +6,33 @@ import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
 import { SlLock } from 'react-icons/sl';
 import { requestLogin } from '../../api/api';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-interface SigninForm {
+interface LoginForm {
   id: string;
   pw: string;
 }
 
-const SignIn = () => {
+const Login = () => {
+  const navigate = useNavigate();
+  const formSchema = yup.object({
+    id: yup.string().required('필수 입력란입니다.').email('이메일 형식에 맞지 않습니다.'),
+    pw: yup
+      .string()
+      .required('필수 입력란입니다.')
+      .min(8, '영문, 숫자 포함 8자 이상 입력해주세요.')
+      .max(15, '최대 15자까지 입력 가능합니다.')
+      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/, '영문, 숫자를 모두 포함해야 합니다.'),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SigninForm>();
-
-  const navigate = useNavigate();
+  } = useForm<LoginForm>({
+    mode: 'onChange',
+    resolver: yupResolver(formSchema),
+  });
 
   return (
     <Main>
@@ -31,8 +44,14 @@ const SignIn = () => {
         />
       </Div>
       <h1 style={{ padding: '30px 0 50px' }}>Login</h1>
-      {/* <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}> */}
-      <form onSubmit={handleSubmit((data) => requestLogin(data.id, data.pw))}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          const formData = new FormData();
+          formData.append('memberId', data.id);
+          formData.append('password', data.pw);
+          requestLogin(formData);
+        })}
+      >
         <Div>
           <div>
             <CategoryTitle>아이디</CategoryTitle>
@@ -49,13 +68,7 @@ const SignIn = () => {
               type="text"
               placeholder="abc@google.com"
               style={{ width: '380px', paddingLeft: '45px' }}
-              {...register('id', {
-                pattern: {
-                  value: /\S+@\S+\.\S+/,
-                  message: '이메일 형식에 맞지 않습니다.',
-                },
-                required: '필수 입력란입니다.',
-              })}
+              {...register('id')}
             />
           </div>
         </Div>
@@ -75,13 +88,7 @@ const SignIn = () => {
               type="password"
               placeholder="8글자 이상 입력해 주세요"
               style={{ width: '380px', paddingLeft: '45px' }}
-              {...register('pw', {
-                minLength: {
-                  value: 8,
-                  message: '8글자 이상 입력해주세요.',
-                },
-                required: '필수 입력란입니다.',
-              })}
+              {...register('pw')}
             />
           </div>
         </Div>
@@ -106,4 +113,4 @@ const NavSpan = styled.span`
   font-weight: 600;
 `;
 
-export default SignIn;
+export default Login;
