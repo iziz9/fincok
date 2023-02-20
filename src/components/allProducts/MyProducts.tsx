@@ -10,13 +10,15 @@ function MyProducts() {
       <h3>나의 상품 바구니</h3>
       <FlexBox>
         <LinkBox to="/user">
-          <FaRegMoneyBillAlt size="48" />
-          <p>가입중n개</p>
+          {/* <FaRegMoneyBillAlt size="48" /> */}
+          <img src="/icon5.png" alt="가입중인 상품" />
+          <p>가입신청 n개</p>
         </LinkBox>
         <CenterLine>center line</CenterLine>
         <LinkBox to="/cart">
-          <TiHeartOutline size="48" />
-          <p>관심상품n개</p>
+          {/* <TiHeartOutline size="48" /> */}
+          <img src="/icon6.png" alt="관심상품" />
+          <p>관심상품 n개</p>
         </LinkBox>
       </FlexBox>
     </BoxWrap>
@@ -28,10 +30,11 @@ const BoxWrap = styled.div`
   background-color: var(--color-background);
   box-sizing: border-box;
   margin-top: 40px;
-  border-radius: 20px; 
+  border-radius: 20px;
   box-shadow: 0px 4px 4px 0px #00000040;
   h3 {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
   }
 `;
 const FlexBox = styled.div`
@@ -48,11 +51,11 @@ const LinkBox = styled(Link)`
     padding-top: 10px;
     font-size: 16px;
   }
-  :hover{
-    svg{
+  :hover {
+    svg {
       color: var(--color-orange);
     }
-    p{
+    p {
       color: var(--color-orange);
     }
   }

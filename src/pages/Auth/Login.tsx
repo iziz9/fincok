@@ -95,8 +95,8 @@ const Login = () => {
         <SubmitButton type="submit">로그인</SubmitButton>
       </form>
       <Flexdiv>
-        <NavSpan onClick={() => navigate('/auth/findpassword')}>비밀번호 찾기</NavSpan> /{' '}
-        <NavSpan onClick={() => navigate('/auth/signup')}>회원가입</NavSpan>
+        <NavSpan onClick={() => navigate('/findpassword')}>비밀번호 찾기</NavSpan> /{' '}
+        <NavSpan onClick={() => navigate('/signup')}>회원가입</NavSpan>
       </Flexdiv>
     </Main>
   );
@@ -107,7 +107,7 @@ const Flexdiv = styled.div`
   gap: 10px;
   justify-content: center;
 `;
-const NavSpan = styled.span`
+export const NavSpan = styled.span`
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;

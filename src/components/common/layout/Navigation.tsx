@@ -2,15 +2,12 @@ import { useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useOutSideClick from '../../../hooks/useOutSideClick';
 import styled from 'styled-components';
+import { requestLogout } from '../../../api/api';
 import { GrClose } from 'react-icons/gr';
 import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
-import {
-  HiOutlineHeart,
-  HiOutlineClipboardList,
-  HiOutlineShoppingBag,
-} from 'react-icons/hi';
+import { HiOutlineHeart, HiOutlineClipboardList, HiOutlineShoppingBag } from 'react-icons/hi';
 
 type Props = {
   setActive: (active: boolean) => void;
@@ -95,7 +92,12 @@ const Navigation = (props: Props) => {
             </li>
           </Link>
         </ul>
-        <Foot onClick={closeNav}>
+        <Foot
+          onClick={() => {
+            requestLogout();
+            closeNav;
+          }}
+        >
           로그아웃
           <BiLogOut size="18" color="var(--color-white)" />
         </Foot>
