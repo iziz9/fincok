@@ -36,13 +36,14 @@ const Header = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 100px;
+  height: 75px;
   background-color: #fff;
   box-sizing: border-box;
 `;
 
 const Inner = styled.div`
   width: 100%;
+  height: 100%;
   padding: 20px 35px;
   margin: auto;
   display: flex;

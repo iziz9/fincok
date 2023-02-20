@@ -1,22 +1,20 @@
-import react from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-type productItem = {
+type loansItem = {
   item: {
-    itemId: string;
-    category: string;
     bank: string;
+    itemId: string;
     itemName: string;
+    maxRate: string;
+    minRate: string;
     type: string;
-    dtype: string;
-    rate: string;
-    prefRate: string;
   };
   key: number;
 };
 
-const ProductItem = ({ item }: productItem) => {
+const LoansItem = ({ item }: loansItem) => {
   const bankName: string = item.bank;
 
   return (
@@ -24,10 +22,9 @@ const ProductItem = ({ item }: productItem) => {
       <Item bankName={bankName}>
         <div>
           <h4>{item.bank}</h4>
-          <p>금리 {item.prefRate}%</p>
+          <p>최대 금리 {item.maxRate}%</p>
         </div>
         <h3>{item.itemName}</h3>
-        <span>{item.category}</span>
       </Item>
     </Link>
   );
@@ -35,7 +32,7 @@ const ProductItem = ({ item }: productItem) => {
 
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;
-  height: 125px;
+  height: 80px;
   border-radius: 15px;
   display: flex;
   flex-flow: column;
@@ -67,15 +64,11 @@ const Item = styled.div<{ bankName: string }>`
     }
   }
   h3 {
-    margin: 13px 0 0;
+    margin: auto 0 0;
     font-size: 20px;
     line-height: 1.2em;
     font-weight: bold;
   }
-  span {
-    font-weight: bold;
-    margin-top: auto;
-  }
 `;
 
-export default ProductItem;
+export default LoansItem;
