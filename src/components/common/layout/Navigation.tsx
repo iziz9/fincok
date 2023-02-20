@@ -31,7 +31,7 @@ const Navigation = (props: Props) => {
   };
 
   const handleSubmit = (value: string) => {
-    return navigate(`/search?content=${value}`);
+    return navigate(`/search?title=${value}`);
   };
 
   return (
@@ -115,6 +115,7 @@ const Container = styled.div`
   z-index: 100;
   background: rgba(0, 0, 0, 0.4);
 `;
+
 const Inner = styled.div`
   position: absolute;
   right: 0;
@@ -145,18 +146,17 @@ const Inner = styled.div`
     li {
       height: 60px;
       font-size: 15px;
-      font-weight: bold;
       display: flex;
       gap: 8px;
       align-items: center;
       box-sizing: border-box;
       margin: 0 2px;
       padding: 0 30px;
-      &:hover {
+      :hover {
         background-color: var(--color-bg-grey);
       }
       svg {
-        &:last-child {
+        :last-child {
           margin-left: auto;
         }
       }
@@ -186,7 +186,8 @@ const User = styled.div`
     font-weight: bold;
   }
 `;
-const SearchForm = styled.div`
+
+export const SearchForm = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -200,9 +201,9 @@ const SearchForm = styled.div`
   input {
     box-sizing: border-box;
     width: 100%;
-    font-size: 14px;
+    font-size: 15px;
     padding: 10px 10px 10px 15px;
-    &::placeholder {
+    ::placeholder {
       color: var(--color-light-grey);
     }
   }
@@ -212,9 +213,9 @@ const SearchForm = styled.div`
     position: absolute;
     right: 35px;
     cursor: pointer;
-    &:hover {
-      border-color: none;
-      background-color: none;
+    :hover {
+      border-color: none !important;
+      background-color: none !important;
     }
   }
 `;
@@ -234,7 +235,7 @@ const Foot = styled.div`
   color: var(--color-white);
   gap: 5px;
   cursor: pointer;
-  &:hover {
+  :hover {
     background-color: var(--color-orange);
   }
 `;
