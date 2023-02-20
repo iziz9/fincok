@@ -58,9 +58,9 @@ const Home = () => {
       </Title>
       <AllProducts>
         <p>
-          전체 <span>상품</span> 둘러보기
+          <span>로그인</span> 하러 가기
         </p>
-        <Link to={'/allproducts'}>GO !</Link>
+        <Link to={'/login'}>GO !</Link>
       </AllProducts>
       <MyPage>
         <Cart>

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { instance } from './axios';
 import { setCookie, getCookie, removeCookie } from '../utils/cookie';
-import { SetStateAction } from 'react';
 
 //로그인
 export const requestLogin = async (formData: FormData) => {
@@ -89,7 +88,9 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
       setLoading(true);
       const res = await instance.post(`findPw/sendMail?memberId=${id}&name=${name}`);
       setLoading(false);
-      alert('비밀번호 재설정 메일이 전송되었습니다. 메일함을 확인해주세요.');
+      res.data.resultCode === 'success'
+        ? alert('비밀번호 재설정 메일이 전송되었습니다. 메일함을 확인해주세요.')
+        : alert('에러가 발생했습니다. 다시 시도해주세요.');
     }
   } catch (err) {
     alert(err);
@@ -97,3 +98,16 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
     //로딩애니메이션 중지
   }
 };
+
+// 상품 상세조회
+export const getProductDetail = async (category: string, itemId: string) => {
+  try {
+    // const res = await instance.get(`search/${category}/detail/${itemId}`);
+    const res = await instance.get(`search${category}Detail/${itemId}`);
+    console.log(res.data);
+    return res.data;
+  } catch (err) {
+    alert(err);
+  }
+};
+getProductDetail('Deposit', '20');

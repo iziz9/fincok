@@ -10,6 +10,7 @@ import Search from './pages/Search';
 import Recommend from './pages/Recommend';
 import AllProducts from './pages/AllProducts';
 import FindPassword from './pages/Auth/FindPassword';
+import NotFound from './pages/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: 'allproducts',
         element: <AllProducts />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

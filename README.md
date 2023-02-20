@@ -21,3 +21,11 @@
 - 각자 작업할 feature branch </br>
   작업 후 develop branch에 PR하기, PR 완료 후에는 feature branch 삭제, feature branch명 컨벤션: 주요한 작업 내용에 따라 commit 컨벤션을 지킴</br>
   ex) 메인페이지 css 구성: design-mainpage와 같이 브랜치명을 생성
+
+---
+
+---
+
+### 참고자료
+
+- [icons8](https://icons8.kr/icons/clouds)

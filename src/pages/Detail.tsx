@@ -58,6 +58,8 @@ const Detail = () => {
     borderRadius: '50px',
   };
 
+  // const { }= getProductDetail() //navigate에서?
+
   return (
     <main>
       <ColoredSection style={colorState}>
@@ -86,27 +88,28 @@ const Detail = () => {
           />
         </div>
         <H1>
-          <span>신한</span> <br /> <span>신한 플러스 아무튼 적금</span>
+          <span>{'props.bank'}</span> <br /> <span>{'props.itemName'}</span>
         </H1>
         <TagDiv>
           {/* 옵셔널체이닝으로 응답값에 태그 있을 경우에만 */}
-          <Tag style={deepColorState}>상품종류</Tag>
-          <Tag style={deepColorState}>지역</Tag>
-          <Tag style={deepColorState}>직종</Tag>
+          <Tag style={deepColorState}>{'props.category'}</Tag>
+          <Tag style={deepColorState}>{'props.target'}</Tag>
+          <Tag style={deepColorState}>{'props.type'}</Tag>
         </TagDiv>
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <ColDiv>
             <FcMoneyTransfer style={iconStyle} />
-            {/* 상품별 응답값에 따라 텍스트 내용 변경 */}
-            <SummaryTitle>최고우대금리</SummaryTitle>
-            <SummaryContent>연 9.00%</SummaryContent>
+            {/* 상품 카테고리에 따라 텍스트 내용 변경 */}
+            <SummaryTitle>최고우대금리/최저대출금리</SummaryTitle>
+            <SummaryContent>연 {'prefRate / minRate'} %</SummaryContent>
             <SummaryTitle>(12개월 세전)</SummaryTitle>
           </ColDiv>
           <ColDiv>
             <FcSalesPerformance style={iconStyle} />
-            <SummaryTitle>저축한도</SummaryTitle>
+            {/* 상품 카테고리에 따라 텍스트 내용 변경 */}
+            <SummaryTitle>(저축?)한도</SummaryTitle>
             {/* 응답값 null이면 `없음` 표시*/}
-            <SummaryContent>월 30만원</SummaryContent>
+            <SummaryContent>월 {'props.limit'} 30만원</SummaryContent>
           </ColDiv>
         </div>
         <Heart>
@@ -128,7 +131,7 @@ const Detail = () => {
           직장인을 위한 신한은행 정기적금
         </ProductDetailTitle>
         <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
-          `영업점, 인터넷, 스마트폰` 을 통해 가입할 수 있습니다.
+          {'props.join'} 을 통해 가입할 수 있습니다.
         </span>
         <ProductDesc>
           만기 후 이자율은? <br />
