@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TiHeartOutline, TiHeart } from 'react-icons/ti';
-import { IoMdArrowRoundBack } from 'react-icons/io';
+import { TiHeartOutline, TiHeart, TiHome, TiArrowLeftThick } from 'react-icons/ti';
 import { FcSalesPerformance } from 'react-icons/fc';
 import { FcMoneyTransfer } from 'react-icons/fc';
-import { GoHome } from 'react-icons/go';
 import { useNavigate } from 'react-router-dom';
+import { BsCartPlus, BsCartX } from 'react-icons/bs';
 
 const Detail = () => {
   const navigate = useNavigate();
   // redux로 추후 관심상품 상태관리 변경
   const [likeState, setLikeState] = useState<boolean>(false);
+  const [cartState, setCartState] = useState<boolean>(false);
 
   // 컬러차트도 헤더에 똑같이 적용하기
   const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
@@ -41,6 +41,14 @@ const Detail = () => {
     borderRadius: '20px',
     padding: '5px',
   };
+  const cartStyle: object = {
+    backgroundColor: '#fff',
+    width: '30px',
+    height: '30px',
+    cursor: 'pointer',
+    borderRadius: '25px',
+    padding: '10px',
+  };
   const iconStyle: object = {
     width: '45px',
     height: '45px',
@@ -54,7 +62,7 @@ const Detail = () => {
     <main>
       <ColoredSection style={colorState}>
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-          <IoMdArrowRoundBack
+          <TiArrowLeftThick
             onClick={() => history.back()}
             style={{
               cursor: 'pointer',
@@ -65,7 +73,7 @@ const Detail = () => {
               borderRadius: '100%',
             }}
           />
-          <GoHome
+          <TiHome
             onClick={() => navigate('/')}
             style={{
               cursor: 'pointer',
@@ -106,6 +114,11 @@ const Detail = () => {
             <TiHeart style={heartStyle} onClick={() => setLikeState(!likeState)} />
           ) : (
             <TiHeartOutline style={heartStyle} onClick={() => setLikeState(!likeState)} />
+          )}
+          {cartState ? (
+            <BsCartX style={cartStyle} onClick={() => setCartState(!cartState)} />
+          ) : (
+            <BsCartPlus style={cartStyle} onClick={() => setCartState(!cartState)} />
           )}
         </Heart>
       </ColoredSection>
@@ -162,10 +175,11 @@ const Tag = styled.div`
   text-align: center;
 `;
 const Heart = styled.div`
-  width: 80px;
+  width: 140px;
   height: 80px;
   display: flex;
-  flex-direction: column;
+  gap: 20px;
+  // flex-direction: column;
   position: absolute;
   right: 0;
   bottom: 0;

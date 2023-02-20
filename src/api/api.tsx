@@ -34,7 +34,7 @@ export const requestLogout = async () => {
     } else {
       removeCookie();
       alert('로그아웃 되었습니다.');
-      location.pathname = '/';
+      // location.pathname = '/';
     }
   } catch (err) {
     alert('로그아웃에 실패했습니다.');

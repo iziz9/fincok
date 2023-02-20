@@ -15,7 +15,7 @@ function App() {
       <Header />
       <Outlet />
       <GlobalStyle />
-      {location.pathname.includes('auth') ? null : <CategoryBar />}
+      {location.pathname.includes('signup') ? null : <CategoryBar />}
     </>
   );
 }
