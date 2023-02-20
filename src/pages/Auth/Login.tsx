@@ -39,7 +39,7 @@ const Login = () => {
       <Div>
         <img
           src="/logo_fincok.png"
-          style={{ margin: '30px auto', cursor: 'pointer' }}
+          style={{ margin: '25px auto', cursor: 'pointer' }}
           onClick={() => navigate('/')}
         />
       </Div>
