@@ -4,14 +4,14 @@ import styled from 'styled-components';
 
 type productItem = {
   item: {
-    itemId: number;
+    itemId: string;
     category: string;
     bank: string;
     itemName: string;
     type: string;
     dtype: string;
-    rate: number;
-    prefRate: number;
+    rate: string;
+    prefRate: string;
   };
   key: number;
 };

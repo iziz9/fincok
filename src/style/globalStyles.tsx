@@ -22,23 +22,35 @@ const GlobalStyles = createGlobalStyle`
     --color-bank-puple: #bb90f4;
   }
   @font-face {
-    font-family: 'S-CoreDream-3Light';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+    font-family: 'SCoreDream';
+    font-weight: lighter;
+    font-style: normal; 
+    src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff2) format('woff2'),
+         url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff) format('woff');
+    font-display: swap;
+  }
   @font-face {
-    font-family: 'Noto Sans KR';
-    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap') format('font-woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'SCoreDream';
+      font-weight: normal; 
+      font-style: normal; 
+      src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff2) format('woff2'),
+          url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff) format('woff');
+      font-display: swap;
+  }
+  @font-face {
+      font-family: 'SCoreDream';
+      font-weight: bold; 
+      font-style: normal; 
+      src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff2) format('woff2'),
+          url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff) format('woff');
+      font-display: swap;
   }
   body {
     width: 500px;
     min-height: 100vh;
     height: 100%;
     margin: 0 auto;
-    font-family: 'S-CoreDream-3Light', 'Noto Sans KR', sans-serif;
+    font-family: 'SCoreDream', sans-serif;
     font-size: 14px;
     background-color: var(--color-white);
     color: var(--color-black);

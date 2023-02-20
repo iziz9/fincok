@@ -31,9 +31,9 @@ const Home = () => {
         // const url =
         //   'https://abf630fa-517f-4e51-9dac-36cba71c3ecc.mock.pstmn.io/api';
         // const response: any = await axios.get(url);
-        // const response = await getProducts();
-        // console.log(response);
-        setProducts(resultData);
+        const response = await getProducts();
+        console.log(response);
+        setProducts(response);
       } catch (error) {
         console.log('에러 발생!');
       }
@@ -120,8 +120,8 @@ const Container = styled.div`
 
 const Title = styled.div`
   h3 {
-    font-size: 22px;
-    line-height: 1.7em;
+    font-size: 24px;
+    line-height: 1.5em;
     span {
       color: var(--color-orange);
     }
@@ -133,22 +133,22 @@ const AllProducts = styled.div`
   flex-flow: column;
   margin: 20px 0 40px;
   letter-spacing: -0.5px;
+  font-weight: bold;
   span {
     color: var(--color-orange);
   }
   a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 55px;
     height: 55px;
+    text-align: center;
+    line-height: 56px;
     border-radius: 50px;
     background-color: var(--color-orange);
     color: var(--color-white);
     box-shadow: 0px 4px 4px rgba(247, 68, 64, 0.2);
     margin-top: 20px;
     font-weight: bold;
-    &:hover {
+    :hover {
       background-color: var(--color-black);
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
     }
@@ -181,7 +181,7 @@ const Cart = styled.div`
   display: flex;
   p {
     font-size: 18px;
-    &:last-child {
+    :last-child {
       margin-left: auto;
     }
   }
@@ -192,13 +192,13 @@ const Products = styled.div`
   h4 {
     font-size: 18px;
     line-height: 1.7em;
-    font-weight: bold;
     letter-spacing: -1.5px;
     margin-bottom: 15px;
+    font-weight: bold;
   }
 `;
 
-const NoList = styled.div`
+export const NoList = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -208,7 +208,6 @@ const NoList = styled.div`
   margin-top: -40px;
   p {
     font-size: 16px;
-    font-weight: bold;
     color: var(--color-dark-grey);
   }
 `;
