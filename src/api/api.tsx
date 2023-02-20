@@ -98,3 +98,16 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
     //로딩애니메이션 중지
   }
 };
+
+// 상품 상세조회
+export const getProductDetail = async (category: string, itemId: string) => {
+  try {
+    // const res = await instance.get(`search/${category}/detail/${itemId}`);
+    const res = await instance.get(`search${category}Detail/${itemId}`);
+    console.log(res.data);
+    return res.data;
+  } catch (err) {
+    alert(err);
+  }
+};
+getProductDetail('Deposit', '20');
