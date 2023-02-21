@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { BsHouseFill, BsArrowLeft, BsSuitHeart, BsSuitHeartFill, BsCart4 } from 'react-icons/bs';
+import { BsHouseFill, BsArrowLeft } from 'react-icons/bs';
 import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
@@ -96,10 +96,10 @@ const Detail = () => {
       alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
     } else {
       localStorage.setItem('cart', JSON.stringify(info));
-      window.confirm('장바구니에 상품이 담겼습니다');
-      const local = localStorage.getItem('cart');
-      console.log(local);
-      //confirm대신 모달 만들어서 띄우기(장바구니로 이동 / 취소버튼)
+      window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
+        ? navigate('/cart')
+        : null;
+      console.log(localStorage.getItem('cart'));
     }
   };
   const addwishHandler = (itemId: number) => {
