@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TiHeartOutline, TiHeart, TiHome, TiArrowLeftThick } from 'react-icons/ti';
+import {
+  BsHouseFill,
+  BsArrowLeft,
+  BsSuitHeart,
+  BsSuitHeartFill,
+  BsBagPlus,
+  BsCart4,
+} from 'react-icons/bs';
 import { FcSalesPerformance } from 'react-icons/fc';
 import { FcMoneyTransfer } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
-import { BsCartPlus, BsCartDash } from 'react-icons/bs';
 import { getProductDetail, requestSetWishList, requestDelWishList } from '../api/api';
 import NotFound from './NotFound';
 
@@ -42,11 +48,6 @@ const Detail = () => {
     getData();
   }, []);
 
-  useEffect(() => {
-    const local = localStorage.getItem('cart');
-    console.log(local);
-  }, [cartState]);
-
   const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
   const tagColor: Array<string> = [
     '#0C216F',
@@ -69,19 +70,20 @@ const Detail = () => {
 
   const heartStyle: object = {
     backgroundColor: '#fff',
-    width: '35px',
-    height: '35px',
+    width: '28px',
+    height: '28px',
     cursor: 'pointer',
-    borderRadius: '20px',
-    padding: '5px',
+    borderRadius: '25px',
+    padding: '13px',
   };
   const cartStyle: object = {
     backgroundColor: '#fff',
-    width: '35px',
-    height: '35px',
+    width: '28px',
+    height: '28px',
     cursor: 'pointer',
     borderRadius: '25px',
-    padding: '5px',
+    padding: '13px',
+    color: 'black',
   };
   const iconStyle: object = {
     width: '45px',
@@ -96,13 +98,15 @@ const Detail = () => {
 
   const addCartHandler = () => {
     setCartState(!cartState);
-    localStorage.setItem('cart', JSON.stringify(info));
-    alert('장바구니에 담겼습니다.');
-  };
-  const deleteCartHandler = () => {
-    setCartState(!cartState);
-    localStorage.removeItem('cart');
-    alert('장바구니에서 삭제되었습니다.');
+    if (localStorage.getItem('cart')) {
+      alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
+    } else {
+      localStorage.setItem('cart', JSON.stringify(info));
+      window.confirm('장바구니에 상품이 담겼습니다');
+      const local = localStorage.getItem('cart');
+      console.log(local);
+      //confirm대신 모달 만들어서 띄우기(장바구니로 이동 / 취소버튼)
+    }
   };
   const addwishHandler = (itemId: number) => {
     const formData = new FormData();
@@ -116,7 +120,7 @@ const Detail = () => {
         <>
           <ColoredSection style={colorState}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-              <TiArrowLeftThick
+              <BsArrowLeft
                 onClick={() => history.back()}
                 style={{
                   cursor: 'pointer',
@@ -127,7 +131,7 @@ const Detail = () => {
                   borderRadius: '100%',
                 }}
               />
-              <TiHome
+              <BsHouseFill
                 onClick={() => navigate('/')}
                 style={{
                   cursor: 'pointer',
@@ -180,35 +184,21 @@ const Detail = () => {
             </div>
             <Heart>
               {likeState ? (
-                <TiHeart
+                <BsSuitHeartFill
                   style={heartStyle}
                   onClick={() => {
                     requestDelWishList(info.itemId, setLikeState);
                   }}
                 />
               ) : (
-                <TiHeartOutline
+                <BsSuitHeart
                   style={heartStyle}
                   onClick={() => {
                     addwishHandler(info.itemId);
                   }}
                 />
               )}
-              {cartState ? (
-                <BsCartDash
-                  style={cartStyle}
-                  onClick={() => {
-                    deleteCartHandler();
-                  }}
-                />
-              ) : (
-                <BsCartPlus
-                  style={cartStyle}
-                  onClick={() => {
-                    addCartHandler();
-                  }}
-                />
-              )}
+              <BsCart4 style={cartStyle} onClick={() => addCartHandler()} />
             </Heart>
           </ColoredSection>
           <FlatSection>
@@ -286,7 +276,7 @@ const Tag = styled.div`
   text-align: center;
 `;
 const Heart = styled.div`
-  width: 140px;
+  width: 150px;
   height: 80px;
   display: flex;
   gap: 20px;
