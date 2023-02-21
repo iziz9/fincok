@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 type loansItem = {
@@ -18,15 +17,13 @@ const LoansItem = ({ item }: loansItem) => {
   const bankName: string = item.bank;
 
   return (
-    <Link to={`detail/${item.itemId}`}>
-      <Item bankName={bankName}>
-        <div>
-          <h4>{item.bank}</h4>
-          <p>최대 금리 {item.maxRate}%</p>
-        </div>
-        <h3>{item.itemName}</h3>
-      </Item>
-    </Link>
+    <Item bankName={bankName}>
+      <div>
+        <h4>{item.bank}</h4>
+        <p>최대 금리 {item.maxRate}%</p>
+      </div>
+      <h3>{item.itemName}</h3>
+    </Item>
   );
 };
 
