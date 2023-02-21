@@ -29,7 +29,7 @@ export const requestLogout = async () => {
     if (res.data.resultCode === 'failed') {
       throw new Error('로그아웃 에러');
     } else {
-      removeCookie();
+      removeCookie('accessToken');
       alert('로그아웃 되었습니다.');
       location.pathname = '/';
     }
@@ -40,7 +40,9 @@ export const requestLogout = async () => {
 
 // 맞춤 상품 조회
 export const getProducts = async () => {
-  return instance.get(`main_recommend`);
+  const accessToken = getCookie('accessToken');
+  instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  return instance.get('main_recommend');
 };
 
 // 회원가입
@@ -137,6 +139,18 @@ export const requestDelWishList = async (
     const res = await instance.delete(`wish/delete/${id}`);
     console.log(res.data);
     setLikeState(false);
+  } catch (err) {
+    alert(err);
+  }
+};
+
+// 유저 정보 출력
+export const requestUserInfo = async () => {
+  try {
+    const accessToken = getCookie('accessToken');
+    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    const res = await instance.post('member/info');
+    console.log(res);
   } catch (err) {
     alert(err);
   }
