@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { BsHouseFill, BsArrowLeft } from 'react-icons/bs';
+import { TbArrowBack } from 'react-icons/tb';
 import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
@@ -114,24 +114,13 @@ const Detail = () => {
         <>
           <ColoredSection style={colorState}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-              <BsArrowLeft
+              <TbArrowBack
                 onClick={() => history.back()}
                 style={{
                   cursor: 'pointer',
                   backgroundColor: '#fff',
-                  width: '15px',
-                  height: '15px',
-                  padding: '10px',
-                  borderRadius: '100%',
-                }}
-              />
-              <BsHouseFill
-                onClick={() => navigate('/')}
-                style={{
-                  cursor: 'pointer',
-                  backgroundColor: '#fff',
-                  width: '15px',
-                  height: '15px',
+                  width: '20px',
+                  height: '20px',
                   padding: '10px',
                   borderRadius: '100%',
                 }}
