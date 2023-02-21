@@ -65,7 +65,7 @@ function CategoryBar() {
   );
 }
 const CategoryWrap = styled.ul`
-  position: sticky;
+  position: fixed;
   background-color: #fff;
   z-index: 9;
   font-weight: 600;

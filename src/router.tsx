@@ -8,9 +8,14 @@ import Home from './pages/Home';
 import MyPage from './pages/MyPage';
 import Search from './pages/Search';
 import Recommend from './pages/Recommend';
-import AllProducts from './pages/AllProducts';
+import AllProducts from './pages/allProducts/AllProducts';
 import FindPassword from './pages/Auth/FindPassword';
 import NotFound from './pages/NotFound';
+import DepositList from './pages/allProducts/DepositList';
+import SavingsList from './pages/allProducts/SavingsList';
+import MortgageLoan from './pages/allProducts/MortgageLoan';
+import CharterLoan from './pages/allProducts/CharterLoan';
+
 
 const router = createBrowserRouter([
   {
@@ -60,6 +65,22 @@ const router = createBrowserRouter([
       {
         path: '*',
         element: <NotFound />,
+      },
+      {
+        path: 'allproducts/depositlist',
+        element: <DepositList />,
+      },
+      {
+        path: 'allproducts/savinglist',
+        element: <SavingsList />,
+      },
+      {
+        path: 'allproducts/mortgageloan',
+        element: <MortgageLoan />,
+      },
+      {
+        path: 'allproducts/charterloan',
+        element: <CharterLoan />,
       },
     ],
   },

@@ -260,7 +260,7 @@ const H1 = styled.h1`
 `;
 const TagDiv = styled.div`
   height: 60px;
-  magin: 20px 0;
+  margin: 20px 0;
   display: flex;
   justify-content: center;
   gap: 10px;

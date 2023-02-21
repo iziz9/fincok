@@ -35,7 +35,10 @@ const Header = () => {
 };
 
 const Container = styled.div`
+  position: fixed;
   width: 100%;
+  max-width: 500px;
+  top: 0;
   height: 75px;
   background-color: #fff;
   box-sizing: border-box;
