@@ -214,8 +214,8 @@ export const SearchForm = styled.div`
     right: 35px;
     cursor: pointer;
     :hover {
-      border-color: none !important;
-      background-color: none !important;
+      border-color: transparent;
+      background-color: transparent;
     }
   }
 `;

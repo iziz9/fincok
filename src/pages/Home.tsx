@@ -7,18 +7,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import resultData from '../api/data';
-
-interface response {
-  itemId: number;
-  category: string;
-  bank: string;
-  itemName: string;
-  type: string;
-  dtype: string;
-  rate: number;
-  prefRate: number;
-}
 
 const Home = () => {
   const [user, setUser] = useState<String>('');
@@ -28,12 +16,9 @@ const Home = () => {
   useEffect(() => {
     async function getRecommendProducts() {
       try {
-        // const url =
-        //   'https://abf630fa-517f-4e51-9dac-36cba71c3ecc.mock.pstmn.io/api';
-        // const response: any = await axios.get(url);
         const response = await getProducts();
         console.log(response);
-        setProducts(response);
+        setProducts(response.data.resultData);
       } catch (error) {
         console.log('에러 발생!');
       }
