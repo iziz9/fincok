@@ -108,3 +108,25 @@ export const getProductDetail = async (category: string, itemId: string) => {
   console.log(res.data);
   return res.data;
 };
+
+const accessToken = getCookie('accessToken');
+
+export const getDepositWishList = async (page: number) => {
+  try {
+    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+    const res = await instance.get(`wish_list/deposit?page=${page}`);
+    console.log(res.data)
+  } catch (err) {
+    alert(err);
+  }
+};
+
+export const getLoanWishList = async (page: number) => {
+  try {
+    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+    const res = await instance.get(`wish_list/loan?page=${page}`);
+    console.log(res.data)
+  } catch (err) {
+    alert(err);
+  }
+}
