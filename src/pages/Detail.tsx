@@ -31,12 +31,11 @@ const Detail = () => {
   const [info, setInfo] = useState<ProductType>();
   // redux로 추후 관심상품 상태관리 변경
   const [likeState, setLikeState] = useState<boolean>(false);
-  const [cartState, setCartState] = useState<boolean>(false);
 
   //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('loan', '62');
+      const data = await getProductDetail('deposit', '23');
       setInfo(data);
     }
     getData();
@@ -91,7 +90,6 @@ const Detail = () => {
   const delayText = info?.delay?.split('%');
 
   const addCartHandler = () => {
-    setCartState(!cartState);
     if (localStorage.getItem('cart')) {
       alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
     } else {
@@ -198,11 +196,7 @@ const Detail = () => {
                 <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
                   만기 후 이자율은?
                 </div>
-                {matureText?.map((text, index) => (
-                  <div key={index}>
-                    {index !== matureText.length - 1 ? <span>{text}%</span> : <span>{text}</span>}
-                  </div>
-                ))}
+                {info.mature}
               </ProductDesc>
             )}
             {info.delay && (
