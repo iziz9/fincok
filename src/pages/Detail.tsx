@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-  BsHouseFill,
-  BsArrowLeft,
-  BsSuitHeart,
-  BsSuitHeartFill,
-  BsBagPlus,
-  BsCart4,
-} from 'react-icons/bs';
-import { FcSalesPerformance } from 'react-icons/fc';
-import { FcMoneyTransfer } from 'react-icons/fc';
+import { BsHouseFill, BsArrowLeft, BsSuitHeart, BsSuitHeartFill, BsCart4 } from 'react-icons/bs';
+import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
+import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
+import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { getProductDetail, requestSetWishList, requestDelWishList } from '../api/api';
 import NotFound from './NotFound';
@@ -74,7 +68,7 @@ const Detail = () => {
     height: '28px',
     cursor: 'pointer',
     borderRadius: '25px',
-    padding: '13px',
+    padding: '12px',
   };
   const cartStyle: object = {
     backgroundColor: '#fff',
@@ -82,7 +76,7 @@ const Detail = () => {
     height: '28px',
     cursor: 'pointer',
     borderRadius: '25px',
-    padding: '13px',
+    padding: '12px',
     color: 'black',
   };
   const iconStyle: object = {
@@ -184,21 +178,21 @@ const Detail = () => {
             </div>
             <Heart>
               {likeState ? (
-                <BsSuitHeartFill
+                <HiHeart
                   style={heartStyle}
                   onClick={() => {
                     requestDelWishList(info.itemId, setLikeState);
                   }}
                 />
               ) : (
-                <BsSuitHeart
+                <HiOutlineHeart
                   style={heartStyle}
                   onClick={() => {
                     addwishHandler(info.itemId);
                   }}
                 />
               )}
-              <BsCart4 style={cartStyle} onClick={() => addCartHandler()} />
+              <HiOutlineShoppingBag style={cartStyle} onClick={() => addCartHandler()} />
             </Heart>
           </ColoredSection>
           <FlatSection>
@@ -280,14 +274,12 @@ const Heart = styled.div`
   height: 80px;
   display: flex;
   gap: 20px;
-  // flex-direction: column;
   position: absolute;
   right: 0;
   bottom: 0;
   color: #f74440;
 `;
 const ColDiv = styled.div`
-  margin: 20px 0;
   display: flex;
   flex-direction: column;
   text-align: center;
