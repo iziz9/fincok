@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import styled from 'styled-components';
-import CartPageCard from '../components/common/cart/CartPageCard';
+import CartPageCard from '../components/cart/CartPageCard';
 
 const Cart = () => {
   const [checked, setChecked] = useState<boolean>(false);
@@ -13,8 +13,8 @@ const Cart = () => {
   }
   return (
     <CartWrap>
-      <h2>관심상품</h2>
-      <p>n개의 관심 상품이 있습니다.</p>
+      <h2>장바구니 상품</h2>
+      <p>n개의 장바구니 상품이 있습니다.</p>
       <ButtonBox>
         <button onClick={allChecked}>
           전체선택 &nbsp;

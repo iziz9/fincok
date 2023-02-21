@@ -1,7 +1,7 @@
 import React from 'react';
-import CartList from '../components/common/user/CartList';
-import UserProfile from '../components/common/user/UserProfile';
-import Setting from '../components/common/user/Setting';
+import CartList from '../components/user/CartList';
+import UserProfile from '../components/user/UserProfile';
+import Setting from '../components/user/Setting';
 import styled from 'styled-components';
 
 

@@ -55,6 +55,9 @@ const GlobalStyles = createGlobalStyle`
     background-color: var(--color-white);
     color: var(--color-black);
     position: relative;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    box-sizing: border-box;
   }
   h1 {
     font-size: 35px;

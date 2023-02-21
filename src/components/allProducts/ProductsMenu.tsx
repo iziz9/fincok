@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BsPiggyBank } from 'react-icons/bs';
-import { GiMoneyStack, GiReceiveMoney, GiTakeMyMoney } from 'react-icons/gi';
 import styled from 'styled-components';
 
 function ProductsMenu() {
@@ -10,14 +8,14 @@ function ProductsMenu() {
       <h3>모으기</h3>
       <ListWrap>
         <li>
-          <LinkBox to="/">
+          <LinkBox to="savinglist">
             {/* <BsPiggyBank /> */}
             <img src="/icon1.png" alt="적금" />
             <p>적금</p>
           </LinkBox>
         </li>
         <li>
-          <LinkBox to="/">
+          <LinkBox to="depositlist">
             {/* <GiMoneyStack /> */}
             <img src="/icon2.png" alt="예금" />
             <p>예금</p>
@@ -28,14 +26,14 @@ function ProductsMenu() {
       <h3>빌리기</h3>
       <ListWrap>
         <li>
-          <LinkBox to="/">
+          <LinkBox to="mortgageloan">
             {/* <GiReceiveMoney /> */}
             <img src="/icon3.png" alt="주택담보대출" />
             <p>주택담보대출</p>
           </LinkBox>
         </li>
         <li>
-          <LinkBox to="/">
+          <LinkBox to="charterloan">
             {/* <GiTakeMyMoney /> */}
             <img src="/icon4.png" alt="전세자금대출" />
             <p>전세자금대출</p>
