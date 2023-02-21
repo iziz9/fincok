@@ -4,8 +4,8 @@ import { TiHeartOutline, TiHeart, TiHome, TiArrowLeftThick } from 'react-icons/t
 import { FcSalesPerformance } from 'react-icons/fc';
 import { FcMoneyTransfer } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
-import { BsCartPlus, BsCartX } from 'react-icons/bs';
-import { getProductDetail } from '../api/api';
+import { BsCartPlus, BsCartDash } from 'react-icons/bs';
+import { getProductDetail, requestSetWishList, requestDelWishList } from '../api/api';
 import NotFound from './NotFound';
 
 export interface ProductType {
@@ -29,21 +29,24 @@ export interface ProductType {
 const Detail = () => {
   const navigate = useNavigate();
   const [info, setInfo] = useState<ProductType>();
+  // redux로 추후 관심상품 상태관리 변경
+  const [likeState, setLikeState] = useState<boolean>(false);
+  const [cartState, setCartState] = useState<boolean>(false);
 
   //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('loan', '59');
+      const data = await getProductDetail('loan', '62');
       setInfo(data);
     }
     getData();
   }, []);
 
-  // redux로 추후 관심상품 상태관리 변경
-  const [likeState, setLikeState] = useState<boolean>(false);
-  const [cartState, setCartState] = useState<boolean>(false);
+  useEffect(() => {
+    const local = localStorage.getItem('cart');
+    console.log(local);
+  }, [cartState]);
 
-  // 컬러차트도 헤더에 똑같이 적용하기
   const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
   const tagColor: Array<string> = [
     '#0C216F',
@@ -90,6 +93,22 @@ const Detail = () => {
 
   const matureText = info?.mature?.split('%');
   const delayText = info?.delay?.split('%');
+
+  const addCartHandler = () => {
+    setCartState(!cartState);
+    localStorage.setItem('cart', JSON.stringify(info));
+    alert('장바구니에 담겼습니다.');
+  };
+  const deleteCartHandler = () => {
+    setCartState(!cartState);
+    localStorage.removeItem('cart');
+    alert('장바구니에서 삭제되었습니다.');
+  };
+  const addwishHandler = (itemId: number) => {
+    const formData = new FormData();
+    formData.append('itemId', `${itemId}`);
+    requestSetWishList(formData, setLikeState);
+  };
 
   return (
     <main>
@@ -161,14 +180,34 @@ const Detail = () => {
             </div>
             <Heart>
               {likeState ? (
-                <TiHeart style={heartStyle} onClick={() => setLikeState(!likeState)} />
+                <TiHeart
+                  style={heartStyle}
+                  onClick={() => {
+                    requestDelWishList(info.itemId, setLikeState);
+                  }}
+                />
               ) : (
-                <TiHeartOutline style={heartStyle} onClick={() => setLikeState(!likeState)} />
+                <TiHeartOutline
+                  style={heartStyle}
+                  onClick={() => {
+                    addwishHandler(info.itemId);
+                  }}
+                />
               )}
               {cartState ? (
-                <BsCartX style={cartStyle} onClick={() => setCartState(!cartState)} />
+                <BsCartDash
+                  style={cartStyle}
+                  onClick={() => {
+                    deleteCartHandler();
+                  }}
+                />
               ) : (
-                <BsCartPlus style={cartStyle} onClick={() => setCartState(!cartState)} />
+                <BsCartPlus
+                  style={cartStyle}
+                  onClick={() => {
+                    addCartHandler();
+                  }}
+                />
               )}
             </Heart>
           </ColoredSection>
@@ -183,20 +222,24 @@ const Detail = () => {
             </span>
             {info.mature && (
               <ProductDesc>
-                만기 후 이자율은? <br />
+                <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
+                  만기 후 이자율은?
+                </div>
                 {matureText?.map((text, index) => (
                   <div key={index}>
-                    {index !== text.length - 1 ? <span>{text}%</span> : <span>{text}</span>}
+                    {index !== matureText.length - 1 ? <span>{text}%</span> : <span>{text}</span>}
                   </div>
                 ))}
               </ProductDesc>
             )}
             {info.delay && (
               <ProductDesc>
-                연체이자율은? <br />
+                <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
+                  연체 이자율은?
+                </div>
                 {delayText?.map((delay, index) => (
                   <div key={index}>
-                    {index !== delay.length - 1 ? <span>{delay}%</span> : <span>{delay}</span>}
+                    {index !== delayText.length - 1 ? <div>{delay}%</div> : <span>{delay}</span>}
                   </div>
                 ))}
               </ProductDesc>

@@ -1,11 +1,4 @@
-export const jobList = [
-  '무직',
-  '학생',
-  '군인',
-  '자영업자',
-  '전문직',
-  '일반 직장인',
-];
+export const jobList = ['무직', '학생', '군인', '자영업자', '전문직', '직장인'];
 export const addressList = [
   '강원도',
   '경기도',
