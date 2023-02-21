@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getMortgageLoan } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
-import ProductCard from '../../components/allProducts/ProductCard';
+import LoanProductCard from '../../components/allProducts/LoanProductCard';
 import { DataType } from './AllProducts';
 
 function MortgageLoan() {
@@ -11,7 +11,7 @@ function MortgageLoan() {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { ref, inView } = useInView({
-
+    threshold: 0,
   });
 
   useEffect(() => {
@@ -32,11 +32,11 @@ function MortgageLoan() {
         <div key={index}>
           {mortgageLoanData.length - 1 == index ? (
             <div ref={ref}>
-              <ProductCard item={item} />
+              <LoanProductCard item={item} />
             </div>
           ) : (
             <div>
-              <ProductCard item={item} />
+              <LoanProductCard item={item} />
             </div>
           )}
         </div>
@@ -44,4 +44,4 @@ function MortgageLoan() {
     </>
   );
 }
-export default MortgageLoan
+export default MortgageLoan;

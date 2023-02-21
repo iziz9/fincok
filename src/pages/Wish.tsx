@@ -4,16 +4,13 @@ import styled from 'styled-components';
 import DepositWishList from '../components/wish/DepositWishList';
 
 function Wish() {
-  const [depositWishData, setDepositWishData] = useState();
-  const [loanWishData, setLoanWishData] = useState();
-  const [pageNumber, setPageNumber] = useState();
   const [toggleButton, setToggleButton] = useState<boolean>(true);
 
   const ButtonToggle = () => {
     setToggleButton(!toggleButton);
   };
   return (
-    <div>
+    <Wrap>
       <h2>관심 상품</h2>
       <Container>
         <Button
@@ -32,7 +29,7 @@ function Wish() {
           toggleButton ? <DepositWishList /> : <LoanWishList /> 
         }
       </Container>
-    </div>
+    </Wrap>
   );
 }
 
@@ -42,5 +39,7 @@ const Button = styled.button<{ toggleButton: boolean }>`
   background-color: ${(props) => (props.toggleButton ? 'var(--color-orange)' : 'var(--color-black)')};
   border-color: ${(props) => (props.toggleButton ? 'var(--color-orange)' : 'var(--color-black)')};
 `;
-
+const Wrap = styled.div`
+  padding: 0 30px;
+`
 export default Wish;

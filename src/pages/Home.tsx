@@ -33,7 +33,7 @@ const Home = () => {
         // const response: any = await axios.get(url);
         const response = await getProducts();
         console.log(response);
-        setProducts(response);
+        setProducts(response.data.resultData);
       } catch (error) {
         console.log('에러 발생!');
       }

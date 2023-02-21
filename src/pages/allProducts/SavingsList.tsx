@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSavingsList } from '../../api/allProductsApi';
-import ProductCard from '../../components/allProducts/ProductCard';
+import DepositProductCard from '../../components/allProducts/DepositProductCard';
 import { useInView } from 'react-intersection-observer';
 import { DataType } from './AllProducts';
 
@@ -32,11 +32,11 @@ function SavingsList() {
         <div key={index}>
           {savingsListData.length - 1 == index ? (
             <div ref={ref}>
-              <ProductCard item={item} />
+              <DepositProductCard item={item} />
             </div>
           ) : (
             <div>
-              <ProductCard item={item} />
+              <DepositProductCard item={item} />
             </div>
           )}
         </div>

@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-type Props = { item: DataType };
+type Props = { item: DataType};
 
-function ProductCard({ item }: Props) {
+function DepositProductCard({ item }: Props) {
   return (
-    <Link to={`/detail/${item.itemId}`}>
+    <LinkWrap to={`/detail/${item.itemId}`}>
       <Item bankName={item.bank}>
         <div>
           <h4>{item.bank}</h4>
@@ -15,11 +15,13 @@ function ProductCard({ item }: Props) {
         <h3>{item.itemName}</h3>
         <span>{item.category}</span>
       </Item>
-    </Link>
+    </LinkWrap>
   );
 }
+  const LinkWrap = styled(Link)`
+    width: 100%;
+  `
   const Item = styled.div<{ bankName: string }>`
-  width: 80%;
   padding: 30px;
   height: 100px;
   border-radius: 15px;
@@ -80,4 +82,4 @@ export type DataType = {
   mature: string;
 };
 
-export default ProductCard;
+export default DepositProductCard;

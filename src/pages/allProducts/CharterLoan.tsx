@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCharterLoan } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
-import ProductCard from '../../components/allProducts/ProductCard';
+import LoanProductCard from '../../components/allProducts/DepositProductCard';
 import { DataType } from './AllProducts';
 
 function CharterLoan() {
@@ -11,7 +11,7 @@ function CharterLoan() {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { ref, inView } = useInView({
-
+    threshold: 0,
   });
 
   useEffect(() => {
@@ -32,11 +32,11 @@ function CharterLoan() {
         <div key={index}>
           {charterLoanData.length - 1 == index ? (
             <div ref={ref}>
-              <ProductCard item={item} />
+              <LoanProductCard item={item} />
             </div>
           ) : (
             <div>
-              <ProductCard item={item} />
+              <LoanProductCard item={item} />
             </div>
           )}
         </div>
@@ -44,6 +44,5 @@ function CharterLoan() {
     </>
   );
 }
-
 
 export default CharterLoan
