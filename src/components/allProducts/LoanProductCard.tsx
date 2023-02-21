@@ -6,7 +6,7 @@ type Props = { item: DataType};
 
 function LoanProductCard({ item }: Props) {
   return (
-    <Link to={`/detail/${item.itemId}`}>
+    <LinkWrap to={`/detail/${item.itemId}`}>
       <Item bankName={item.bank}>
         <div>
           <h4>{item.bank}</h4>
@@ -15,9 +15,12 @@ function LoanProductCard({ item }: Props) {
         <h3>{item.itemName}</h3>
         <span>{item.category}</span>
       </Item>
-    </Link>
+    </LinkWrap>
   );
 }
+const LinkWrap = styled(Link)`
+  width: 100%;
+`;
   const Item = styled.div<{ bankName: string }>`
   width: 80%;
   padding: 30px;

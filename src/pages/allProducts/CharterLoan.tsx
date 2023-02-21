@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getCharterLoan } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
-import LoanProductCard from '../../components/allProducts/DepositProductCard';
+import LoanProductCard from '../../components/allProducts/LoanProductCard';
 import { DataType } from './AllProducts';
+import styled from 'styled-components';
 
 function CharterLoan() {
   const [charterLoanData, setCharterLoanData] = useState<DataType>([]);
@@ -27,7 +28,7 @@ function CharterLoan() {
   }, [inView, loading]);
 
   return (
-    <>
+    <Wrap>
       {charterLoanData.map((item: any, index: number) => (
         <div key={index}>
           {charterLoanData.length - 1 == index ? (
@@ -41,8 +42,11 @@ function CharterLoan() {
           )}
         </div>
       ))}
-    </>
+    </Wrap>
   );
 }
+const Wrap = styled.div`
+  padding: 0 30px;
+`
 
 export default CharterLoan

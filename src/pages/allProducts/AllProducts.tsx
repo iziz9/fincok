@@ -6,12 +6,17 @@ import ProductsMenu from '../../components/allProducts/ProductsMenu'
 function AllProducts() {
   return (
     <AllProductsWrap>
-      <h1>전체 상품</h1>
+      <Title>전체 상품</Title>
       <MyProducts />
       <ProductsMenu />
     </AllProductsWrap>
   );}
-
+const Title = styled.h2`
+   margin-top: 40px;
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: bold;
+`
 const AllProductsWrap = styled.div`
   padding: 20px 35px;
 `;

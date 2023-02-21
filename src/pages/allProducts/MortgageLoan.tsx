@@ -3,6 +3,7 @@ import { getMortgageLoan } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
 import LoanProductCard from '../../components/allProducts/LoanProductCard';
 import { DataType } from './AllProducts';
+import styled from 'styled-components';
 
 function MortgageLoan() {
   const [mortgageLoanData, setMortgageLoanData] = useState<DataType>([]);
@@ -27,7 +28,7 @@ function MortgageLoan() {
   }, [inView, loading]);
 
   return (
-    <>
+    <Wrap>
       {mortgageLoanData.map((item: any, index: number) => (
         <div key={index}>
           {mortgageLoanData.length - 1 == index ? (
@@ -41,7 +42,10 @@ function MortgageLoan() {
           )}
         </div>
       ))}
-    </>
+    </Wrap>
   );
 }
+const Wrap = styled.div`
+  padding: 0 30px;
+`
 export default MortgageLoan;

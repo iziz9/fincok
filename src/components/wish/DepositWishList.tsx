@@ -33,20 +33,20 @@ function DepositWishList() {
 
   return (
     <>
-    {depositWishData.map((item: any, index: number) => (
-      <div key={index}>
-        {depositWishData.length - 1 == index ? (
-          <div ref={ref}>
-            <DepositWishCard item={item} />
-          </div>
-        ) : (
-          <div>
-            <DepositWishCard item={item} />
-          </div>
-        )}
-      </div>
-    ))}
-  </>
+      {depositWishData.map((item: any, index: number) => (
+        <div key={index}>
+          {depositWishData.length - 1 == index ? (
+            <div ref={ref}>
+              <DepositWishCard item={item} />
+            </div>
+          ) : (
+            <div>
+              <DepositWishCard item={item} />
+            </div>
+          )}
+        </div>
+      ))}
+    </>
   );
 }
 export default DepositWishList;

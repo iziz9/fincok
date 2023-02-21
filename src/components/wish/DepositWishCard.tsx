@@ -1,23 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { requestDelWishList } from '../../api/api';
 
-function DepositWishCard({ item }: any) {
+type Props = { item: DataType };
+
+function DepositProductCard({ item }: Props) {
+  const [likeState, setLikeState] = useState<boolean>(true);
+
+  const wishButton = () => {
+    setLikeState(!likeState);
+    requestDelWishList(Number(item.itemId), setLikeState);
+  };
+  useEffect(() => {
+    //DepositWishList.tsx에서 관리 되어야 하는 State -> like가 변경 되면 렌더를 다시 해서 삭제된 리스트가 뜰 수 있도록
+  }, [wishButton]);
+  
   return (
-    <LinkWrap to={`/detail/${item.itemId}`}>
-      <Item bankName={item.bank}>
-        <div>
-          <h4>{item.bank}</h4>
-          <p>최저 금리 {item.minRate}%</p>
-        </div>
-        <h3>{item.itemName}</h3>
-        <span>{item.category}</span>
-      </Item>
-    </LinkWrap>
+    <Wrap>
+      <LinkWrap to={`/detail/${item.itemId}`}>
+        <Item bankName={item.bank}>
+          <div>
+            <h4>{item.bank}</h4>
+          </div>
+          <h3>{item.itemName}</h3>
+          <span>
+            {item.category} - {item.type}
+          </span>
+        </Item>
+      </LinkWrap>
+      <Button onClick={() => wishButton()}>{likeState ? <HiHeart /> : <HiOutlineHeart />}</Button>
+    </Wrap>
   );
 }
+const Wrap = styled.div`
+  position: relative;
+`;
 const LinkWrap = styled(Link)`
   width: 100%;
+`;
+const Button = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;
@@ -64,4 +90,20 @@ const Item = styled.div<{ bankName: string }>`
     margin-top: auto;
   }
 `;
-export default DepositWishCard;
+
+export type DataType = {
+  itemId: string;
+  category: string;
+  bank: string;
+  itemName: string;
+  type: string;
+  join: string;
+  limit: string;
+  preference: any;
+  target: any;
+  rate: string;
+  prefRate: string;
+  mature: string;
+};
+
+export default DepositProductCard;

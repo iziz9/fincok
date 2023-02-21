@@ -3,6 +3,7 @@ import { getDepositList } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
 import DepositProductCard from '../../components/allProducts/DepositProductCard';
 import { DataType } from './AllProducts';
+import styled from 'styled-components';
 
 function DepositList() {
   const [depositData, setDepositListData] = useState<DataType>([]);
@@ -27,7 +28,7 @@ function DepositList() {
   }, [inView, loading]);
 
   return (
-    <>
+    <Wrap>
       {depositData.map((item: any, index: number) => (
         <div key={index}>
           {depositData.length - 1 == index ? (
@@ -41,8 +42,11 @@ function DepositList() {
           )}
         </div>
       ))}
-    </>
+    </Wrap>
   );
 }
+const Wrap = styled.div`
+  padding: 0 30px;
+`
 
 export default DepositList;

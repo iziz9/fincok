@@ -11,8 +11,9 @@ function Wish() {
   };
   return (
     <Wrap>
-      <h2>관심 상품</h2>
-      <Container>
+      <Title>관심 상품</Title>
+      <div>
+        <FlexBox>
         <Button
           onClick={ButtonToggle}
           toggleButton={toggleButton}
@@ -25,19 +26,36 @@ function Wish() {
         >
           대출 관심상품
         </Button>
+        </FlexBox>
         {
           toggleButton ? <DepositWishList /> : <LoanWishList /> 
         }
-      </Container>
+      </div>
     </Wrap>
   );
 }
 
-const Container = styled.div``;
+const Title = styled.h2`
+  margin-top: 40px;
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: bold;
+`
+const FlexBox = styled.div`
+  display: flex;
+  gap: 5px;
+  width: max-content;
+  background-color: var(--color-dark-grey);
+  border-radius: 8px;
+`;
 
 const Button = styled.button<{ toggleButton: boolean }>`
-  background-color: ${(props) => (props.toggleButton ? 'var(--color-orange)' : 'var(--color-black)')};
-  border-color: ${(props) => (props.toggleButton ? 'var(--color-orange)' : 'var(--color-black)')};
+  background-color: ${(props) => (props.toggleButton ? 'var(--color-orange)' : 'var(--color-dark-grey)')};
+  border-color: none;
+  /* border-radius: ${(props) => (props.toggleButton ? '8px' : '0px')}; */
+  border-style: none;
+  width: 120px;
+  transition: all .3s;
 `;
 const Wrap = styled.div`
   padding: 0 30px;
