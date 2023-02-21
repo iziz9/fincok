@@ -16,23 +16,48 @@ const GlobalStyles = createGlobalStyle`
     --color-orange: #f74440;
     --color-stroke: #e9e9f2;
     --color-background: #fafaff;
+    --color-bank-yellow: #fedC32;
+    --color-bank-blue: #4091dc;
+    --color-bank-green: #1bd760;
+    --color-bank-puple: #bb90f4;
   }
   @font-face {
-    font-family: 'Noto Sans KR';
-    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap') format('font-woff');
-    font-weight: normal;
-    font-style: normal;
+    font-family: 'SCoreDream';
+    font-weight: lighter;
+    font-style: normal; 
+    src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff2) format('woff2'),
+         url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff) format('woff');
+    font-display: swap;
+  }
+  @font-face {
+      font-family: 'SCoreDream';
+      font-weight: normal; 
+      font-style: normal; 
+      src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff2) format('woff2'),
+          url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff) format('woff');
+      font-display: swap;
+  }
+  @font-face {
+      font-family: 'SCoreDream';
+      font-weight: bold; 
+      font-style: normal; 
+      src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff2) format('woff2'),
+          url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff) format('woff');
+      font-display: swap;
   }
   body {
     width: 500px;
     min-height: 100vh;
     height: 100%;
     margin: 0 auto;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'SCoreDream', sans-serif;
     font-size: 14px;
     background-color: var(--color-white);
     color: var(--color-black);
     position: relative;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    box-sizing: border-box;
   }
   h1 {
     font-size: 35px;
@@ -56,6 +81,7 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     background-color: var(--color-black);
     color: var(--color-white);
+    font-weight: bold;
 
     :hover {
       border-color: var(--color-orange);

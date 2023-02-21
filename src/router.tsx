@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import SignIn from './pages/Auth/SignIn';
+import Login from './pages/Auth/Login';
 import SignUp from './pages/Auth/SignUp';
 import Cart from './pages/Cart';
 import Detail from './pages/Detail';
@@ -8,8 +8,14 @@ import Home from './pages/Home';
 import MyPage from './pages/MyPage';
 import Search from './pages/Search';
 import Recommend from './pages/Recommend';
-import AllProducts from './pages/AllProducts';
+import AllProducts from './pages/allProducts/AllProducts';
 import FindPassword from './pages/Auth/FindPassword';
+import NotFound from './pages/NotFound';
+import DepositList from './pages/allProducts/DepositList';
+import SavingsList from './pages/allProducts/SavingsList';
+import MortgageLoan from './pages/allProducts/MortgageLoan';
+import CharterLoan from './pages/allProducts/CharterLoan';
+
 
 const router = createBrowserRouter([
   {
@@ -33,15 +39,15 @@ const router = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path: 'auth/signin',
-        element: <SignIn />,
+        path: 'login',
+        element: <Login />,
       },
       {
-        path: 'auth/findpassword',
+        path: 'findpassword',
         element: <FindPassword />,
       },
       {
-        path: 'auth/signup',
+        path: 'signup',
         element: <SignUp />,
       },
       {
@@ -55,6 +61,26 @@ const router = createBrowserRouter([
       {
         path: 'allproducts',
         element: <AllProducts />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
+      {
+        path: 'allproducts/depositlist',
+        element: <DepositList />,
+      },
+      {
+        path: 'allproducts/savinglist',
+        element: <SavingsList />,
+      },
+      {
+        path: 'allproducts/mortgageloan',
+        element: <MortgageLoan />,
+      },
+      {
+        path: 'allproducts/charterloan',
+        element: <CharterLoan />,
       },
     ],
   },
