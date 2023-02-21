@@ -8,7 +8,7 @@ export const requestLogin = async (formData: FormData) => {
     const res = await instance.post('login', formData);
     console.log(res);
     if (res.data.resultCode === 'failed') {
-      throw new Error('존재하지 않는 회원정보입니다.');
+      throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
     } else {
       const accessToken = res.data.accessToken;
       setCookie('accessToken', accessToken);
@@ -94,20 +94,17 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
     }
   } catch (err) {
     alert(err);
-  } finally {
-    //로딩애니메이션 중지
   }
 };
 
 // 상품 상세조회
 export const getProductDetail = async (category: string, itemId: string) => {
+  let res: any = {};
   try {
-    // const res = await instance.get(`search/${category}/detail/${itemId}`);
-    const res = await instance.get(`search${category}Detail/${itemId}`);
-    console.log(res.data);
-    return res.data;
+    res = await instance.get(`search/${category}/detail/${itemId}`);
   } catch (err) {
     alert(err);
   }
+  console.log(res.data);
+  return res.data;
 };
-getProductDetail('Deposit', '20');

@@ -78,6 +78,7 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     background-color: var(--color-black);
     color: var(--color-white);
+    font-weight: bold;
 
     :hover {
       border-color: var(--color-orange);

@@ -1,17 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TiHeartOutline, TiHeart } from 'react-icons/ti';
-import { IoMdArrowRoundBack } from 'react-icons/io';
+import { TiHeartOutline, TiHeart, TiHome, TiArrowLeftThick } from 'react-icons/ti';
 import { FcSalesPerformance } from 'react-icons/fc';
 import { FcMoneyTransfer } from 'react-icons/fc';
-import { GoHome } from 'react-icons/go';
 import { useNavigate } from 'react-router-dom';
+import { BsCartPlus, BsCartX } from 'react-icons/bs';
 import { getProductDetail } from '../api/api';
+import NotFound from './NotFound';
+
+export interface ProductType {
+  bank: string;
+  category: string;
+  itemId: number;
+  itemName: string;
+  join: string;
+  limit: number | null;
+  mature?: string;
+  prefRate?: number;
+  preferences: string | null;
+  rate?: number;
+  target: string | null;
+  type: string;
+  delay?: string | null;
+  maxRate?: number;
+  minRate?: number;
+}
 
 const Detail = () => {
   const navigate = useNavigate();
+  const [info, setInfo] = useState<ProductType>();
+
+  //navigate로 들어올 때 category, item 전달해서 함수실행
+  useEffect(() => {
+    async function getData() {
+      const data = await getProductDetail('loan', '59');
+      setInfo(data);
+    }
+    getData();
+  }, []);
+
   // redux로 추후 관심상품 상태관리 변경
   const [likeState, setLikeState] = useState<boolean>(false);
+  const [cartState, setCartState] = useState<boolean>(false);
 
   // 컬러차트도 헤더에 똑같이 적용하기
   const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
@@ -42,93 +72,140 @@ const Detail = () => {
     borderRadius: '20px',
     padding: '5px',
   };
+  const cartStyle: object = {
+    backgroundColor: '#fff',
+    width: '35px',
+    height: '35px',
+    cursor: 'pointer',
+    borderRadius: '25px',
+    padding: '5px',
+  };
   const iconStyle: object = {
     width: '45px',
     height: '45px',
-    cursor: 'pointer',
     padding: '10px',
     backgroundColor: '#fff',
     borderRadius: '50px',
   };
 
-  // const { }= getProductDetail() //navigate에서?
+  const matureText = info?.mature?.split('%');
+  const delayText = info?.delay?.split('%');
 
   return (
     <main>
-      <ColoredSection style={colorState}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-          <IoMdArrowRoundBack
-            onClick={() => history.back()}
-            style={{
-              cursor: 'pointer',
-              backgroundColor: '#fff',
-              width: '15px',
-              height: '15px',
-              padding: '10px',
-              borderRadius: '100%',
-            }}
-          />
-          <GoHome
-            onClick={() => navigate('/')}
-            style={{
-              cursor: 'pointer',
-              backgroundColor: '#fff',
-              width: '15px',
-              height: '15px',
-              padding: '10px',
-              borderRadius: '100%',
-            }}
-          />
-        </div>
-        <H1>
-          <span>{'props.bank'}</span> <br /> <span>{'props.itemName'}</span>
-        </H1>
-        <TagDiv>
-          {/* 옵셔널체이닝으로 응답값에 태그 있을 경우에만 */}
-          <Tag style={deepColorState}>{'props.category'}</Tag>
-          <Tag style={deepColorState}>{'props.target'}</Tag>
-          <Tag style={deepColorState}>{'props.type'}</Tag>
-        </TagDiv>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <ColDiv>
-            <FcMoneyTransfer style={iconStyle} />
-            {/* 상품 카테고리에 따라 텍스트 내용 변경 */}
-            <SummaryTitle>최고우대금리/최저대출금리</SummaryTitle>
-            <SummaryContent>연 {'prefRate / minRate'} %</SummaryContent>
-            <SummaryTitle>(12개월 세전)</SummaryTitle>
-          </ColDiv>
-          <ColDiv>
-            <FcSalesPerformance style={iconStyle} />
-            {/* 상품 카테고리에 따라 텍스트 내용 변경 */}
-            <SummaryTitle>(저축?)한도</SummaryTitle>
-            {/* 응답값 null이면 `없음` 표시*/}
-            <SummaryContent>월 {'props.limit'} 30만원</SummaryContent>
-          </ColDiv>
-        </div>
-        <Heart>
-          {likeState ? (
-            <TiHeart style={heartStyle} onClick={() => setLikeState(!likeState)} />
-          ) : (
-            <TiHeartOutline style={heartStyle} onClick={() => setLikeState(!likeState)} />
-          )}
-        </Heart>
-      </ColoredSection>
-      <FlatSection>
-        <ProductDetailTitle>
-          {/* target: null이 아니면 `~을 위한` */}
-          직장인을 위한 신한은행 정기적금
-        </ProductDetailTitle>
-        <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
-          {'props.join'} 을 통해 가입할 수 있습니다.
-        </span>
-        <ProductDesc>
-          만기 후 이자율은? <br />
-          -1개월 이하:(일반) 정기예금 기본금리 1/2 -1개월 초과~6개월 이하: (일반) 정기예금
-          기본금리의 1/4 -6개월 초과 0.2% -1개월 이하:(일반) 정기예금 기본금리 1/2 -1개월 초과~6개월
-          이하: (일반) 정기예금 기본금리의 1/4 -6개월 초과 0.2% -1개월 이하:(일반) 정기예금 기본금리
-          1/2 -1개월 초과~6개월 이하: (일반) 정기예금 기본금리의 1/4 -6개월 초과 0.2%
-        </ProductDesc>
-      </FlatSection>
+      {info ? (
+        <>
+          <ColoredSection style={colorState}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
+              <TiArrowLeftThick
+                onClick={() => history.back()}
+                style={{
+                  cursor: 'pointer',
+                  backgroundColor: '#fff',
+                  width: '15px',
+                  height: '15px',
+                  padding: '10px',
+                  borderRadius: '100%',
+                }}
+              />
+              <TiHome
+                onClick={() => navigate('/')}
+                style={{
+                  cursor: 'pointer',
+                  backgroundColor: '#fff',
+                  width: '15px',
+                  height: '15px',
+                  padding: '10px',
+                  borderRadius: '100%',
+                }}
+              />
+            </div>
+            <H1>
+              <span>{info.bank}</span> <br /> <span>{info.itemName}</span>
+            </H1>
+            <TagDiv>
+              <Tag style={deepColorState}>{info.category}</Tag>
+              {info.target ? <Tag style={deepColorState}>{info.target}</Tag> : null}
+              {info.type ? <Tag style={deepColorState}>{info.type}</Tag> : null}
+            </TagDiv>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+              <ColDiv>
+                <FcMoneyTransfer style={iconStyle} />
+                {info?.category === '정기예금' || info.category === '적금' ? (
+                  <>
+                    <SummaryTitle>최고우대금리</SummaryTitle>
+                    <SummaryContent>연 {info.prefRate}%</SummaryContent>
+                    <SummaryTitle>(12개월 세전)</SummaryTitle>
+                  </>
+                ) : (
+                  <>
+                    <SummaryTitle>최저대출금리</SummaryTitle>
+                    <SummaryContent>연 {info.minRate}%</SummaryContent>
+                  </>
+                )}
+              </ColDiv>
+              <ColDiv>
+                <FcSalesPerformance style={iconStyle} />
+                <SummaryTitle>
+                  {info?.category === '정기예금' || info.category === '적금'
+                    ? '저축한도'
+                    : '최고대출금리'}
+                </SummaryTitle>
+                {info.maxRate && <SummaryContent>연 {info.maxRate}%</SummaryContent>}
+                {(info?.category === '정기예금' || info.category === '적금') && (
+                  <SummaryContent>
+                    {info.limit ? '월 ' + info.limit + ' 만원' : '없음'}
+                  </SummaryContent>
+                )}
+              </ColDiv>
+            </div>
+            <Heart>
+              {likeState ? (
+                <TiHeart style={heartStyle} onClick={() => setLikeState(!likeState)} />
+              ) : (
+                <TiHeartOutline style={heartStyle} onClick={() => setLikeState(!likeState)} />
+              )}
+              {cartState ? (
+                <BsCartX style={cartStyle} onClick={() => setCartState(!cartState)} />
+              ) : (
+                <BsCartPlus style={cartStyle} onClick={() => setCartState(!cartState)} />
+              )}
+            </Heart>
+          </ColoredSection>
+          <FlatSection>
+            <ProductDetailTitle>
+              {info.target
+                ? `${info.target}을 위한 ${info.category}상품`
+                : `${info.bank} ${info.category}상품`}
+            </ProductDetailTitle>
+            <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
+              '{info.join}'을 통해 가입할 수 있습니다.
+            </span>
+            {info.mature && (
+              <ProductDesc>
+                만기 후 이자율은? <br />
+                {matureText?.map((text, index) => (
+                  <div key={index}>
+                    {index !== text.length - 1 ? <span>{text}%</span> : <span>{text}</span>}
+                  </div>
+                ))}
+              </ProductDesc>
+            )}
+            {info.delay && (
+              <ProductDesc>
+                연체이자율은? <br />
+                {delayText?.map((delay, index) => (
+                  <div key={index}>
+                    {index !== delay.length - 1 ? <span>{delay}%</span> : <span>{delay}</span>}
+                  </div>
+                ))}
+              </ProductDesc>
+            )}
+          </FlatSection>
+        </>
+      ) : (
+        <NotFound />
+      )}
     </main>
   );
 };
@@ -166,10 +243,11 @@ const Tag = styled.div`
   text-align: center;
 `;
 const Heart = styled.div`
-  width: 80px;
+  width: 140px;
   height: 80px;
   display: flex;
-  flex-direction: column;
+  gap: 20px;
+  // flex-direction: column;
   position: absolute;
   right: 0;
   bottom: 0;
