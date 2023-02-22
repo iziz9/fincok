@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  HiOutlineHome,
-  HiHome,
-  HiHeart,
-  HiOutlineHeart,
-  HiClipboardList,
-  HiOutlineClipboardList,
-} from 'react-icons/hi';
+import { HiOutlineHome, HiHome, HiClipboardList, HiOutlineClipboardList } from 'react-icons/hi';
+import { RiPushpinLine, RiPushpinFill } from 'react-icons/ri';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -35,12 +29,12 @@ function CategoryBar() {
         <LinkStyle to="/recommend">
           {location === '/recommend' ? (
             <>
-              <HiHeart color={orangeColor} />
+              <RiPushpinFill color={orangeColor} />
               <CategoryName color={orangeColor}>맞춤추천</CategoryName>
             </>
           ) : (
             <>
-              <HiOutlineHeart color={blackColor} />
+              <RiPushpinLine color={blackColor} />
               <CategoryName color={blackColor}>맞춤추천</CategoryName>
             </>
           )}

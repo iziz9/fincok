@@ -7,7 +7,8 @@ import { GrClose } from 'react-icons/gr';
 import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
-import { HiOutlineHeart, HiOutlineClipboardList, HiOutlineShoppingBag } from 'react-icons/hi';
+import { HiOutlineUser, HiOutlineClipboardList, HiOutlineShoppingBag } from 'react-icons/hi';
+import { getCookie } from '../../../utils/cookie';
 
 type Props = {
   setActive: (active: boolean) => void;
@@ -72,7 +73,7 @@ const Navigation = (props: Props) => {
           <h2>메뉴</h2>
           <Link to={'/user'} onClick={closeNav}>
             <li>
-              <HiOutlineHeart color="var(--color-black)" />
+              <HiOutlineUser color="var(--color-black)" />
               마이페이지
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
@@ -92,15 +93,28 @@ const Navigation = (props: Props) => {
             </li>
           </Link>
         </ul>
-        <Foot
-          onClick={() => {
-            requestLogout();
-            closeNav;
-          }}
-        >
-          로그아웃
-          <BiLogOut size="18" color="var(--color-white)" />
-        </Foot>
+
+        {getCookie('accessToken') ? (
+          <Foot
+            onClick={() => {
+              requestLogout();
+              closeNav;
+            }}
+          >
+            로그아웃
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        ) : (
+          <Foot
+            onClick={() => {
+              navigate('/login');
+              closeNav();
+            }}
+          >
+            로그인
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        )}
       </Inner>
     </Container>
   );
@@ -224,7 +238,7 @@ const Foot = styled.div`
   width: 100px;
   height: 45px;
   display: flex;
-  margin: auto 25px 0 auto;
+  margin: auto 25px 80px auto;
   padding: 0 15px;
   justify-content: center;
   align-items: center;

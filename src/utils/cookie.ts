@@ -14,6 +14,6 @@ export const getCookie = (name: string) => {
   return cookies.get(name);
 };
 
-export const removeCookie = () => {
-  return cookies.remove('accessToken');
+export const removeCookie = (name: string) => {
+  return cookies.remove(name);
 };
