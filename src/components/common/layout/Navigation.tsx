@@ -8,6 +8,7 @@ import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { HiOutlineUser, HiOutlineClipboardList, HiOutlineShoppingBag } from 'react-icons/hi';
+import { getCookie } from '../../../utils/cookie';
 
 type Props = {
   setActive: (active: boolean) => void;
@@ -92,15 +93,28 @@ const Navigation = (props: Props) => {
             </li>
           </Link>
         </ul>
-        <Foot
-          onClick={() => {
-            requestLogout();
-            closeNav;
-          }}
-        >
-          로그아웃
-          <BiLogOut size="18" color="var(--color-white)" />
-        </Foot>
+
+        {getCookie('accessToken') ? (
+          <Foot
+            onClick={() => {
+              requestLogout();
+              closeNav;
+            }}
+          >
+            로그아웃
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        ) : (
+          <Foot
+            onClick={() => {
+              navigate('/login');
+              closeNav();
+            }}
+          >
+            로그인
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        )}
       </Inner>
     </Container>
   );
@@ -214,8 +228,8 @@ export const SearchForm = styled.div`
     right: 35px;
     cursor: pointer;
     :hover {
-      border-color: none !important;
-      background-color: none !important;
+      border-color: transparent;
+      background-color: transparent;
     }
   }
 `;
@@ -224,7 +238,7 @@ const Foot = styled.div`
   width: 100px;
   height: 45px;
   display: flex;
-  margin: auto 25px 80px auto;
+  margin: auto 25px 0 auto;
   padding: 0 15px;
   justify-content: center;
   align-items: center;

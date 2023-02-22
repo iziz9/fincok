@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getDepositWishList } from '../../api/api';
+import { getDepositWishList } from '../../api/wishApi';
 import WishCard from './WishCard';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';

@@ -7,7 +7,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import resultData from '../api/data';
+import { getCookie } from '../utils/cookie';
+import { FaHandPointDown } from 'react-icons/fa';
 
 interface response {
   itemId: number;
@@ -25,17 +26,20 @@ const Home = () => {
   const [cart, setCart] = useState<String>('0');
   const [products, setProducts] = useState({});
 
+  const token = getCookie('accessToken');
   useEffect(() => {
     async function getRecommendProducts() {
-      try {
-        // const url =
-        //   'https://abf630fa-517f-4e51-9dac-36cba71c3ecc.mock.pstmn.io/api';
-        // const response: any = await axios.get(url);
-        const response = await getProducts();
-        console.log(response);
-        setProducts(response.data.resultData);
-      } catch (error) {
-        console.log('에러 발생!');
+      if (token) {
+        try {
+          const response = await getProducts();
+          console.log(response);
+          setProducts(response.data.resultData);
+        } catch (error) {
+          console.log('에러 발생!');
+        }
+      } else {
+        console.log('토큰 없음');
+        return null;
       }
     }
     getRecommendProducts();
@@ -44,56 +48,84 @@ const Home = () => {
   return (
     <Container>
       <Title>
-        {user !== '' ? (
-          <h3>
-            <span>{user}</span> 님, 안녕하세요
-            <br /> 추천 상품을 확인해 보세요
-          </h3>
+        {token ? (
+          <>
+            <h3>
+              <span>{'user'}</span> 님, 안녕하세요
+              <br /> 핀콕의 추천 상품을 확인해 보세요!
+            </h3>
+            <AllProducts>
+              <p>
+                <span>내 정보</span> 보러 가기
+              </p>
+              <Link to={'/user'}>GO !</Link>
+            </AllProducts>
+          </>
         ) : (
-          <h3>
-            <span>로그인</span>을 하시면
-            <br /> 추천 상품을 확인할 수 있습니다.
-          </h3>
+          <>
+            <h3>
+              <span>로그인</span>을 하시면
+              <br /> 추천 상품을 확인할 수 있습니다.
+            </h3>
+            <AllProducts>
+              <p>
+                <span>로그인</span> 하러 가기
+              </p>
+              <Link to={'/login'}>GO !</Link>
+            </AllProducts>
+          </>
         )}
       </Title>
-      <AllProducts>
-        <p>
-          <span>로그인</span> 하러 가기
-        </p>
-        <Link to={'/login'}>GO !</Link>
-      </AllProducts>
-      <MyPage>
-        <Cart>
-          <p>가입한 상품</p>
-          <p>{cart} 건</p>
-        </Cart>
-        <Link to={'/cart'}>장바구니 보러가기</Link>
-      </MyPage>
+      {token ? (
+        <MyPage>
+          <Cart>
+            <p>가입한 상품</p>
+            <p>{cart} 건</p>
+          </Cart>
+          <Link to={'/cart'}>장바구니 보러가기</Link>
+        </MyPage>
+      ) : (
+        <NotUser>
+          <Join>
+            <p>
+              아직 핀콕 회원이 아니라면?
+              <FaHandPointDown style={{ width: '30px', height: '23px' }} />
+            </p>
+          </Join>
+          <Link to={'/signup'}>회원가입하기</Link>
+        </NotUser>
+      )}
       <Products>
         <h4>추천 상품</h4>
-        <Swiper
-          slidesPerView={1.3}
-          spaceBetween={15}
-          pagination={{
-            clickable: true,
-          }}
-          loop={false}
-          modules={[Pagination]}
-        >
-          {Array.isArray(products) ? (
-            products.map((item, idx) => {
-              return (
-                <SwiperSlide key={idx}>
-                  <ProductItem item={item} key={idx} />
-                </SwiperSlide>
-              );
-            })
-          ) : (
-            <NoList>
-              <p>추천 상품이 없습니다.</p>
-            </NoList>
-          )}
-        </Swiper>
+        {token ? (
+          <Swiper
+            slidesPerView={1.3}
+            spaceBetween={15}
+            pagination={{
+              clickable: true,
+            }}
+            loop={false}
+            modules={[Pagination]}
+          >
+            {Array.isArray(products) ? (
+              products.map((item, idx) => {
+                return (
+                  <SwiperSlide key={idx}>
+                    <ProductItem item={item} key={idx} />
+                  </SwiperSlide>
+                );
+              })
+            ) : (
+              <NoList>
+                <p>추천 상품이 없습니다.</p>
+              </NoList>
+            )}
+          </Swiper>
+        ) : (
+          <div style={{ marginTop: '60px' }}>
+            <NoList>로그인 후 확인하실 수 있습니다.</NoList>
+          </div>
+        )}
       </Products>
     </Container>
   );
@@ -177,6 +209,10 @@ const MyPage = styled.div`
   }
 `;
 
+const NotUser = styled(MyPage)`
+  background-color: black;
+`;
+
 const Cart = styled.div`
   display: flex;
   p {
@@ -186,7 +222,13 @@ const Cart = styled.div`
     }
   }
 `;
-
+const Join = styled.div`
+  display: flex;
+  justify-content: center;
+  p {
+    font-size: 18px;
+  }
+`;
 const Products = styled.div`
   margin-top: 50px;
   h4 {

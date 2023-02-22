@@ -5,7 +5,8 @@ import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
-import { getProductDetail, requestSetWishList, requestDelWishList } from '../api/api';
+import { getProductDetail} from '../api/api';
+import { requestSetWishList, requestDelWishList } from '../api/wishApi'
 import NotFound from './NotFound';
 
 export interface ProductType {
@@ -35,7 +36,7 @@ const Detail = () => {
   //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('deposit', '27');
+      const data = await getProductDetail('deposit', '23');
       setInfo(data);
     }
     getData();

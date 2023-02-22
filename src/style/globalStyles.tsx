@@ -61,7 +61,7 @@ const GlobalStyles = createGlobalStyle`
   }
   h1 {
     font-size: 35px;
-    margin: 30px 0 0;
+    margin: 25px 0 0;
     font-weight: 600;
   }
   ul, li {
@@ -75,6 +75,7 @@ const GlobalStyles = createGlobalStyle`
     display: flex;
     cursor: pointer;
     outline: none;
+    border: none;
     border-radius: 8px;
     height: 50px;
     align-items: center;

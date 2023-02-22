@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { requestDelWishList } from '../../api/api';
+import { requestDelWishList } from '../../api/wishApi';
 
 type Props = { item: DataType; setToggled: any; toggled:boolean };
 

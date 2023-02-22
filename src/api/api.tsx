@@ -1,4 +1,4 @@
-import { instance } from './axios';
+import { instance, authInstance } from './axios';
 import { setCookie, getCookie, removeCookie } from '../utils/cookie';
 import { SetStateAction } from 'react';
 
@@ -29,7 +29,7 @@ export const requestLogout = async () => {
     if (res.data.resultCode === 'failed') {
       throw new Error('로그아웃 에러');
     } else {
-      removeCookie();
+      removeCookie('accessToken');
       alert('로그아웃 되었습니다.');
       location.pathname = '/';
     }
@@ -40,7 +40,7 @@ export const requestLogout = async () => {
 
 // 맞춤 상품 조회
 export const getProducts = async () => {
-  return instance.get(`main_recommend`);
+  return authInstance.get('main_recommend');
 };
 
 // 회원가입
@@ -107,80 +107,35 @@ export const getProductDetail = async (category: string, itemId: string) => {
   return res.data;
 };
 
-// 관심상품등록
-export const requestSetWishList = async (
-  formData: FormData,
-  setLikeState: React.Dispatch<SetStateAction<boolean>>,
-) => {
+
+
+
+// 유저 정보 출력
+export const requestUserInfo = async () => {
   try {
     const accessToken = getCookie('accessToken');
     instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.post('wish', formData);
-    setLikeState(true);
-    if (res.data.resultCode === 'duplicate') {
-      alert('이미 관심등록된 상품입니다.');
-    }
-    console.log(res.data);
+    const res = await instance.post('member/info');
+    console.log(res);
   } catch (err) {
     alert(err);
   }
 };
 
-//관심상품 삭제
-export const requestDelWishList = async (
-  id: number,
-  setLikeState: React.Dispatch<SetStateAction<boolean>>,
-) => {
-  try {
-    const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.delete(`wish/delete/${id}`);
-    console.log(res.data);
-    setLikeState(false);
-  } catch (err) {
-    alert(err);
-  }
+// 검색-예금 적금
+export const getDeposit = async (title: string, page: number) => {
+  const send = {
+    content: title,
+    page: page,
+  };
+  return authInstance.get(`search_deposit`, { params: { ...send } });
 };
 
-const accessToken = getCookie('accessToken');
-
-export const getDepositWishList = async (
-  page: number,
-  setResult: any,
-  setLastPage: any,
-  setLoading: any,
-) => {
-  try {
-    setLoading(true);
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.get(`wish_list/deposit?page=${page}`);
-    const data = res.data.resultData
-    console.log(data);
-    // setResult((prevState: any) => [...prevState, ...data.content]);
-    setResult(data.content);
-    setLastPage(data.last);
-    setLoading(false);
-  } catch (err) {
-    alert(err);
-  }
+// 검색-대출
+export const getLoan = async (title: string, page: number) => {
+  const send = {
+    content: title,
+    page: page,
+  };
+  return authInstance.get(`search_loan`, { params: { ...send } });
 };
-
-export const getLoanWishList = async (page: number) => {
-  try {
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.get(`wish_list/loan?page=${page}`);
-    console.log(res.data);
-  } catch (err) {
-    alert(err);
-  }
-};
-
-// export const removeWishAll = async () => {
-//   try {
-//     instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-//     const res = await instance.get(`api/delete_all/cart`);
-//     console.log(res.data);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
