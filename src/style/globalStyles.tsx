@@ -61,7 +61,7 @@ const GlobalStyles = createGlobalStyle`
   }
   h1 {
     font-size: 35px;
-    margin: 30px 0 0;
+    margin: 25px 0 0;
     font-weight: 600;
   }
   ul, li {

@@ -8,6 +8,7 @@ import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { HiOutlineUser, HiOutlineClipboardList, HiOutlineShoppingBag } from 'react-icons/hi';
+import { getCookie } from '../../../utils/cookie';
 
 type Props = {
   setActive: (active: boolean) => void;
@@ -92,15 +93,28 @@ const Navigation = (props: Props) => {
             </li>
           </Link>
         </ul>
-        <Foot
-          onClick={() => {
-            requestLogout();
-            closeNav;
-          }}
-        >
-          로그아웃
-          <BiLogOut size="18" color="var(--color-white)" />
-        </Foot>
+
+        {getCookie('accessToken') ? (
+          <Foot
+            onClick={() => {
+              requestLogout();
+              closeNav;
+            }}
+          >
+            로그아웃
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        ) : (
+          <Foot
+            onClick={() => {
+              navigate('/login');
+              closeNav();
+            }}
+          >
+            로그인
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        )}
       </Inner>
     </Container>
   );

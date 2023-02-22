@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Navigation from './Navigation';
-import { AiOutlineMenu, AiOutlineShoppingCart } from 'react-icons/ai';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { CgMenu } from 'react-icons/cg';
 
 const Header = () => {
   const [active, setActive] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const Header = () => {
             </Link>
           </Cart>
           <Menu onClick={navigation}>
-            <AiOutlineMenu size="28" color="var(--color-black)" />
+            <CgMenu size="28" color="var(--color-black)" />
           </Menu>
         </Icon>
       </Inner>
@@ -68,7 +69,7 @@ const Icon = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 18px;
 `;
 
 const Cart = styled.div`
