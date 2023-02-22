@@ -1,4 +1,4 @@
-import { instance } from './axios';
+import { instance, authInstance } from './axios';
 import { setCookie, getCookie, removeCookie } from '../utils/cookie';
 import { SetStateAction } from 'react';
 
@@ -40,9 +40,7 @@ export const requestLogout = async () => {
 
 // 맞춤 상품 조회
 export const getProducts = async () => {
-  const accessToken = getCookie('accessToken');
-  instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-  return instance.get('main_recommend');
+  return authInstance.get('main_recommend');
 };
 
 // 회원가입
@@ -154,4 +152,22 @@ export const requestUserInfo = async () => {
   } catch (err) {
     alert(err);
   }
+};
+
+// 검색-예금 적금
+export const getDeposit = async (title: string, page: number) => {
+  const send = {
+    content: title,
+    page: page,
+  };
+  return authInstance.get(`search_deposit`, { params: { ...send } });
+};
+
+// 검색-대출
+export const getLoan = async (title: string, page: number) => {
+  const send = {
+    content: title,
+    page: page,
+  };
+  return authInstance.get(`search_loan`, { params: { ...send } });
 };

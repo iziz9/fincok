@@ -75,6 +75,7 @@ const GlobalStyles = createGlobalStyle`
     display: flex;
     cursor: pointer;
     outline: none;
+    border: none;
     border-radius: 8px;
     height: 50px;
     align-items: center;

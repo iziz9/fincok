@@ -7,7 +7,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import resultData from '../api/data';
 import { getCookie } from '../utils/cookie';
 import { FaHandPointDown } from 'react-icons/fa';
 

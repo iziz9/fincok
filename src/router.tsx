@@ -16,7 +16,6 @@ import SavingsList from './pages/allProducts/SavingsList';
 import MortgageLoan from './pages/allProducts/MortgageLoan';
 import CharterLoan from './pages/allProducts/CharterLoan';
 
-
 const router = createBrowserRouter([
   {
     path: '/',

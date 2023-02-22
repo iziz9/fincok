@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { SearchForm } from '../components/common/layout/Navigation';
@@ -6,105 +6,89 @@ import DepositsItem from './../components/product/DepositsItem';
 import LoansItem from '../components/product/LoansItem';
 import { NoList } from '../pages/Home';
 import { BiSearch } from 'react-icons/bi';
-//import { getDeposit, getLoan } from '../api/api';
+import { getDeposit, getLoan } from '../api/api';
+import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 
 const Search = () => {
-  // const [value, setValue] = useState('');
   const navigate = useNavigate();
-  const [page, setPage] = useState<number>(1);
-  let infiniteScroll = false;
-
+  const [ref, inView] = useInView();
   const [searchTitle, setSearchTitle] = useState<string | any>('');
+  const [page, setPage] = useState<number>(1);
 
+  // 적금/대출 검색 리스트
   const [deposits, setDeposits] = useState([]);
   const [depositsLast, setDepositsLast] = useState<boolean>(false);
-  console.log(depositsLast);
-
   const [loans, setLoans] = useState([]);
   const [loansLast, setLoansLast] = useState<boolean>(false);
-  console.log(loansLast);
 
-  const observerRef = useRef<IntersectionObserver>();
-  const boxRef = useRef<HTMLDivElement>(null);
+  // 전체 검색 리스트
+  if (deposits) {
+    const searchList = [...deposits];
+  } else if (loans) {
+    const searchList = [...loans];
+  } else {
+  }
+  const searchList = [...deposits, ...loans];
 
-  // const searchList = [...deposits, ...loans];
-  // console.log(searchList);
-
+  // 쿼리스트링
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
   };
-
   let KeywordQuery = useQuery();
   const searchText: string | any = KeywordQuery.get('title');
 
+  const getSearchDeposit = useCallback(
+    async (setDeposits: any, setDepositsLast: any) => {
+      try {
+        const response = await getDeposit(searchText, page);
+        console.log('적금', response.data.content);
+        setDeposits((prevState: any) => [...prevState, ...response.data.content]);
+        setDepositsLast(response.data.last);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [searchText, page],
+  );
+
+  const getSearchLoan = useCallback(
+    async (setLoans: any, setLoansLast: any) => {
+      try {
+        const response = await getLoan(searchText, page);
+        console.log('대출', response.data.content);
+        setLoans((prevState: any) => [...prevState, ...response.data.content]);
+        setLoansLast(response.data.last);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [searchText, page],
+  );
+
   useEffect(() => {
-    // 네비게이션 검색시
-    // if (searchText) {
-    //   async function depositsData() {
-    //     try {
-    //       const response = await getDeposit(searchText, page);
-    //       console.log('적금', response.data.content);
-    //       setDeposits(response.data.content);
-    //       setDepositsLast(response.data.last);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   }
-    //   async function loansData() {
-    //     try {
-    //       const response = await getLoan(searchText, page);
-    //       console.log('대출', response.data.content);
-    //       setLoans(response.data.content);
-    //       setLoansLast(response.data.last);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   }
-    //   depositsData();
-    //   loansData();
-    //   setSearchTitle(searchText);
-    // }
+    // 네비게이션 쿼리 유무
+    if (searchText) {
+      // 초기화
+      setPage(1);
+      setDeposits([]);
+      setLoans([]);
+      setSearchTitle(searchText);
+    }
   }, [searchText]);
 
-  // useEffect(() => {
-  //   observerRef.current = new IntersectionObserver(intersectionObserver); // IntersectionObserver
-  //   boxRef.current && observerRef.current.observe(boxRef.current);
-  // }, []);
+  // api 호출 함수가 바뀔 때 마다 실행
+  useEffect(() => {
+    getSearchDeposit(setDeposits, setDepositsLast);
+    getSearchLoan(setLoans, setLoansLast);
+  }, [getSearchDeposit, getSearchLoan]);
 
-  // IntersectionObserver 설정
-  // const intersectionObserver = (entries: IntersectionObserverEntry[], io: IntersectionObserver) => {
-  //   entries.forEach((entry) => {
-  //     if (entry.isIntersecting) {
-  //       // 관찰하고 있는 entry가 화면에 보여지는 경우
-  //       io.unobserve(entry.target); // entry 관찰 해제
-  //       setPage(+1);
-  //       getSearchDeposit();
-  //       getSearchLoan();
-  //     }
-  //   });
-  // };
-
-  // const getSearchDeposit = async () => {
-  //   try {
-  //     const response = await getDeposit(searchTitle, page);
-  //     console.log('적금', response.data.content);
-  //     setDeposits(response.data.content);
-  //     setDepositsLast(response.data.last);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const getSearchLoan = async () => {
-  //   try {
-  //     const response = await getLoan(searchTitle, page);
-  //     console.log('대출', response.data.content);
-  //     setLoans(response.data.content);
-  //     setLoansLast(response.data.last);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    // 사용자가 마지막 요소를 보고 있고, 마지막 페이지 일 때
+    if ((inView && depositsLast === false) || (inView && loansLast === false)) {
+      setPage((prevState) => prevState + 1);
+    }
+  }, [inView]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
@@ -114,6 +98,10 @@ const Search = () => {
   const handleSubmit = (value: string) => {
     return navigate(`/search?title=${value}`);
   };
+
+  const handleDeposits = () => {};
+
+  const handleLoans = () => {};
 
   return (
     <Container>
@@ -140,31 +128,43 @@ const Search = () => {
         </form>
       </SearchForm>
       <SearchList>
-        {deposits.length > 0
-          ? deposits.map((item, idx) => {
-              return <DepositsItem item={item} key={idx} />;
-            })
-          : null}
-        {loans.length > 0
-          ? loans.map((item, idx) => {
-              return <LoansItem item={item} key={idx} />;
-            })
-          : null}
-        {deposits.length > 0 ? (
-          loans.length > 0
+        <ProductTap>
+          <button
+            onClick={() => {
+              handleDeposits();
+            }}
+          >
+            적금/예금 상품
+          </button>
+          <button
+            onClick={() => {
+              handleLoans();
+            }}
+          >
+            대출 상품
+          </button>
+        </ProductTap>
+        {searchList.length > 0 ? (
+          searchList.map((item: any, idx) => {
+            return (
+              <Link to={'/detail/' + item.itemId} key={idx}>
+                <DepositsItem item={item} key={idx} />
+              </Link>
+            );
+          })
         ) : (
           <span>
             <NoList>검색결과가 없습니다.</NoList>
           </span>
         )}
-        <div ref={boxRef}></div>
       </SearchList>
+      <div ref={ref}></div>
     </Container>
   );
 };
 
 const Container = styled.div`
-  padding: 30px 0 120px;
+  padding: 30px 0;
   form {
     padding: 0 35px;
     button {
@@ -180,6 +180,24 @@ const SearchList = styled.div`
   gap: 20px;
   span {
     margin-top: 40px;
+  }
+`;
+
+const ProductTap = styled.div`
+  width: 60%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  button {
+    color: var(--color-black);
+    padding: 0 1.5em;
+    background-color: var(--color-bg-grey);
+    font-weight: bold;
+    :hover {
+      background-color: var(--color-black);
+      color: var(--color-white);
+    }
   }
 `;
 
