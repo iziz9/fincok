@@ -8,7 +8,7 @@ import { getCookie } from '../utils/cookie';
 import AlertLoginState from '../components/common/AlertLoginState';
 
 const Cart = () => {
-  const cart = localStorage.getItem('cart');
+  const cart = JSON.parse(localStorage.getItem('cart')!);
   const [checked, setChecked] = useState<boolean>(false);
   const allChecked = () => {
     setChecked(!checked);
