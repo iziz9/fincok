@@ -4,19 +4,18 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { requestDelWishList } from '../../api/api';
 
-type Props = { item: DataType };
+type Props = { item: DataType; setToggled: any; toggled:boolean };
 
-function DepositProductCard({ item }: Props) {
-  const [likeState, setLikeState] = useState<boolean>(true);
+function WishCard({ item, setToggled, toggled }: Props) {
+  const [likeState, setLikeState] = useState<boolean>(true); // 추후에 toolkit으로 상태관리 예정
 
-  const wishButton = () => {
-    setLikeState(!likeState);
+  function wishButton () {
     requestDelWishList(Number(item.itemId), setLikeState);
-  };
-  useEffect(() => {
-    //DepositWishList.tsx에서 관리 되어야 하는 State -> like가 변경 되면 렌더를 다시 해서 삭제된 리스트가 뜰 수 있도록
-  }, [wishButton]);
-  
+  }
+  useEffect(()=>{
+    setToggled(!toggled)
+  },[likeState])
+
   return (
     <Wrap>
       <LinkWrap to={`/detail/${item.itemId}`}>
@@ -30,7 +29,13 @@ function DepositProductCard({ item }: Props) {
           </span>
         </Item>
       </LinkWrap>
-      <Button onClick={() => wishButton()}>{likeState ? <HiHeart /> : <HiOutlineHeart />}</Button>
+      <Button
+        onClick={() => {
+          wishButton();
+        }}
+      >
+        {likeState ? <HiHeart /> : <HiOutlineHeart />}
+      </Button>
     </Wrap>
   );
 }
@@ -106,4 +111,4 @@ export type DataType = {
   mature: string;
 };
 
-export default DepositProductCard;
+export default WishCard;

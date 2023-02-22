@@ -156,7 +156,8 @@ export const getDepositWishList = async (
     const res = await instance.get(`wish_list/deposit?page=${page}`);
     const data = res.data.resultData
     console.log(data);
-    setResult((prevState: any) => [...prevState, ...data.content]);
+    // setResult((prevState: any) => [...prevState, ...data.content]);
+    setResult(data.content);
     setLastPage(data.last);
     setLoading(false);
   } catch (err) {
@@ -173,3 +174,13 @@ export const getLoanWishList = async (page: number) => {
     alert(err);
   }
 };
+
+// export const removeWishAll = async () => {
+//   try {
+//     instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+//     const res = await instance.get(`api/delete_all/cart`);
+//     console.log(res.data);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
