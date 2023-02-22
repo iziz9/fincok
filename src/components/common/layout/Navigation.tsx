@@ -238,7 +238,7 @@ const Foot = styled.div`
   width: 100px;
   height: 45px;
   display: flex;
-  margin: auto 25px 80px auto;
+  margin: auto 25px 0 auto;
   padding: 0 15px;
   justify-content: center;
   align-items: center;

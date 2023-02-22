@@ -43,6 +43,7 @@ const Container = styled.div`
   height: 75px;
   background-color: #fff;
   box-sizing: border-box;
+  z-index: 100;
 `;
 
 const Inner = styled.div`
