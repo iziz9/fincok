@@ -23,9 +23,7 @@ export const requestLogin = async (formData: FormData) => {
 // 로그아웃
 export const requestLogout = async () => {
   try {
-    const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.post('/logout');
+    const res = await authInstance.post('/logout');
     if (res.data.resultCode === 'failed') {
       throw new Error('로그아웃 에러');
     } else {
@@ -99,7 +97,7 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
 export const getProductDetail = async (category: string, itemId: string) => {
   let res: any = {};
   try {
-    res = await instance.get(`search/${category}/detail/${itemId}`);
+    res = await authInstance.get(`search/${category}/detail/${itemId}`);
   } catch (err) {
     alert(err);
   }
@@ -107,15 +105,10 @@ export const getProductDetail = async (category: string, itemId: string) => {
   return res.data;
 };
 
-
-
-
 // 유저 정보 출력
 export const requestUserInfo = async () => {
   try {
-    const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.post('member/info');
+    const res = await authInstance.post('member/info');
     console.log(res);
   } catch (err) {
     alert(err);

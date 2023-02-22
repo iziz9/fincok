@@ -61,7 +61,7 @@ function DepositWishList() {
     </>
   );
 }
-const EmptyWishBox = styled.div`
+export const EmptyWishBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
