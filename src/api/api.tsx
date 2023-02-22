@@ -107,40 +107,8 @@ export const getProductDetail = async (category: string, itemId: string) => {
   return res.data;
 };
 
-// 관심상품등록
-export const requestSetWishList = async (
-  formData: FormData,
-  setLikeState: React.Dispatch<SetStateAction<boolean>>,
-) => {
-  try {
-    const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.post('wish', formData);
-    setLikeState(true);
-    if (res.data.resultCode === 'duplicate') {
-      alert('이미 관심등록된 상품입니다.');
-    }
-    console.log(res.data);
-  } catch (err) {
-    alert(err);
-  }
-};
 
-//관심상품 삭제
-export const requestDelWishList = async (
-  id: number,
-  setLikeState: React.Dispatch<SetStateAction<boolean>>,
-) => {
-  try {
-    const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.delete(`wish/delete/${id}`);
-    console.log(res.data);
-    setLikeState(false);
-  } catch (err) {
-    alert(err);
-  }
-};
+
 
 // 유저 정보 출력
 export const requestUserInfo = async () => {

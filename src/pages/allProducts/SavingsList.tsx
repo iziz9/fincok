@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getSavingsList } from '../../api/allProductsApi';
-import ProductCard from '../../components/allProducts/ProductCard';
+import DepositProductCard from '../../components/allProducts/DepositProductCard';
 import { useInView } from 'react-intersection-observer';
 import { DataType } from './AllProducts';
+import styled from 'styled-components';
 
 function SavingsList() {
   const [savingsListData, setSavingsListData] = useState<DataType>([]);
@@ -27,24 +28,26 @@ function SavingsList() {
   }, [inView, loading]);
 
   return (
-    <>
+    <Wrap>
       {savingsListData.map((item: any, index: number) => (
         <div key={index}>
           {savingsListData.length - 1 == index ? (
             <div ref={ref}>
-              <ProductCard item={item} />
+              <DepositProductCard item={item} />
             </div>
           ) : (
             <div>
-              <ProductCard item={item} />
+              <DepositProductCard item={item} />
             </div>
           )}
         </div>
       ))}
-    </>
+    </Wrap>
   );
 }
-
+const Wrap = styled.div`
+  padding: 0 30px;
+`
 
 
 export default SavingsList;

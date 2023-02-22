@@ -15,6 +15,7 @@ import DepositList from './pages/allProducts/DepositList';
 import SavingsList from './pages/allProducts/SavingsList';
 import MortgageLoan from './pages/allProducts/MortgageLoan';
 import CharterLoan from './pages/allProducts/CharterLoan';
+import Wish from './pages/Wish';
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
       {
         path: 'allproducts/charterloan',
         element: <CharterLoan />,
+      },
+      {
+        path: 'wish',
+        element: <Wish />,
       },
     ],
   },

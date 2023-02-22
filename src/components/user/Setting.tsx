@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { MdKeyboardArrowRight, MdErrorOutline } from 'react-icons/md';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 import styled from 'styled-components';
 
 function Setting() {
@@ -10,12 +11,12 @@ function Setting() {
       <h3>설정</h3>
       <LinkBox to="/cart">
         <FelxBox>
-          <HiOutlineHeart size="22" />
+          <AiOutlineShoppingCart size="22"/>
           <p>장바구니 상품</p>
         </FelxBox>
         <MdKeyboardArrowRight size="22" />
       </LinkBox>
-      <LinkBox to="/cart">
+      <LinkBox to="/wish">
         <FelxBox>
           <HiOutlineHeart size="22" />
           <p>관심 상품</p>
@@ -45,12 +46,13 @@ const SettingWrap = styled.div`
   h3 {
     font-size: 22px;
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 `;
 const LinkBox = styled(Link)`
   ${buttonStyle}
-  margin-bottom: 15px;
+  padding: 15px 0;
+  font-weight: 500;  
 `;
 const Logout = styled.button`
   ${buttonStyle}
@@ -60,6 +62,7 @@ const Logout = styled.button`
   color: var(--color-black);
   border: transparent;
   padding: 0;
+  font-weight: 500;  
   :hover {
     background-color: #fff;
   }

@@ -5,7 +5,8 @@ import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
-import { getProductDetail, requestSetWishList, requestDelWishList } from '../api/api';
+import { getProductDetail} from '../api/api';
+import { requestSetWishList, requestDelWishList } from '../api/wishApi'
 import NotFound from './NotFound';
 
 export interface ProductType {
@@ -100,6 +101,7 @@ const Detail = () => {
       console.log(localStorage.getItem('cart'));
     }
   };
+
   const addwishHandler = (itemId: number) => {
     const formData = new FormData();
     formData.append('itemId', `${itemId}`);
