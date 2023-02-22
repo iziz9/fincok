@@ -1,5 +1,5 @@
 import React from 'react'
-import { getLoanWishList } from '../../api/api';
+import { getLoanWishList } from '../../api/wishApi';
 
 function LoanWishList() {
   getLoanWishList(1);
