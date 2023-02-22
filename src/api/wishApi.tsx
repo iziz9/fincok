@@ -30,8 +30,9 @@ export const requestDelWishList = async (
     const accessToken = getCookie('accessToken');
     instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const res = await instance.delete(`wish/delete/${id}`);
-    console.log(res.data);
+    // setLikeState(false);
     setLikeState(false);
+    console.log('삭제 api 마지막',res.data);
   } catch (err) {
     alert(err);
   }
@@ -39,6 +40,25 @@ export const requestDelWishList = async (
 
 const accessToken = getCookie('accessToken');
 
+// 예/적금 관심상품 조회
+// export const getDepositWishList = async (
+//   page: number,
+//   setResult: any,
+//   setLastPage: any,
+//   setLoading: any,
+// ) => {
+//   try {
+//     setLoading(true);
+//     const res = await authInstance.get(`wish_list/deposit?page=${page}`);
+//     const data = res.data.resultData;
+//     console.log(data);
+//     setResult(data.content);
+//     setLastPage(data.last);
+//     setLoading(false);
+//   } catch (err) {
+//     alert(err);
+//   }
+// };
 export const getDepositWishList = async (
   page: number,
   setResult: any,
@@ -47,24 +67,32 @@ export const getDepositWishList = async (
 ) => {
   try {
     setLoading(true);
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.get(`wish_list/deposit?page=${page}`);
-    const data = res.data.resultData
-    console.log(data);
-    // setResult((prevState: any) => [...prevState, ...data.content]);
-    setResult(data.content);
+    const res = await authInstance.get(`wish_list/deposit?page=${page}`);
+    const data = res.data.resultData;
+    setResult((prevState: any) =>[...prevState, ...data.content]);
     setLastPage(data.last);
     setLoading(false);
+    console.log('상품조회 마지막',data.content);
   } catch (err) {
     alert(err);
   }
 };
-
-export const getLoanWishList = async (page: number) => {
+// 대출 관심상품 조회
+export const getLoanWishList = async (
+  page: number,
+  setResult: any,
+  setLastPage: any,
+  setLoading: any,
+) => {
   try {
+    setLoading(true);
     instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const res = await instance.get(`wish_list/loan?page=${page}`);
-    console.log(res.data);
+    const data = res.data.resultData;
+    console.log(data);
+    setResult(data.content);
+    setLastPage(data.last);
+    setLoading(false);
   } catch (err) {
     alert(err);
   }

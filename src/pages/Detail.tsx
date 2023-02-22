@@ -36,7 +36,7 @@ const Detail = () => {
   //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('deposit', '23');
+      const data = await getProductDetail('deposit', '45');
       setInfo(data);
     }
     getData();

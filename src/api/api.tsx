@@ -99,15 +99,13 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
 export const getProductDetail = async (category: string, itemId: string) => {
   let res: any = {};
   try {
-    res = await instance.get(`search/${category}/detail/${itemId}`);
+    res = await authInstance.get(`search/${category}/detail/${itemId}`);
   } catch (err) {
     alert(err);
   }
   console.log(res.data);
   return res.data;
 };
-
-
 
 
 // 유저 정보 출력
