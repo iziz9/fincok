@@ -178,9 +178,14 @@ const Detail = () => {
                         : '최고대출금리'}
                     </SummaryTitle>
                     {info.maxRate && <SummaryContent>연 {info.maxRate}%</SummaryContent>}
-                    {(info?.category === '정기예금' || info.category === '적금') && (
+                    {info?.category === '정기예금' && (
                       <SummaryContent>
-                        {info.limit ? '월 ' + info.limit + ' 만원' : '없음'}
+                        {info.limit ? info.limit + '천만 원' : '없음'}
+                      </SummaryContent>
+                    )}
+                    {info.category === '적금' && (
+                      <SummaryContent>
+                        {info.limit ? '월 ' + info.limit + '천만 원' : '없음'}
                       </SummaryContent>
                     )}
                   </ColDiv>

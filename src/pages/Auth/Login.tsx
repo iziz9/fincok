@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
@@ -9,8 +8,10 @@ import { requestLogin } from '../../api/api';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { getCookie } from '../../utils/cookie';
-import { FcHighPriority } from 'react-icons/fc';
 import AlertLoginState from '../../components/common/AlertLoginState';
+import { useAppDispatch } from '../../hooks/useDispatchHooks';
+import { userLogin } from '../../store/loginSlice';
+import { setCookie } from '../../utils/cookie';
 
 interface LoginForm {
   id: string;
@@ -19,6 +20,7 @@ interface LoginForm {
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const formSchema = yup.object({
     id: yup.string().required('필수 입력란입니다.').email('이메일 형식에 맞지 않습니다.'),
     pw: yup
@@ -37,6 +39,26 @@ const Login = () => {
     resolver: yupResolver(formSchema),
   });
 
+  const onSubmit = async (id: string, pw: string) => {
+    const formData = new FormData();
+    formData.append('memberId', id);
+    formData.append('password', pw);
+    try {
+      const res = await requestLogin(formData);
+      if (res.resultCode === 'failed') {
+        throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
+      } else {
+        const accessToken = res.accessToken;
+        setCookie('accessToken', accessToken);
+        alert('로그인 완료');
+        dispatch(userLogin(formData));
+        location.pathname = '/';
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
     <Main>
       {getCookie('accessToken') ? (
@@ -53,10 +75,7 @@ const Login = () => {
           <h1 style={{ padding: '30px 0 50px' }}>Login</h1>
           <form
             onSubmit={handleSubmit((data) => {
-              const formData = new FormData();
-              formData.append('memberId', data.id);
-              formData.append('password', data.pw);
-              requestLogin(formData);
+              onSubmit(data.id, data.pw);
             })}
           >
             <Div>

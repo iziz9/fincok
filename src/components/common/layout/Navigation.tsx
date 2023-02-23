@@ -12,6 +12,7 @@ import { HiOutlineUser, HiOutlineClipboardList } from 'react-icons/hi';
 import { RiPushpinLine } from 'react-icons/ri';
 import { useAppSelector, useAppDispatch } from '../../../hooks/useDispatchHooks';
 import { userInit } from '../../../store/userSlice';
+import { userLoginInit } from '../../../store/loginSlice';
 
 type Props = {
   setActive: (active: boolean) => void;
@@ -118,6 +119,7 @@ const Navigation = ({ setActive }: Props) => {
             onClick={() => {
               requestLogout();
               dispatch(userInit());
+              dispatch(userLoginInit());
               closeNav;
             }}
           >
