@@ -9,7 +9,7 @@ import { getProductDetail } from '../api/api';
 import { requestSetWishList, requestDelWishList } from '../api/wishApi';
 import NotFound from './NotFound';
 import { getCookie } from '../utils/cookie';
-import AlertLoginState, { AlreadyLogin } from '../components/common/AlertLoginState';
+import AlertLoginState from '../components/common/AlertLoginState';
 
 export interface ProductType {
   bank: string;
@@ -27,19 +27,32 @@ export interface ProductType {
   delay?: string | null;
   maxRate?: number;
   minRate?: number;
+  wish: boolean;
+}
+export type CartArrayType = CartType[][];
+export interface CartType {
+  itemId?: number;
+  category?: string;
+  bank?: string;
+  itemName?: string;
 }
 
 const Detail = () => {
   const navigate = useNavigate();
   const [info, setInfo] = useState<ProductType>();
-  // redux로 추후 관심상품 상태관리 변경
+  const [cartList, setCartList] = useState<CartArrayType>([]);
+  const [isOnCart, setIsOnCart] = useState<boolean>(false);
   const [likeState, setLikeState] = useState<boolean>(false);
 
   //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('deposit', '20');
+      const data = await getProductDetail('loan', '61');
       setInfo(data);
+      setLikeState(data.wish);
+      const list = [];
+      list.push([data.itemId, data.itemName, data.bank, data.category]);
+      setCartList(list);
     }
     getData();
   }, []);
@@ -92,14 +105,27 @@ const Detail = () => {
   const delayText = info?.delay?.split('%');
 
   const addCartHandler = () => {
-    if (localStorage.getItem('cart')) {
-      alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
-    } else {
-      localStorage.setItem('cart', JSON.stringify(info));
+    console.log(localStorage.getItem('cart'));
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify(cartList));
       window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
         ? navigate('/cart')
         : null;
-      console.log(localStorage.getItem('cart'));
+      return;
+    } else if (
+      localStorage
+        .getItem('cart')
+        ?.includes(JSON.stringify([info?.itemId, info?.itemName, info?.bank, info?.category]))
+    ) {
+      alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
+      return;
+    } else {
+      const prevList = JSON.parse(localStorage.getItem('cart')!);
+      const nextList = [...prevList, ...cartList];
+      localStorage.setItem('cart', JSON.stringify(nextList));
+      window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
+        ? navigate('/cart')
+        : null;
     }
   };
 
