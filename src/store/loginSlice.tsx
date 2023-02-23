@@ -27,6 +27,7 @@ let login = createSlice({
 });
 
 //dispatch로 slice 내부 메소드 접근
+//변수에 저장해뒀다가 사용 -> 페이지를 종료하지 않았을 떄만 작동하게
 
 export const { userLogin, userLoginInit } = login.actions;
 export default login;

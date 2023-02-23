@@ -10,6 +10,7 @@ import { requestFindPw } from '../../api/api';
 import { BeatLoader } from 'react-spinners';
 import { getCookie } from '../../utils/cookie';
 import AlertLoginState from '../../components/common/AlertLoginState';
+import { instance } from '../../api/axios';
 
 type findForm = {
   memberId: string;
@@ -36,6 +37,27 @@ const FindPassword = () => {
     resolver: yupResolver(formSchema),
   });
 
+  const onSubmit = async (memberId: string, name: string) => {
+    const isCorrectUser = await requestFindPw(memberId, name);
+    try {
+      if (isCorrectUser.data.resultCode === 'failed') {
+        alert('일치하는 회원정보가 없습니다. 다시 확인해주세요.');
+      } else {
+        //로딩애니메이션 시작
+        setLoading(true);
+        const res = await instance.post(
+          `find_password/send_mail?memberId=${memberId}&name=${name}`,
+        );
+        setLoading(false);
+        res.data.resultCode === 'success'
+          ? alert('비밀번호 재설정 메일이 전송되었습니다. 메일함을 확인해주세요.')
+          : alert('에러가 발생했습니다. 다시 시도해주세요.');
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
     <Main>
       {getCookie('accessToken') ? (
@@ -58,11 +80,7 @@ const FindPassword = () => {
             핀콕에 가입했던 회원정보를 입력해주세요. <br />
             비밀번호 재설정 메일을 보내드립니다.
           </FlexText>
-          <form
-            onSubmit={handleSubmit((data) => {
-              requestFindPw(data.memberId, data.name, setLoading);
-            })}
-          >
+          <form onSubmit={handleSubmit((data) => onSubmit(data.memberId, data.name))}>
             <Div>
               <div>
                 <CategoryTitle>이름</CategoryTitle>
