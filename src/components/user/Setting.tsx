@@ -1,17 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { requestLogout } from '../../api/api';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { MdKeyboardArrowRight, MdErrorOutline } from 'react-icons/md';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { useAppDispatch } from '../../hooks/useDispatchHooks';
+import { userInit } from '../../store/userSlice';
 import styled from 'styled-components';
 
 function Setting() {
+  const dispatch = useAppDispatch();
+
   return (
     <SettingWrap>
       <h3>설정</h3>
       <LinkBox to="/cart">
         <FelxBox>
-          <AiOutlineShoppingCart size="22"/>
+          <AiOutlineShoppingCart size="22" />
           <p>장바구니 상품</p>
         </FelxBox>
         <MdKeyboardArrowRight size="22" />
@@ -23,7 +28,12 @@ function Setting() {
         </FelxBox>
         <MdKeyboardArrowRight size="22" />
       </LinkBox>
-      <Logout>
+      <Logout
+        onClick={() => {
+          requestLogout();
+          dispatch(userInit());
+        }}
+      >
         <FelxBox>
           <MdErrorOutline size="22" color="var(--color-orange)" />
           <p style={{ color: 'var(--color-orange)' }}>로그아웃</p>
@@ -52,7 +62,7 @@ const SettingWrap = styled.div`
 const LinkBox = styled(Link)`
   ${buttonStyle}
   padding: 15px 0;
-  font-weight: 500;  
+  font-weight: 500;
 `;
 const Logout = styled.button`
   ${buttonStyle}
@@ -62,7 +72,7 @@ const Logout = styled.button`
   color: var(--color-black);
   border: transparent;
   padding: 0;
-  font-weight: 500;  
+  font-weight: 500;
   :hover {
     background-color: #fff;
   }
