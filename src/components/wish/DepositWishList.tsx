@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getDepositWishList } from '../../api/wishApi';
+import { getDepositWishList, requestDelWishList } from '../../api/wishApi';
 import WishCard from './WishCard';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
@@ -10,15 +10,28 @@ function DepositWishList() {
   const [lastPage, setLastPage] = useState<boolean>(false);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
-  const [toggled, setToggled] = useState<boolean>(false);
+
+  const [abc, setabc] = useState<boolean>(true);
 
   const { ref, inView } = useInView({
-    threshold: 0,
+    // threshold: 0,
   });
+  const wishClick = async (id: number) => {
+    await requestDelWishList(Number(id), setabc);
+    setDepositWishData([]);
+    setPageNumber(1);
+    await getDepositWishList(1, setDepositWishData, setLastPage, setLoading);
+  };
+
+  useEffect(() => {
+    if (pageNumber !== 1) {
+      getDepositWishList(pageNumber, setDepositWishData, setLastPage, setLoading);
+    }
+  }, [pageNumber]);
 
   useEffect(() => {
     getDepositWishList(pageNumber, setDepositWishData, setLastPage, setLoading);
-  }, [pageNumber]);
+  }, []);
 
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
@@ -27,11 +40,6 @@ function DepositWishList() {
       // else alert('마지막 상품입니다.')
     }
   }, [inView, loading]);
-
-  useEffect(() => {
-    getDepositWishList(pageNumber, setDepositWishData, setLastPage, setLoading);
-    console.log('toggled', depositWishData);
-  }, [toggled]);
 
   return (
     <>
@@ -48,11 +56,11 @@ function DepositWishList() {
           <div key={item.itemId}>
             {depositWishData?.length - 1 == index ? (
               <div ref={ref}>
-                <WishCard item={item} setToggled={setToggled} toggled={toggled} />
+                <WishCard item={item} wishClick={wishClick} />
               </div>
             ) : (
               <div>
-                <WishCard item={item} setToggled={setToggled} toggled={toggled} />
+                <WishCard item={item} wishClick={wishClick} />
               </div>
             )}
           </div>

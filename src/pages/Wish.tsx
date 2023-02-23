@@ -14,22 +14,14 @@ function Wish() {
       <Title>관심 상품</Title>
       <div>
         <FlexBox>
-        <Button
-          onClick={ButtonToggle}
-          toggleButton={toggleButton}
-        >
-          예/적금 관심상품
-        </Button>
-        <Button
-          onClick={ButtonToggle}
-          toggleButton={!toggleButton}
-        >
-          대출 관심상품
-        </Button>
+          <Button onClick={ButtonToggle} toggleButton={toggleButton}>
+            예/적금 관심상품
+          </Button>
+          <Button onClick={ButtonToggle} toggleButton={!toggleButton}>
+            대출 관심상품
+          </Button>
         </FlexBox>
-        {
-          toggleButton ? <DepositWishList /> : <LoanWishList /> 
-        }
+        {toggleButton ? <DepositWishList /> : <LoanWishList />}
       </div>
     </Wrap>
   );
@@ -40,7 +32,7 @@ const Title = styled.h2`
   font-size: 32px;
   margin-bottom: 20px;
   font-weight: bold;
-`
+`;
 const FlexBox = styled.div`
   display: flex;
   gap: 5px;
@@ -50,14 +42,15 @@ const FlexBox = styled.div`
 `;
 
 const Button = styled.button<{ toggleButton: boolean }>`
-  background-color: ${(props) => (props.toggleButton ? 'var(--color-orange)' : 'var(--color-dark-grey)')};
+  background-color: ${(props) =>
+    props.toggleButton ? 'var(--color-orange)' : 'var(--color-dark-grey)'};
   border-color: none;
   /* border-radius: ${(props) => (props.toggleButton ? '8px' : '0px')}; */
   border-style: none;
   width: 120px;
-  transition: all .3s;
+  transition: all 0.3s;
 `;
 const Wrap = styled.div`
   padding: 0 30px;
-`
+`;
 export default Wish;
