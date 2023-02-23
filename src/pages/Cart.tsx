@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import styled from 'styled-components';
 import CartPageCard from '../components/cart/CartPageCard';
@@ -9,28 +9,44 @@ import AlertLoginState from '../components/common/AlertLoginState';
 
 const Cart = () => {
   const cart = JSON.parse(localStorage.getItem('cart')!);
-  const [checked, setChecked] = useState<boolean>(false);
-  const allChecked = () => {
-    setChecked(!checked);
+  const [list, setList] = useState(cart);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(list));
+  }, [list]);
+
+  const deleteItem = (id: number) => {
+    const deleted = list.filter((item: any) => {
+      return item[0] !== id;
+    });
+    setList(deleted);
   };
-  const removeCart = () => {};
 
   return (
     <CartWrap>
       <h1>장바구니</h1>
       {getCookie('accessToken') ? (
         <>
-          {cart ? (
+          {list.length ? (
             <>
-              <p>{cart ? cart.length : 0}개의 상품이 있습니다.</p>
-              <ButtonBox>
-                <button onClick={allChecked}>
-                  {checked ? <BsCheckCircleFill /> : <BsCheckCircle />}
-                  &nbsp; 전체선택
-                </button>
-                <button onClick={removeCart}>선택삭제</button>
-              </ButtonBox>
-              <CartPageCard />
+              <p>{list ? list.length : 0}개의 상품이 있습니다.</p>
+              <div>
+                <Table>
+                  <colgroup>
+                    <col style={{ width: '80%' }} />
+                    <col style={{ width: '20%' }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th scope="col">상품</th>
+                      <th scope="col">신청/삭제</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <CartPageCard storage={list} deleteItem={deleteItem} />
+                  </tbody>
+                </Table>
+              </div>
             </>
           ) : (
             <EmptyWishBox>
@@ -56,27 +72,29 @@ const CartWrap = styled.div`
     margin-bottom: 20px;
   }
   p {
-    margin: 20px 0 30px;
+    margin: 40px 0 30px;
     text-align: right;
     font-size: 15px;
+    font-weight: bold;
     color: var(--color-orange);
   }
 `;
-const ButtonBox = styled.div`
-  display: flex;
-  margin-bottom: 30px;
-  button {
-    font-size: 15px;
-    background-color: #fff;
-    color: var(--color-black);
-    border: transparent;
-    padding: 0;
-    :hover {
-      background-color: #fff;
-    }
-    :nth-child(2) {
-      margin-left: 20px;
+
+const Table = styled.table`
+  width: 100%;
+
+  thead {
+    background-color: var(--color-dark-grey);
+    color: #fff;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    text-align: center;
+
+    th {
+      padding: 2px;
     }
   }
 `;
+
 export default Cart;
