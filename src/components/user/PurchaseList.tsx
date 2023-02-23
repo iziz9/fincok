@@ -20,7 +20,6 @@ function PurchaseList() {
 
   useEffect(() => {
     (async () => {
-      console.log('어디서 자꾸')
       setAllData([])
       await getDepositPurchase(setDepositData);
       await getLoanPurchase(setLoanData, setLoading);
