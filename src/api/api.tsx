@@ -11,7 +11,7 @@ export const requestLogin = async (formData: FormData) => {
       throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
     } else {
       const accessToken = res.data.accessToken;
-      setCookie('accessToken', accessToken);
+      setCookie('accessToken', accessToken); // 회원정보 전역저장 후 confirm으로 재로그인?
       alert('로그인 완료');
       location.pathname = '/';
     }
@@ -94,14 +94,14 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
 };
 
 // 상품 상세조회
-export const getProductDetail = async (category: string, itemId: string) => {
+export const getProductDetail = async (category: string, itemId: string, setIsNotFound: any) => {
   let res: any = {};
   try {
     res = await authInstance.get(`search/${category}/detail/${itemId}`);
   } catch (err) {
     alert(err);
   }
-  console.log(res.data);
+  // console.log(res.data);
   return res.data;
 };
 
