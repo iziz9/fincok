@@ -1,10 +1,10 @@
 import React from 'react';
-import { HiHeart } from 'react-icons/hi';
+import { MdDelete } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 function PurchaseCard({ item }: any) {
-  console.log(item)
+  console.log(item);
 
   return (
     <Wrap>
@@ -20,7 +20,7 @@ function PurchaseCard({ item }: any) {
         </Item>
       </LinkWrap>
       <Button onClick={() => {}}>
-        <HiHeart size={30} color={'var(--color-dark-grey)'} />
+        <MdDelete size={30} color={'#fff'} />
       </Button>
     </Wrap>
   );
@@ -34,20 +34,21 @@ const LinkWrap = styled(Link)`
 `;
 const Button = styled.button`
   position: absolute;
-  top: 0;
-  right: 0;
-  background-color: transparent;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  background-color: var(--color-dark-grey);
+
   :hover {
-    background-color: transparent;
-  }
-  svg {
-    :hover {
+    background-color: #fff;
+    svg {
       fill: var(--color-orange);
     }
   }
 `;
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;
+  padding-right: 50px;
   height: 100px;
   border-radius: 15px;
   display: flex;
@@ -85,7 +86,8 @@ const Item = styled.div<{ bankName: string }>`
     font-size: 20px;
     line-height: 1.2em;
     font-weight: bold;
-  }
+    padding-right: 20px;
+  } 
   span {
     font-weight: bold;
     margin-top: auto;

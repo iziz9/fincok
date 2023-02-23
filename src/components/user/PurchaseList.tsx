@@ -6,28 +6,31 @@ import 'swiper/css/pagination';
 import { getDepositPurchase, getLoanPurchase } from '../../api/api';
 import PurchaseCard from './PurchaseCard';
 import styled from 'styled-components';
+import { Pagination } from 'swiper';
 
 function PurchaseList() {
   const [depositData, setDepositData] = useState([]);
   const [loanData, setLoanData] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [allData, setAllData] = useState([]);
-  const abc = () => {
-    console.log('abc함수 시작', allData);
-    setAllData([...depositData, ...loanData]);
-    console.log(allData);
-    console.log('abc함수 끝', allData);
-  };
+
   useEffect(() => {
     (async () => {
       await getDepositPurchase(setDepositData);
-      await getLoanPurchase(setLoanData,setLoading);
+      await getLoanPurchase(setLoanData, setLoading);
     })();
   }, []);
-  
+
   useEffect(() => {
     setAllData([...depositData, ...loanData]);
   }, [loading]);
+
+  const pagination = {
+    clickable: true,
+    renderBullet: function (index: number, className: string) {
+      return '<span class="' + className + '">' + (index + 1) + '</span>';
+    },
+  };
 
   return (
     <Wrap>
@@ -36,11 +39,9 @@ function PurchaseList() {
       <Swiper
         slidesPerView={1.3}
         spaceBetween={15}
-        pagination={{
-          clickable: true,
-        }}
+        pagination={pagination}
+        modules={[Pagination]}
         loop={false}
-        // modules={[Pagination]}
       >
         {allData?.length ? (
           allData?.map((item: any) => {
@@ -68,6 +69,24 @@ const Wrap = styled.div`
     text-align: right;
     color: var(--color-orange);
     font-size: 16px;
+  }
+  .swiper{
+    height: 280px;
+  }
+  .swiper-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex;
+    gap: 5px;
+  }
+  .swiper-pagination-bullet {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-dark-grey);
+    color: #fff;
   }
 `;
 

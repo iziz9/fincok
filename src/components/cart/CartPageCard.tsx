@@ -47,7 +47,14 @@ function CartPageCard({ storage, deleteItem }: any) {
           </td>
           <td>
             <div className="buttonbox">
-              <button onClick={() => purchase(item[0])}>신청</button>
+              <button
+                onClick={() => {
+                  purchase(item[0]);
+                  deleteItem(item[0]);
+                }}
+              >
+                신청
+              </button>
               <button onClick={() => deleteItem(item[0])}>삭제</button>
             </div>
           </td>
