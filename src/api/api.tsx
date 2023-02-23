@@ -107,12 +107,8 @@ export const getProductDetail = async (category: string, itemId: string) => {
 
 // 유저 정보 출력
 export const requestUserInfo = async () => {
-  try {
-    const res = await authInstance.post('member/info');
-    console.log(res);
-  } catch (err) {
-    alert(err);
-  }
+  const res = await authInstance.post('member/info');
+  return res.data.resultData;
 };
 
 // 검색-예금 적금
