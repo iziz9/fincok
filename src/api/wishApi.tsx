@@ -9,8 +9,7 @@ export const requestSetWishList = async (
 ) => {
   try {
     const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.post('wish', formData);
+    const res = await authInstance.post('wish', formData);
     setLikeState(true);
     if (res.data.resultCode === 'duplicate') {
       alert('이미 관심등록된 상품입니다.');
@@ -28,11 +27,9 @@ export const requestDelWishList = async (
 ) => {
   try {
     const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.delete(`wish/delete/${id}`);
-    // setLikeState(false);
+    const res = await authInstance.delete(`wish/delete/${id}`);
     setLikeState(false);
-    console.log('삭제 api 마지막',res.data);
+    console.log('삭제 api 마지막', res.data);
   } catch (err) {
     alert(err);
   }
@@ -40,25 +37,6 @@ export const requestDelWishList = async (
 
 const accessToken = getCookie('accessToken');
 
-// 예/적금 관심상품 조회
-// export const getDepositWishList = async (
-//   page: number,
-//   setResult: any,
-//   setLastPage: any,
-//   setLoading: any,
-// ) => {
-//   try {
-//     setLoading(true);
-//     const res = await authInstance.get(`wish_list/deposit?page=${page}`);
-//     const data = res.data.resultData;
-//     console.log(data);
-//     setResult(data.content);
-//     setLastPage(data.last);
-//     setLoading(false);
-//   } catch (err) {
-//     alert(err);
-//   }
-// };
 export const getDepositWishList = async (
   page: number,
   setResult: any,
@@ -69,10 +47,10 @@ export const getDepositWishList = async (
     setLoading(true);
     const res = await authInstance.get(`wish_list/deposit?page=${page}`);
     const data = res.data.resultData;
-    setResult((prevState: any) =>[...prevState, ...data.content]);
+    setResult((prevState: any) => [...prevState, ...data.content]);
     setLastPage(data.last);
     setLoading(false);
-    console.log('상품조회 마지막',data.content);
+    console.log('상품조회 마지막', data.content);
   } catch (err) {
     alert(err);
   }
@@ -86,8 +64,7 @@ export const getLoanWishList = async (
 ) => {
   try {
     setLoading(true);
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.get(`wish_list/loan?page=${page}`);
+    const res = await authInstance.get(`wish_list/loan?page=${page}`);
     const data = res.data.resultData;
     console.log(data);
     setResult(data.content);

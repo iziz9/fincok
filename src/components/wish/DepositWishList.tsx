@@ -17,32 +17,20 @@ function DepositWishList() {
     // threshold: 0,
   });
   const wishClick = async (id: number) => {
-    console.log('클릭함수 시작');
     await requestDelWishList(Number(id), setabc);
     setDepositWishData([]);
-    setPageNumber(1);    
+    setPageNumber(1);
     await getDepositWishList(1, setDepositWishData, setLastPage, setLoading);
-    console.log('클릭함수 끝부분 콘솔', depositWishData);
-  }
+  };
 
   useEffect(() => {
-    console.log('무한스크롤 useEffect 시작');
-    console.log('pageNum', pageNumber);
     if (pageNumber !== 1) {
-      console.log('1페이지가 아닌데요?')
       getDepositWishList(pageNumber, setDepositWishData, setLastPage, setLoading);
-      console.log('무한스크롤 useEffect중간', depositWishData);
-    } else {
-      console.log('1페이지가 들어왔습니다.')
-      console.log('무한스크롤 useEffect중간', depositWishData);
     }
-    console.log('무한스크롤 마지막', depositWishData);
   }, [pageNumber]);
 
   useEffect(() => {
-    console.log('기본 useEffect 시작');
     getDepositWishList(pageNumber, setDepositWishData, setLastPage, setLoading);
-    console.log('첫 실행 useFfect 마지막', depositWishData);
   }, []);
 
   useEffect(() => {

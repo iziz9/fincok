@@ -4,23 +4,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { requestDelWishList } from '../../api/wishApi';
 
-type Props = { item: DataType; wishClick:Function };
+type Props = { item: DataType; wishClick: Function };
 
 function WishCard({ item, wishClick }: Props) {
-  const [likeState, setLikeState] = useState<boolean>(true); // 추후에 toolkit으로 상태관리 예정
- 
-  // function wishButton () {
-  //   // requestDelWishList(Number(item.itemId), setLikeState);
-  //   wishClick()
-  // }
-  // const buttonChange = () => {
-  //   console.log(likeState)
-  //   return likeState ? <HiHeart /> : <HiOutlineHeart />
-  // }
-  // useEffect(()=>{
-  //   buttonChange
-  // },[likeState])
-
   return (
     <Wrap>
       <LinkWrap to={`/detail/${item.itemId}`}>
@@ -36,7 +22,7 @@ function WishCard({ item, wishClick }: Props) {
       </LinkWrap>
       <Button
         onClick={() => {
-          wishClick(item.itemId)
+          wishClick(item.itemId);
         }}
       >
         <HiHeart />
