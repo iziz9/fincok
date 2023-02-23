@@ -7,23 +7,28 @@ import { GrClose } from 'react-icons/gr';
 import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
-import { HiOutlineUser, HiOutlineClipboardList, HiOutlineShoppingBag } from 'react-icons/hi';
-import { getCookie } from '../../../utils/cookie';
+import { HiOutlineUser, HiOutlineClipboardList } from 'react-icons/hi';
+import { RiPushpinLine } from 'react-icons/ri';
+import { useAppSelector, useAppDispatch } from '../../../hooks/useDispatchHooks';
+import { userInit } from '../../../store/userSlice';
 
 type Props = {
   setActive: (active: boolean) => void;
+  login: boolean;
 };
 
-const Navigation = (props: Props) => {
+const Navigation = ({ setActive, login }: Props) => {
   const naviRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [value, setValue] = useState('');
+  const dispatch = useAppDispatch();
+  const name = useAppSelector((state) => state.user.name);
 
   // 모달창 닫기 hook
-  useOutSideClick(naviRef, () => props.setActive(false));
+  useOutSideClick(naviRef, () => setActive(false));
 
   const closeNav = () => {
-    props.setActive(false);
+    setActive(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,10 +46,23 @@ const Navigation = (props: Props) => {
         <Close onClick={closeNav}>
           <GrClose size="22" color="var(--color-grey)" />
         </Close>
-        <User>
-          <FaUserCircle size="50" color="var(--color-light-grey)" />
-          <h2>유저명</h2>
-        </User>
+        {login ? (
+          <User>
+            <FaUserCircle size="50" color="var(--color-light-grey)" />
+            <h2>{name}</h2>
+          </User>
+        ) : (
+          <Login
+            onClick={() => {
+              navigate('/login');
+              closeNav();
+            }}
+          >
+            <FaUserCircle size="50" color="var(--color-light-grey)" />
+            <h2>로그인을 해주세요</h2>
+            <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
+          </Login>
+        )}
         <SearchForm>
           <form
             onSubmit={(e) => {
@@ -80,24 +98,25 @@ const Navigation = (props: Props) => {
           </Link>
           <Link to={'/recommend'} onClick={closeNav}>
             <li>
-              <HiOutlineClipboardList color="var(--color-black)" />
+              <RiPushpinLine color="var(--color-black)" />
               맞춤 추천
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
           <Link to={'/allproducts'} onClick={closeNav}>
             <li>
-              <HiOutlineShoppingBag color="var(--color-black)" />
+              <HiOutlineClipboardList color="var(--color-black)" />
               전체 상품
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
         </ul>
 
-        {getCookie('accessToken') ? (
+        {login ? (
           <Foot
             onClick={() => {
               requestLogout();
+              dispatch(userInit());
               closeNav;
             }}
           >
@@ -198,6 +217,24 @@ const User = styled.div`
   h2 {
     font-size: 18px;
     font-weight: bold;
+  }
+`;
+
+const Login = styled.div`
+  padding: 0 30px;
+  margin: 20px 0 25px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  cursor: pointer;
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  svg {
+    :last-child {
+      margin-left: auto;
+    }
   }
 `;
 

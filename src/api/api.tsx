@@ -94,7 +94,7 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
 };
 
 // 상품 상세조회
-export const getProductDetail = async (category: string, itemId: string) => {
+export const getProductDetail = async (category: string, itemId: string, setIsNotFound: any) => {
   let res: any = {};
   try {
     res = await authInstance.get(`search/${category}/detail/${itemId}`);
@@ -107,12 +107,8 @@ export const getProductDetail = async (category: string, itemId: string) => {
 
 // 유저 정보 출력
 export const requestUserInfo = async () => {
-  try {
-    const res = await authInstance.post('member/info');
-    console.log(res);
-  } catch (err) {
-    alert(err);
-  }
+  const res = await authInstance.post('member/info');
+  return res.data.resultData;
 };
 
 // 검색-예금 적금
@@ -131,4 +127,9 @@ export const getLoan = async (title: string, page: number) => {
     page: page,
   };
   return authInstance.get(`search_loan`, { params: { ...send } });
+};
+
+// 상품 신청
+export const requestPurchase = async (formData: FormData) => {
+  return authInstance.post('purchase', formData);
 };

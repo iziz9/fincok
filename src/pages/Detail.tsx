@@ -4,12 +4,13 @@ import { TbArrowBack } from 'react-icons/tb';
 import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getProductDetail } from '../api/api';
 import { requestSetWishList, requestDelWishList } from '../api/wishApi';
-import NotFound from './NotFound';
 import { getCookie } from '../utils/cookie';
+import { HashLoader } from 'react-spinners';
 import AlertLoginState from '../components/common/AlertLoginState';
+import { setColor, setDeepColor } from '../utils/list';
 
 export interface ProductType {
   bank: string;
@@ -39,36 +40,25 @@ export interface CartType {
 
 const Detail = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const category = pathname.split('/')[2];
+  const itemId = pathname.split('/')[3];
   const [info, setInfo] = useState<ProductType>();
   const [cartList, setCartList] = useState<CartArrayType>([]);
   const [isOnCart, setIsOnCart] = useState<boolean>(false);
   const [likeState, setLikeState] = useState<boolean>(false);
+  const [isNotfound, setIsNotFound] = useState<boolean>(false);
 
-  //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('loan', '61');
+      const data = await getProductDetail(category, itemId, setIsNotFound);
       setInfo(data);
       setLikeState(data.wish);
-      const list = [];
-      list.push([data.itemId, data.itemName, data.bank, data.category]);
+      const list = [[data.itemId, data.itemName, data.bank, data.category]];
       setCartList(list);
     }
     getData();
   }, []);
-
-  const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
-  const tagColor: Array<string> = [
-    '#0C216F',
-    '#09551A',
-    '#645508',
-    '#601783',
-    '#2F2F2F',
-    '#660936',
-  ];
-  const colorIndex: number = Math.floor(Math.random() * bgColor.length);
-  const setColor: object = { backgroundColor: bgColor[colorIndex] };
-  const setDeepColor: object = { backgroundColor: tagColor[colorIndex] };
 
   const [colorState, setColorState] = useState<object>(setColor);
   const [deepColorState, setDeepColorState] = useState<object>(setDeepColor);
@@ -105,7 +95,6 @@ const Detail = () => {
   const delayText = info?.delay?.split('%');
 
   const addCartHandler = () => {
-    console.log(localStorage.getItem('cart'));
     if (!localStorage.getItem('cart')) {
       localStorage.setItem('cart', JSON.stringify(cartList));
       window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
@@ -251,7 +240,9 @@ const Detail = () => {
               </FlatSection>
             </>
           ) : (
-            <NotFound />
+            <div style={{ marginTop: '200px', display: 'flex', justifyContent: 'center' }}>
+              <HashLoader color="#f74440" size={100} speedMultiplier={1} />
+            </div>
           )}
         </>
       ) : (
