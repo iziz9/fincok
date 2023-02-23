@@ -1,4 +1,4 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type depositsItem = {
@@ -16,18 +16,26 @@ type depositsItem = {
 };
 
 const DepositsItem = ({ item }: depositsItem) => {
+  const navigate = useNavigate();
   const bankName: string = item.bank;
+  const category: string = item.type === '단리' || item.type === '복리' ? 'deposit' : 'loan';
 
   return (
-    <Item bankName={bankName}>
-      <div>
-        <h4>{item.bank}</h4>
-        <p>최대 금리 {item.prefRate || item.maxRate}%</p>
-      </div>
-      <h3>{item.itemName}</h3>
-    </Item>
+    <Div onClick={() => navigate(`/detail/${category}/${item.itemId}`)}>
+      <Item bankName={bankName}>
+        <div>
+          <h4>{item.bank}</h4>
+          <p>최대 금리 {item.prefRate || item.maxRate}%</p>
+        </div>
+        <h3>{item.itemName}</h3>
+      </Item>
+    </Div>
   );
 };
+
+const Div = styled.div`
+  cursor: pointer;
+`;
 
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;

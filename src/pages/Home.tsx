@@ -22,8 +22,7 @@ const Home = () => {
       if (token) {
         try {
           const response = await getProducts();
-          console.log(response);
-          setProducts(response.data.resultData);
+          setProducts(response);
         } catch (error) {
           console.log('에러 발생!');
         }

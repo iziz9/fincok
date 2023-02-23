@@ -3,19 +3,19 @@ import { Outlet, useLocation } from 'react-router-dom';
 import CategoryBar from './components/common/layout/CategoryBar';
 import Header from './components/common/layout/Header';
 import GlobalStyle from './style/globalStyles';
+import { getCookie } from './utils/cookie';
 import { useAppDispatch } from './hooks/useDispatchHooks';
 import { requestUserInfo } from './api/api';
 import { userInfo } from './store/userSlice';
 
 function App() {
-  const [login, setLogin] = useState(false);
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const token = getCookie('accessToken');
 
   const getLogin = useCallback(async () => {
     const response = await requestUserInfo();
     if (response) {
-      setLogin(true);
       dispatch(
         userInfo({
           memberId: response.memberId,
@@ -29,12 +29,14 @@ function App() {
   }, [location]);
 
   useEffect(() => {
-    getLogin();
+    if (token) {
+      getLogin();
+    }
   }, [getLogin]);
 
   return (
     <>
-      <Header login={login} />
+      <Header />
       <Outlet />
       <GlobalStyle />
       {location.pathname.includes('signup') ? null : <CategoryBar />}
