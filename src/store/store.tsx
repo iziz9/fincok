@@ -8,8 +8,8 @@ import loading from './loadingSlice';
 const persistConfig = {
   key: 'root',
   storage: storage, // 저장 공간
-  whitelist: ['user', 'login'], // 유지할 값
-  blacklist: ['loading'], // 유지하지 않을 값
+  whitelist: ['user'], // 유지할 값
+  blacklist: ['loading', 'login'], // 유지하지 않을 값
 };
 
 const reducer = combineReducers({

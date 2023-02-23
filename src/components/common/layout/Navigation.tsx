@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import useOutSideClick from '../../../hooks/useOutSideClick';
 import styled from 'styled-components';
 import { requestLogout } from '../../../api/api';
-import { getCookie } from '../../../utils/cookie';
+import { getCookie, removeCookie } from '../../../utils/cookie';
 import { GrClose } from 'react-icons/gr';
 import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
@@ -40,6 +40,24 @@ const Navigation = ({ setActive }: Props) => {
 
   const handleSubmit = (value: string) => {
     return navigate(`/search?title=${value}`);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const res = await requestLogout();
+      dispatch(userInit());
+      dispatch(userLoginInit());
+      closeNav;
+      if (res.resultCode === 'failed') {
+        throw new Error('로그아웃 에러');
+      } else {
+        removeCookie('accessToken');
+        alert('로그아웃 되었습니다.');
+        location.pathname = '/';
+      }
+    } catch (err) {
+      alert('로그아웃에 실패했습니다.');
+    }
   };
 
   return (
@@ -115,14 +133,7 @@ const Navigation = ({ setActive }: Props) => {
         </ul>
 
         {token ? (
-          <Foot
-            onClick={() => {
-              requestLogout();
-              dispatch(userInit());
-              dispatch(userLoginInit());
-              closeNav;
-            }}
-          >
+          <Foot onClick={() => handleLogout()}>
             로그아웃
             <BiLogOut size="18" color="var(--color-white)" />
           </Foot>
