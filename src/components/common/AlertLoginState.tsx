@@ -28,6 +28,9 @@ export const AlreadyLogin = styled.div`
   font-size: 30px;
   color: var(--color-orange);
   text-align: center;
+  button {
+    padding: 0 30px;
+  }
 `;
 
 export default AlertLoginState;

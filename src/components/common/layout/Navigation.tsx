@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import useOutSideClick from '../../../hooks/useOutSideClick';
 import styled from 'styled-components';
 import { requestLogout } from '../../../api/api';
+import { getCookie } from '../../../utils/cookie';
 import { GrClose } from 'react-icons/gr';
 import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
@@ -14,15 +15,15 @@ import { userInit } from '../../../store/userSlice';
 
 type Props = {
   setActive: (active: boolean) => void;
-  login: boolean;
 };
 
-const Navigation = ({ setActive, login }: Props) => {
+const Navigation = ({ setActive }: Props) => {
   const naviRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [value, setValue] = useState('');
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.user.name);
+  const token = getCookie('accessToken');
 
   // 모달창 닫기 hook
   useOutSideClick(naviRef, () => setActive(false));
@@ -46,7 +47,7 @@ const Navigation = ({ setActive, login }: Props) => {
         <Close onClick={closeNav}>
           <GrClose size="22" color="var(--color-grey)" />
         </Close>
-        {login ? (
+        {token ? (
           <User>
             <FaUserCircle size="50" color="var(--color-light-grey)" />
             <h2>{name}</h2>
@@ -112,7 +113,7 @@ const Navigation = ({ setActive, login }: Props) => {
           </Link>
         </ul>
 
-        {login ? (
+        {token ? (
           <Foot
             onClick={() => {
               requestLogout();
