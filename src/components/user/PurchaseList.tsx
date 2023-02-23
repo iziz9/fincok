@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { getDepositPurchase, getLoanPurchase } from '../../api/api';
+import { getDepositPurchase, getLoanPurchase, removePurchase } from '../../api/api';
 import PurchaseCard from './PurchaseCard';
 import styled from 'styled-components';
 import { Pagination } from 'swiper';
@@ -14,8 +14,14 @@ function PurchaseList() {
   const [loading, setLoading] = useState<boolean>(false);
   const [allData, setAllData] = useState([]);
 
+  const removeButton = (itemId:number) => {
+    removePurchase(itemId);
+  }
+
   useEffect(() => {
     (async () => {
+      console.log('어디서 자꾸')
+      setAllData([])
       await getDepositPurchase(setDepositData);
       await getLoanPurchase(setLoanData, setLoading);
     })();
@@ -47,7 +53,7 @@ function PurchaseList() {
           allData?.map((item: any) => {
             return (
               <SwiperSlide key={item.purchaseId}>
-                <PurchaseCard item={item} key={item.purchaseId} />
+                <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton}/>
               </SwiperSlide>
             );
           })

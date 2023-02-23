@@ -84,11 +84,20 @@ export const getLoan = async (title: string, page: number) => {
 export const requestPurchase = async (formData: FormData) => {
   return authInstance.post('purchase', formData);
 };
+export const removePurchase = async (itemId: number) => {
+  authInstance.put(`delete/purchase/${itemId}`)
+    .then(function (res) {
+      return res
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 export const getDepositPurchase = async (setResult: SetStateAction<any>) => {
   const res = await authInstance.get(`deposit/purchase_list?page=1`);
   const data = res.data.resultData;
-  console.log(data);
+  // console.log(data);
   setResult([...data.content]);
 };
 
@@ -104,3 +113,7 @@ export const getLoanPurchase = async (setResult: SetStateAction<any>, setLoading
 export const editUserInfo = async (formData: FormData) => {
   return await authInstance.patch('member/update');
 };
+
+export const getPurchaseLength = async () => {
+  return await authInstance.get('count_purchase')
+}
