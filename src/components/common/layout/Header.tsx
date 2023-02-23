@@ -5,7 +5,11 @@ import Navigation from './Navigation';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { CgMenu } from 'react-icons/cg';
 
-const Header = () => {
+interface Props {
+  login: boolean;
+}
+
+const Header = ({ login }: Props) => {
   const [active, setActive] = useState<boolean>(false);
 
   const navigation = () => {
@@ -30,7 +34,7 @@ const Header = () => {
           </Menu>
         </Icon>
       </Inner>
-      {active && <Navigation setActive={setActive} />}
+      {active && <Navigation login={login} setActive={setActive} />}
     </Container>
   );
 };

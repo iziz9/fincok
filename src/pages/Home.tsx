@@ -9,24 +9,14 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { getCookie } from '../utils/cookie';
 import { FaHandPointDown } from 'react-icons/fa';
-
-interface response {
-  itemId: number;
-  category: string;
-  bank: string;
-  itemName: string;
-  type: string;
-  dtype: string;
-  rate: number;
-  prefRate: number;
-}
+import { useAppSelector } from '../hooks/useDispatchHooks';
 
 const Home = () => {
-  const [user, setUser] = useState<String>('');
   const [cart, setCart] = useState<String>('0');
   const [products, setProducts] = useState({});
-
+  const name = useAppSelector((state) => state.user.name);
   const token = getCookie('accessToken');
+
   useEffect(() => {
     async function getRecommendProducts() {
       if (token) {
@@ -51,7 +41,7 @@ const Home = () => {
         {token ? (
           <>
             <h3>
-              <span>{'user'}</span> 님, 안녕하세요
+              <span>{name}</span> 님, 안녕하세요
               <br /> 핀콕의 추천 상품을 확인해 보세요!
             </h3>
             <AllProducts>
@@ -89,7 +79,7 @@ const Home = () => {
           <Join>
             <p>
               아직 핀콕 회원이 아니라면?
-              <FaHandPointDown style={{ width: '30px', height: '23px' }} />
+              <FaHandPointDown style={{ width: '25px', height: '16px', verticalAlign: 'bottom' }} />
             </p>
           </Join>
           <Link to={'/signup'}>회원가입하기</Link>
@@ -209,9 +199,7 @@ const MyPage = styled.div`
   }
 `;
 
-const NotUser = styled(MyPage)`
-  background-color: black;
-`;
+const NotUser = styled(MyPage)``;
 
 const Cart = styled.div`
   display: flex;
