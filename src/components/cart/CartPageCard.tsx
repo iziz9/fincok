@@ -1,36 +1,125 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { requestPurchase } from '../../api/api';
 
-function CartPageCard() {
+function CartPageCard({ storage, deleteItem }: any) {
+  const navigate = useNavigate();
+
+  const purchase = async (id: number) => {
+    const formData = new FormData();
+    formData.append('itemId', String(id));
+    try {
+      const res = await requestPurchase(formData);
+      if (res.data.resultCode === 'duplicate') {
+        alert('이미 신청한 상품입니다.');
+      } else if (res.data.resultCode === 'failed') {
+        alert('신청할 수 없는 상품입니다. 해당 은행으로 문의 바랍니다.');
+      } else {
+        alert(
+          '신청이 완료되었습니다. 신청하신 은행에서 영업일 기준 3일 이내 확인 연락을 드릴 예정입니다.',
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Table>
-      <colgroup>
-        {/* <col style={{ width: '25%' }} />
-        <col style={{ width: '25%' }} />
-        <col style={{ width: '25%' }} />
-        <col style={{ width: '20%' }} /> */}
-      </colgroup>
-      <thead>
-        <tr>
-          <th scope="col">선택</th>
-          <th scope="col">상품카드</th>
-          <th scope="col">신청/삭제</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>체크박스</td>
-          <td>상품카드삽입</td>
-          <td>신청/삭제버튼 세로</td>
-        </tr>
-      </tbody>
-    </Table>
+    <>
+      {storage.map((item: any) => (
+        <Tr key={item[0]}>
+          <td>
+            <Card
+              bankName={item[2]}
+              onClick={() =>
+                navigate(
+                  `/detail/${item[3] === '적금' || item[3] === '정기예금' ? 'deposit' : 'loan'}/${
+                    item[0]
+                  }`,
+                )
+              }
+            >
+              <div className="bank">{item[2]}</div>
+              <div className="name">{item[1]}</div>
+              <div className="category">{item[3]}</div>
+            </Card>
+          </td>
+          <td>
+            <div className="buttonbox">
+              <button onClick={() => purchase(item[0])}>신청</button>
+              <button onClick={() => deleteItem(item[0])}>삭제</button>
+            </div>
+          </td>
+        </Tr>
+      ))}
+    </>
   );
 }
 
-const Table = styled.table`
+const Tr = styled.tr`
   width: 100%;
-  color: green;
+  vertical-align: middle;
+  border-bottom: 1px solid gray;
+
+  td {
+    vertical-align: middle;
+    padding: 10px 0;
+  }
+  .check {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+  }
+  .buttonbox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    button {
+      background-color: var(--color-dark-grey);
+      width: 60px;
+      height: 30px;
+      margin: 0 auto;
+      :hover {
+        background-color: var(--color-orange);
+      }
+    }
+  }
+`;
+
+const Card = styled.div<{ bankName: string }>`
+  cursor: pointer;
+  width: 100%;
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 25px 15px 15px 30px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background-color: ${(props) =>
+    props.bankName === '국민은행'
+      ? 'var(--color-bank-yellow)'
+      : props.bankName === '신한은행'
+      ? 'var(--color-bank-blue)'
+      : props.bankName === '하나은행'
+      ? 'var(--color-bank-green)'
+      : props.bankName === '우리은행'
+      ? 'var(--color-bank-puple)'
+      : 'var(--color-bg-grey)'};
+
+  .name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .category {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-dark-grey);
+  }
 `;
 
 export default CartPageCard;

@@ -128,3 +128,8 @@ export const getLoan = async (title: string, page: number) => {
   };
   return authInstance.get(`search_loan`, { params: { ...send } });
 };
+
+// 상품 신청
+export const requestPurchase = async (formData: FormData) => {
+  return authInstance.post('purchase', formData);
+};
