@@ -7,7 +7,6 @@ import { NoList } from '../pages/Home';
 import { BiSearch } from 'react-icons/bi';
 import { getDeposit, getLoan } from '../api/api';
 import { useInView } from 'react-intersection-observer';
-import { Link } from 'react-router-dom';
 import { getCookie } from '../utils/cookie';
 import AlertLoginState from '../components/common/AlertLoginState';
 
@@ -42,9 +41,8 @@ const Search = () => {
     async (setDeposits: any, setDepositsLast: any) => {
       try {
         const response = await getDeposit(searchText, page);
-        console.log('적금', response.data.content);
-        setDeposits((prevState: any) => [...prevState, ...response.data.content]);
-        setDepositsLast(response.data.last);
+        setDeposits((prevState: any) => [...prevState, ...response.content]);
+        setDepositsLast(response.last);
       } catch (error) {
         console.log(error);
       }
@@ -57,9 +55,8 @@ const Search = () => {
     async (setLoans: any, setLoansLast: any) => {
       try {
         const response = await getLoan(searchText, page);
-        console.log('대출', response.data.content);
-        setLoans((prevState: any) => [...prevState, ...response.data.content]);
-        setLoansLast(response.data.last);
+        setLoans((prevState: any) => [...prevState, ...response.content]);
+        setLoansLast(response.last);
       } catch (error) {
         console.log(error);
       }
@@ -112,85 +109,67 @@ const Search = () => {
 
   return (
     <Container>
-      {getCookie('accessToken') ? (
-        <>
-          <SearchForm>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <input
-                type="text"
-                value={searchTitle}
-                placeholder="검색어를 입력해 주세요"
-                onChange={(e) => handleChange(e)}
-              />
-              <button
-                aria-label="submit"
-                onClick={() => {
-                  handleSubmit(searchTitle);
-                }}
-              >
-                <BiSearch size="24" color="var(--color-light-grey)" />
-              </button>
-            </form>
-          </SearchForm>
-          <SearchList>
-            <ProductTap>
-              <button className={active[0] ? 'active' : ''} onClick={handleDeposits}>
-                적금 / 예금 상품
-              </button>
-              <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
-                대출 상품
-              </button>
-            </ProductTap>
-            {onProduct === 1 ? (
-              deposits.length > 0 ? (
-                deposits.map((item: any, idx) => {
-                  return (
-                    <Link to={'/detail/' + item.itemId} key={idx}>
-                      <SearchItem item={item} key={idx} />
-                    </Link>
-                  );
-                })
-              ) : (
-                <span>
-                  <NoList>검색결과가 없습니다.</NoList>
-                </span>
-              )
-            ) : onProduct === 2 ? (
-              loans.length > 0 ? (
-                loans.map((item: any, idx) => {
-                  return (
-                    <Link to={'/detail/' + item.itemId} key={idx}>
-                      <SearchItem item={item} key={idx} />
-                    </Link>
-                  );
-                })
-              ) : (
-                <span>
-                  <NoList>검색결과가 없습니다.</NoList>
-                </span>
-              )
-            ) : searchList.length > 0 ? (
-              searchList.map((item: any, idx) => {
-                return (
-                  <Link to={'/detail/' + item.itemId} key={idx}>
-                    <SearchItem item={item} key={idx} />
-                  </Link>
-                );
-              })
-            ) : (
-              <span>
-                <NoList>검색결과가 없습니다.</NoList>
-              </span>
-            )}
-          </SearchList>
-        </>
-      ) : (
-        <AlertLoginState text={'로그인 후 이용 가능합니다.'} style={{ marginTop: '0px' }} />
-      )}
+      <SearchForm>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <input
+            type="text"
+            value={searchTitle}
+            placeholder="검색어를 입력해 주세요"
+            onChange={(e) => handleChange(e)}
+          />
+          <button
+            aria-label="submit"
+            onClick={() => {
+              handleSubmit(searchTitle);
+            }}
+          >
+            <BiSearch size="24" color="var(--color-light-grey)" />
+          </button>
+        </form>
+      </SearchForm>
+      <SearchList>
+        <ProductTap>
+          <button className={active[0] ? 'active' : ''} onClick={handleDeposits}>
+            적금 / 예금 상품
+          </button>
+          <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
+            대출 상품
+          </button>
+        </ProductTap>
+        {onProduct === 1 ? (
+          deposits.length > 0 ? (
+            deposits.map((item: any, idx) => {
+              return <SearchItem item={item} key={idx} />;
+            })
+          ) : (
+            <span>
+              <NoList>검색결과가 없습니다.</NoList>
+            </span>
+          )
+        ) : onProduct === 2 ? (
+          loans.length > 0 ? (
+            loans.map((item: any, idx) => {
+              return <SearchItem item={item} key={idx} />;
+            })
+          ) : (
+            <span>
+              <NoList>검색결과가 없습니다.</NoList>
+            </span>
+          )
+        ) : searchList.length > 0 ? (
+          searchList.map((item: any, idx) => {
+            return <SearchItem item={item} key={idx} />;
+          })
+        ) : (
+          <span>
+            <NoList>검색결과가 없습니다.</NoList>
+          </span>
+        )}
+      </SearchList>
       <div ref={ref}></div>
     </Container>
   );

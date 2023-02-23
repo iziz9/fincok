@@ -36,11 +36,6 @@ export const requestLogout = async () => {
   }
 };
 
-// 맞춤 상품 조회
-export const getProducts = async () => {
-  return authInstance.get('main_recommend');
-};
-
 // 회원가입
 export const requestSignUp = async (formData: FormData) => {
   try {
@@ -93,6 +88,21 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
   }
 };
 
+// 메인-맞춤 상품 조회
+export const getProducts = async () => {
+  const res = await authInstance.get('main_recommend');
+  return res.data.resultData;
+};
+
+// 맞춤 상품 조회
+export const getRecommendProducts = async (page: number) => {
+  const send = {
+    page: page,
+  };
+  const res = await authInstance.get(`custom_recommend`, { params: { ...send } });
+  return res.data.resultData;
+};
+
 // 상품 상세조회
 export const getProductDetail = async (category: string, itemId: string, setIsNotFound: any) => {
   let res: any = {};
@@ -117,7 +127,8 @@ export const getDeposit = async (title: string, page: number) => {
     content: title,
     page: page,
   };
-  return authInstance.get(`search_deposit`, { params: { ...send } });
+  const res = await authInstance.get(`search_deposit`, { params: { ...send } });
+  return res.data;
 };
 
 // 검색-대출
@@ -126,7 +137,8 @@ export const getLoan = async (title: string, page: number) => {
     content: title,
     page: page,
   };
-  return authInstance.get(`search_loan`, { params: { ...send } });
+  const res = await authInstance.get(`search_loan`, { params: { ...send } });
+  return res.data;
 };
 
 // 상품 신청
