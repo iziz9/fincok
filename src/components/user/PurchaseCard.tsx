@@ -1,11 +1,11 @@
+import React from 'react';
 import { HiHeart } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+function PurchaseCard({ item }: any) {
+  console.log(item)
 
-type Props = { item: DataType; wishClick: Function };
-
-function WishCard({ item, wishClick }: Props) {
   return (
     <Wrap>
       <LinkWrap to={`/detail/${item.itemId}`}>
@@ -19,16 +19,13 @@ function WishCard({ item, wishClick }: Props) {
           </span>
         </Item>
       </LinkWrap>
-      <Button
-        onClick={() => {
-          wishClick(item.itemId);
-        }}
-      >
-        <HiHeart size={30} color={'var(--color-dark-grey)'}/>
+      <Button onClick={() => {}}>
+        <HiHeart size={30} color={'var(--color-dark-grey)'} />
       </Button>
     </Wrap>
   );
 }
+
 const Wrap = styled.div`
   position: relative;
 `;
@@ -40,12 +37,11 @@ const Button = styled.button`
   top: 0;
   right: 0;
   background-color: transparent;
-  :hover{
-  background-color: transparent;
-
+  :hover {
+    background-color: transparent;
   }
-  svg{
-    :hover{
+  svg {
+    :hover {
       fill: var(--color-orange);
     }
   }
@@ -96,20 +92,4 @@ const Item = styled.div<{ bankName: string }>`
   }
 `;
 
-
-export type DataType = {
-  itemId: string;
-  category: string;
-  bank: string;
-  itemName: string;
-  type: string;
-  join: string;
-  limit: string;
-  preference: any;
-  target: any;
-  rate: string;
-  prefRate: string;
-  mature: string;
-};
-
-export default WishCard;
+export default PurchaseCard;

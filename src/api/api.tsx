@@ -145,3 +145,18 @@ export const getLoan = async (title: string, page: number) => {
 export const requestPurchase = async (formData: FormData) => {
   return authInstance.post('purchase', formData);
 };
+
+export const getDepositPurchase = async(setResult: SetStateAction<any>) => {
+  const res = await authInstance.get(`deposit/purchase_list?page=1`);
+  const data = res.data.resultData;
+  console.log(data)
+  setResult([...data.content])
+}
+
+export const getLoanPurchase = async(setResult: SetStateAction<any>, setLoading: any) => {
+  const res = await authInstance.get(`loan/purchase_list?page=1`);
+  const data = res.data.resultData;
+  console.log(data)
+  setResult([...data.content])
+  setLoading(true)
+}

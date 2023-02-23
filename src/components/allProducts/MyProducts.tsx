@@ -26,7 +26,7 @@ function MyProducts() {
 }
 const BoxWrap = styled.div`
   width: 100%;
-  padding: 25px;
+  padding: 40px;
   background-color: var(--color-background);
   box-sizing: border-box;
   margin-top: 40px;
@@ -63,6 +63,8 @@ const LinkBox = styled(Link)`
 const CenterLine = styled.div`
   text-indent: -9999px;
   border-left: 2px solid var(--color-black);
+  opacity: 0.2;
+  margin: 15px 0;
 `;
 
 export default MyProducts;

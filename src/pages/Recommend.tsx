@@ -72,7 +72,9 @@ function Recommend() {
       {token ? (
         <Products>
           <h4>
-            <span>{name}</span> 님에게 맞는 상품은?
+            <span>{name}</span> 님에게
+            <br />
+            맞춤 상품을 추천드려요.
           </h4>
           {Array.isArray(products) ? (
             products.map((item, idx) => {
@@ -105,7 +107,7 @@ const Products = styled.div`
   gap: 20px;
   h4 {
     font-size: 26px;
-    line-height: 1.7em;
+    line-height: 1.5em;
     letter-spacing: -1.5px;
     margin-bottom: 15px;
     span {

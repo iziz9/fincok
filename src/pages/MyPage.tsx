@@ -1,5 +1,5 @@
 import React from 'react';
-import CartList from '../components/user/CartList';
+import PurchaseList from '../components/user/PurchaseList';
 import UserProfile from '../components/user/UserProfile';
 import Setting from '../components/user/Setting';
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ const MyPage = () => {
         <>
           <UserProfile />
           <Setting />
-          <CartList />
+          <PurchaseList />
         </>
       ) : (
         <AlertLoginState text={'로그인 후 이용 가능합니다.'} />

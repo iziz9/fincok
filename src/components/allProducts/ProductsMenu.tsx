@@ -45,7 +45,7 @@ function ProductsMenu() {
 }
 
 const MenuBox = styled.div`
-  padding: 0 25px;
+  padding: 15px 40px;
   background-color: var(--color-background);
   box-sizing: border-box;
   margin-top: 40px;
@@ -65,9 +65,11 @@ const ListWrap = styled.ul`
   }
 `;
 const ContentsLine = styled.div`
-  width: 100%;
+  width: 90%;
   border-bottom: 2px solid var(--color-black);
   text-indent: -9999px;
+  opacity: 0.2;
+  margin: 0 auto 10px;
 `;
 const LinkBox = styled(Link)`
   width: 100%;
