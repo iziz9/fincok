@@ -1,15 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { hideLoading, showLoading } from '../../store/loadingSlice';
+import { useAppDispatch } from '../../hooks/useDispatchHooks';
 import { useNavigate } from 'react-router-dom';
 import { requestPurchase } from '../../api/api';
 
 function CartPageCard({ storage, deleteItem }: any) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const purchase = async (id: number) => {
     const formData = new FormData();
     formData.append('itemId', String(id));
     try {
+      dispatch(showLoading());
       const res = await requestPurchase(formData);
       if (res.data.resultCode === 'duplicate') {
         alert('이미 신청한 상품입니다.');
@@ -22,6 +26,8 @@ function CartPageCard({ storage, deleteItem }: any) {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      dispatch(hideLoading());
     }
   };
 
