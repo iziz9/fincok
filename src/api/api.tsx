@@ -118,5 +118,5 @@ export const editUserInfo = async (formData: FormData) => {
 
 // 신청상품 전체 개수 
 export const getPurchaseLength = async () => {
-  return await authInstance.get('count_purchase')
+  return authInstance.get('count_purchase').then(res => res.data.resultData)
 }

@@ -12,7 +12,7 @@ function CartPageCard({ storage, deleteItem }: any) {
 
   const purchase = async (id: number) => {
     const res = await getPurchaseLength();
-    if (res.data.resultData <= 10) {
+    if (res <= 10) {
       const formData = new FormData();
       formData.append('itemId', String(id));
       try {

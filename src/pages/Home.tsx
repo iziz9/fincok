@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts } from '../api/api';
+import { getProducts, getPurchaseLength } from '../api/api';
 import ProductItem from '../components/product/ProductItem';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,8 +21,10 @@ const Home = () => {
     async function getRecommendProducts() {
       if (token) {
         try {
-          const response = await getProducts();
-          setProducts(response);
+          const products = await getProducts();
+          const purchase = await getPurchaseLength();
+          setProducts(products);
+          setCart(purchase);
         } catch (error) {
           console.log('에러 발생!');
         }
