@@ -2,13 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface UserLoginState {
-  memberId: string | any;
-  password: string | any;
+  formData: FormData;
 }
 
+const initialForm = new FormData();
+initialForm.append('memberId', '');
+initialForm.append('password', '');
+
 const initialState: UserLoginState = {
-  memberId: '',
-  password: '',
+  formData: initialForm,
 };
 
 let login = createSlice({
@@ -16,15 +18,15 @@ let login = createSlice({
   initialState,
   reducers: {
     userLogin(state, action: PayloadAction<string | any>) {
-      state.memberId = action.payload.memberId;
-      state.password = action.payload.password;
+      state.formData = action.payload.formData;
     },
     userLoginInit(state) {
-      state.memberId = '';
-      state.password = '';
+      state.formData = initialForm;
     },
   },
 });
+
+//dispatch로 slice 내부 메소드 접근
 
 export const { userLogin, userLoginInit } = login.actions;
 export default login;

@@ -1,23 +1,14 @@
 import { instance, authInstance } from './axios';
-import { setCookie, getCookie, removeCookie } from '../utils/cookie';
+import { setCookie, removeCookie } from '../utils/cookie';
 import { SetStateAction } from 'react';
 
 //로그인
 export const requestLogin = async (formData: FormData) => {
-  try {
-    const res = await instance.post('login', formData);
-    console.log(res);
-    if (res.data.resultCode === 'failed') {
-      throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
-    } else {
-      const accessToken = res.data.accessToken;
-      setCookie('accessToken', accessToken); // 회원정보 전역저장 후 confirm으로 재로그인?
-      alert('로그인 완료');
-      location.pathname = '/';
-    }
-  } catch (err) {
-    alert(err);
-  }
+  const res = await instance.post('login', formData);
+  // authInstance.interceptors.response.use(() => {
+
+  // });
+  return res.data;
 };
 
 // 로그아웃
@@ -146,17 +137,17 @@ export const requestPurchase = async (formData: FormData) => {
   return authInstance.post('purchase', formData);
 };
 
-export const getDepositPurchase = async(setResult: SetStateAction<any>) => {
+export const getDepositPurchase = async (setResult: SetStateAction<any>) => {
   const res = await authInstance.get(`deposit/purchase_list?page=1`);
   const data = res.data.resultData;
-  console.log(data)
-  setResult([...data.content])
-}
+  console.log(data);
+  setResult([...data.content]);
+};
 
-export const getLoanPurchase = async(setResult: SetStateAction<any>, setLoading: any) => {
+export const getLoanPurchase = async (setResult: SetStateAction<any>, setLoading: any) => {
   const res = await authInstance.get(`loan/purchase_list?page=1`);
   const data = res.data.resultData;
-  console.log(data)
-  setResult([...data.content])
-  setLoading(true)
-}
+  console.log(data);
+  setResult([...data.content]);
+  setLoading(true);
+};
