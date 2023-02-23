@@ -105,10 +105,6 @@ export const getProductDetail = async (category: string, itemId: string) => {
   return res.data;
 };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0e6df384c6df8f6c5eced09ec1263e8e13ac007a
 // 유저 정보 출력
 export const requestUserInfo = async () => {
   try {
