@@ -17,7 +17,7 @@ function LoanWishList() {
     // threshold: 0,
   });
   const wishClick = async (id: number) => {
-    console.log('클릭함수 시작');
+    await requestDelWishList(Number(id), setabc);
     setLoanWishData([]);
     setPageNumber(1);
     await getLoanWishList(1, setLoanWishData, setLastPage, setLoading);

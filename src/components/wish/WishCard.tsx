@@ -25,7 +25,7 @@ function WishCard({ item, wishClick }: Props) {
           wishClick(item.itemId);
         }}
       >
-        <HiHeart />
+        <HiHeart size={30} color={'var(--color-dark-grey)'}/>
       </Button>
     </Wrap>
   );
@@ -40,6 +40,16 @@ const Button = styled.button`
   position: absolute;
   top: 0;
   right: 0;
+  background-color: transparent;
+  :hover{
+  background-color: transparent;
+
+  }
+  svg{
+    :hover{
+      fill: var(--color-orange);
+    }
+  }
 `;
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;
@@ -86,6 +96,7 @@ const Item = styled.div<{ bankName: string }>`
     margin-top: auto;
   }
 `;
+
 
 export type DataType = {
   itemId: string;
