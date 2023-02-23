@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
 import { requestFindPw } from '../../api/api';
 import { BeatLoader } from 'react-spinners';
-import { FcHighPriority } from 'react-icons/fc';
 import { getCookie } from '../../utils/cookie';
 import AlertLoginState from '../../components/common/AlertLoginState';
 
