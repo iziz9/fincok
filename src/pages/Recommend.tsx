@@ -1,15 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getRecommendProducts } from '../api/api';
 import ProductItem from '../components/product/ProductItem';
+import { hideLoading, showLoading } from '../store/loadingSlice';
 import AlertLoginState from '../components/common/AlertLoginState';
 import styled from 'styled-components';
 import { getCookie } from '../utils/cookie';
-import { useAppSelector } from '../hooks/useDispatchHooks';
+import { useAppDispatch, useAppSelector } from '../hooks/useDispatchHooks';
 import { useInView } from 'react-intersection-observer';
 import { NoList } from './Home';
 
 function Recommend() {
   const token = getCookie('accessToken');
+  const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.user.name);
 
   const [products, setProducts] = useState([]);
@@ -17,35 +19,19 @@ function Recommend() {
   const [last, setLast] = useState<boolean>(false);
   const [ref, inView] = useInView();
 
-  // useEffect(() => {
-  //   async function getCustomRecommend() {
-  //     if (token) {
-  //       try {
-  //         const response = await getRecommendProducts(page);
-  //         console.log(response);
-  //         setProducts(response.content);
-  //         setLast(response.last);
-  //       } catch (error) {
-  //         console.log('에러 발생!');
-  //       }
-  //     } else {
-  //       console.log('토큰 없음');
-  //       return null;
-  //     }
-  //   }
-  //   getCustomRecommend();
-  // }, []);
-
   // 맞춤 상품 조회
   const getCustomRecommend = useCallback(
     async (setProducts: any, setLast: any) => {
       if (token) {
         try {
+          dispatch(showLoading());
           const response = await getRecommendProducts(page);
           setProducts((prevState: any) => [...prevState, ...response.content]);
           setLast(response.last);
         } catch (error) {
           console.log(error);
+        } finally {
+          dispatch(hideLoading());
         }
       } else {
         console.log('토큰 없음');
