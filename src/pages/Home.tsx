@@ -56,7 +56,7 @@ const Home = () => {
             </h3>
             <AllProducts>
               <p>
-                <span>내 정보</span> 보러 가기
+                <span>내 정보</span> 확인하기
               </p>
               <Link to={'/user'}>GO !</Link>
             </AllProducts>

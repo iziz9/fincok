@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-type Props = { item: DataType};
+type Props = { item: DataType };
 
 function LoanProductCard({ item }: Props) {
+  const navigate = useNavigate();
   return (
-    <LinkWrap to={`/detail/${item.itemId}`}>
+    <LinkWrap onClick={() => navigate(`/detail/${item.itemId}`, { state: 'loan' })}>
       <Item bankName={item.bank}>
         <div>
           <h4>{item.bank}</h4>
@@ -18,10 +19,11 @@ function LoanProductCard({ item }: Props) {
     </LinkWrap>
   );
 }
-const LinkWrap = styled(Link)`
+const LinkWrap = styled.div`
   width: 100%;
+  cursor: pointer;
 `;
-  const Item = styled.div<{ bankName: string }>`
+const Item = styled.div<{ bankName: string }>`
   width: 80%;
   padding: 30px;
   height: 100px;
@@ -69,19 +71,18 @@ const LinkWrap = styled(Link)`
 `;
 
 export type DataType = {
-  itemId: string
-  category: string
-  bank: string
-  itemName: string
-  type: string
-  join: string
-  limit: string
-  preference: any
-  target?: string
-  minRate: string
-  maxRate: string
-  delay: string
-}
-
+  itemId: string;
+  category: string;
+  bank: string;
+  itemName: string;
+  type: string;
+  join: string;
+  limit: string;
+  preference: any;
+  target?: string;
+  minRate: string;
+  maxRate: string;
+  delay: string;
+};
 
 export default LoanProductCard;

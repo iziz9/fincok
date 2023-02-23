@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-type Props = { item: DataType};
+type Props = { item: DataType };
 
 function DepositProductCard({ item }: Props) {
+  const navigate = useNavigate();
   return (
-    <LinkWrap to={`/detail/${item.itemId}`}>
+    <LinkWrap onClick={() => navigate(`/detail/${item.itemId}`, { state: 'deposit' })}>
       <Item bankName={item.bank}>
         <div>
           <h4>{item.bank}</h4>
@@ -18,10 +19,11 @@ function DepositProductCard({ item }: Props) {
     </LinkWrap>
   );
 }
-  const LinkWrap = styled(Link)`
-    width: 100%;
-  `
-  const Item = styled.div<{ bankName: string }>`
+const LinkWrap = styled.div`
+  width: 100%;
+  cursor: pointer;
+`;
+const Item = styled.div<{ bankName: string }>`
   padding: 30px;
   height: 100px;
   border-radius: 15px;

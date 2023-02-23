@@ -1,5 +1,5 @@
 import react from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type productItem = {
@@ -17,10 +17,13 @@ type productItem = {
 };
 
 const ProductItem = ({ item }: productItem) => {
+  const navigate = useNavigate();
   const bankName: string = item.bank;
+  const category: string =
+    item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan';
 
   return (
-    <Link to={`detail/${item.itemId}`}>
+    <Div onClick={() => navigate(`detail/${item.itemId}`, { state: category })}>
       <Item bankName={bankName}>
         <div>
           <h4>{item.bank}</h4>
@@ -29,9 +32,13 @@ const ProductItem = ({ item }: productItem) => {
         <h3>{item.itemName}</h3>
         <span>{item.category}</span>
       </Item>
-    </Link>
+    </Div>
   );
 };
+
+const Div = styled.div`
+  cursor: pointer;
+`;
 
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;

@@ -4,11 +4,11 @@ import { TbArrowBack } from 'react-icons/tb';
 import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getProductDetail } from '../api/api';
 import { requestSetWishList, requestDelWishList } from '../api/wishApi';
-import NotFound from './NotFound';
 import { getCookie } from '../utils/cookie';
+import { HashLoader } from 'react-spinners';
 import AlertLoginState from '../components/common/AlertLoginState';
 
 export interface ProductType {
@@ -39,15 +39,17 @@ export interface CartType {
 
 const Detail = () => {
   const navigate = useNavigate();
+  const { pathname, state } = useLocation();
+  const category = state;
+  const itemId = pathname.split('/')[2];
   const [info, setInfo] = useState<ProductType>();
   const [cartList, setCartList] = useState<CartArrayType>([]);
   const [isOnCart, setIsOnCart] = useState<boolean>(false);
   const [likeState, setLikeState] = useState<boolean>(false);
 
-  //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('loan', '61');
+      const data = await getProductDetail(category, itemId);
       setInfo(data);
       setLikeState(data.wish);
       const list = [];
@@ -105,7 +107,6 @@ const Detail = () => {
   const delayText = info?.delay?.split('%');
 
   const addCartHandler = () => {
-    console.log(localStorage.getItem('cart'));
     if (!localStorage.getItem('cart')) {
       localStorage.setItem('cart', JSON.stringify(cartList));
       window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
@@ -121,6 +122,7 @@ const Detail = () => {
       return;
     } else {
       const prevList = JSON.parse(localStorage.getItem('cart')!);
+      console.log(prevList);
       const nextList = [...prevList, ...cartList];
       localStorage.setItem('cart', JSON.stringify(nextList));
       window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
@@ -251,7 +253,9 @@ const Detail = () => {
               </FlatSection>
             </>
           ) : (
-            <NotFound />
+            <div style={{ marginTop: '200px', display: 'flex', justifyContent: 'center' }}>
+              <HashLoader color="#f74440" size={100} speedMultiplier={1} />
+            </div>
           )}
         </>
       ) : (
