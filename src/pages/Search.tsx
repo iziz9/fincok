@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { hideLoading, showLoading } from '../store/loadingSlice';
+import { useAppDispatch } from '../hooks/useDispatchHooks';
 import styled from 'styled-components';
 import { SearchForm } from '../components/common/layout/Navigation';
 import SearchItem from '../components/product/SearchItem';
@@ -12,6 +14,7 @@ import AlertLoginState from '../components/common/AlertLoginState';
 
 const Search = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [ref, inView] = useInView();
   const [searchTitle, setSearchTitle] = useState<string | any>('');
   const [page, setPage] = useState<number>(1);
@@ -40,11 +43,14 @@ const Search = () => {
   const getSearchDeposit = useCallback(
     async (setDeposits: any, setDepositsLast: any) => {
       try {
+        dispatch(showLoading());
         const response = await getDeposit(searchText, page);
         setDeposits((prevState: any) => [...prevState, ...response.content]);
         setDepositsLast(response.last);
       } catch (error) {
         console.log(error);
+      } finally {
+        dispatch(hideLoading());
       }
     },
     [searchText, page],
@@ -54,11 +60,14 @@ const Search = () => {
   const getSearchLoan = useCallback(
     async (setLoans: any, setLoansLast: any) => {
       try {
+        dispatch(showLoading());
         const response = await getLoan(searchText, page);
         setLoans((prevState: any) => [...prevState, ...response.content]);
         setLoansLast(response.last);
       } catch (error) {
         console.log(error);
+      } finally {
+        dispatch(hideLoading());
       }
     },
     [searchText, page],
