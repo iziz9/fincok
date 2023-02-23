@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-type loansItem = {
+type depositsItem = {
   item: {
     bank: string;
     itemId: string;
     itemName: string;
+    prefRate: string;
+    rate: string;
     maxRate: string;
     minRate: string;
     type: string;
@@ -13,14 +15,14 @@ type loansItem = {
   key: number;
 };
 
-const LoansItem = ({ item }: loansItem) => {
+const DepositsItem = ({ item }: depositsItem) => {
   const bankName: string = item.bank;
 
   return (
     <Item bankName={bankName}>
       <div>
         <h4>{item.bank}</h4>
-        <p>최대 금리 {item.maxRate}%</p>
+        <p>최대 금리 {item.prefRate || item.maxRate}%</p>
       </div>
       <h3>{item.itemName}</h3>
     </Item>
@@ -68,4 +70,4 @@ const Item = styled.div<{ bankName: string }>`
   }
 `;
 
-export default LoansItem;
+export default DepositsItem;

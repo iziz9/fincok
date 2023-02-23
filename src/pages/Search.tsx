@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { SearchForm } from '../components/common/layout/Navigation';
-import DepositsItem from './../components/product/DepositsItem';
-import LoansItem from '../components/product/LoansItem';
+import SearchItem from '../components/product/SearchItem';
 import { NoList } from '../pages/Home';
 import { BiSearch } from 'react-icons/bi';
 import { getDeposit, getLoan } from '../api/api';
@@ -23,13 +22,11 @@ const Search = () => {
   const [loansLast, setLoansLast] = useState<boolean>(false);
 
   // 전체 검색 리스트
-  if (deposits) {
-    const searchList = [...deposits];
-  } else if (loans) {
-    const searchList = [...loans];
-  } else {
-  }
   const searchList = [...deposits, ...loans];
+
+  // 상품별 조회 탭
+  const [active, setActive] = useState([false, false]);
+  const [onProduct, setOnProduct] = useState(0);
 
   // 쿼리스트링
   const useQuery = () => {
@@ -38,6 +35,7 @@ const Search = () => {
   let KeywordQuery = useQuery();
   const searchText: string | any = KeywordQuery.get('title');
 
+  // 적금/예금 조회
   const getSearchDeposit = useCallback(
     async (setDeposits: any, setDepositsLast: any) => {
       try {
@@ -52,6 +50,7 @@ const Search = () => {
     [searchText, page],
   );
 
+  // 대출 조회
   const getSearchLoan = useCallback(
     async (setLoans: any, setLoansLast: any) => {
       try {
@@ -81,7 +80,7 @@ const Search = () => {
   useEffect(() => {
     getSearchDeposit(setDeposits, setDepositsLast);
     getSearchLoan(setLoans, setLoansLast);
-  }, [getSearchDeposit, getSearchLoan]);
+  }, [getSearchDeposit, getSearchLoan, onProduct]);
 
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 마지막 페이지 일 때
@@ -99,9 +98,15 @@ const Search = () => {
     return navigate(`/search?title=${value}`);
   };
 
-  const handleDeposits = () => {};
+  const handleDeposits = () => {
+    setActive([true, false]);
+    setOnProduct(1);
+  };
 
-  const handleLoans = () => {};
+  const handleLoans = () => {
+    setActive([false, true]);
+    setOnProduct(2);
+  };
 
   return (
     <Container>
@@ -129,26 +134,46 @@ const Search = () => {
       </SearchForm>
       <SearchList>
         <ProductTap>
-          <button
-            onClick={() => {
-              handleDeposits();
-            }}
-          >
-            적금/예금 상품
+          <button className={active[0] ? 'active' : ''} onClick={handleDeposits}>
+            적금 / 예금 상품
           </button>
-          <button
-            onClick={() => {
-              handleLoans();
-            }}
-          >
+          <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
             대출 상품
           </button>
         </ProductTap>
-        {searchList.length > 0 ? (
+        {onProduct === 1 ? (
+          deposits.length > 0 ? (
+            deposits.map((item: any, idx) => {
+              return (
+                <Link to={'/detail/' + item.itemId} key={idx}>
+                  <SearchItem item={item} key={idx} />
+                </Link>
+              );
+            })
+          ) : (
+            <span>
+              <NoList>검색결과가 없습니다.</NoList>
+            </span>
+          )
+        ) : onProduct === 2 ? (
+          loans.length > 0 ? (
+            loans.map((item: any, idx) => {
+              return (
+                <Link to={'/detail/' + item.itemId} key={idx}>
+                  <SearchItem item={item} key={idx} />
+                </Link>
+              );
+            })
+          ) : (
+            <span>
+              <NoList>검색결과가 없습니다.</NoList>
+            </span>
+          )
+        ) : searchList.length > 0 ? (
           searchList.map((item: any, idx) => {
             return (
               <Link to={'/detail/' + item.itemId} key={idx}>
-                <DepositsItem item={item} key={idx} />
+                <SearchItem item={item} key={idx} />
               </Link>
             );
           })
@@ -194,7 +219,7 @@ const ProductTap = styled.div`
     padding: 0 1.5em;
     background-color: var(--color-bg-grey);
     font-weight: bold;
-    :hover {
+    &.active {
       background-color: var(--color-black);
       color: var(--color-white);
     }

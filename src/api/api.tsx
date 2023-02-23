@@ -11,7 +11,7 @@ export const requestLogin = async (formData: FormData) => {
       throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
     } else {
       const accessToken = res.data.accessToken;
-      setCookie('accessToken', accessToken);
+      setCookie('accessToken', accessToken); // 회원정보 전역저장 후 confirm으로 재로그인?
       alert('로그인 완료');
       location.pathname = '/';
     }
@@ -23,9 +23,7 @@ export const requestLogin = async (formData: FormData) => {
 // 로그아웃
 export const requestLogout = async () => {
   try {
-    const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.post('/logout');
+    const res = await authInstance.post('/logout');
     if (res.data.resultCode === 'failed') {
       throw new Error('로그아웃 에러');
     } else {
@@ -103,17 +101,18 @@ export const getProductDetail = async (category: string, itemId: string) => {
   } catch (err) {
     alert(err);
   }
-  console.log(res.data);
+  // console.log(res.data);
   return res.data;
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0e6df384c6df8f6c5eced09ec1263e8e13ac007a
 // 유저 정보 출력
 export const requestUserInfo = async () => {
   try {
-    const accessToken = getCookie('accessToken');
-    instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    const res = await instance.post('member/info');
+    const res = await authInstance.post('member/info');
     console.log(res);
   } catch (err) {
     alert(err);

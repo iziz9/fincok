@@ -1,4 +1,3 @@
-import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,7 +5,8 @@ import * as yup from 'yup';
 import { productList, jobList, bankList, addressList } from '../../utils/list';
 import { requestSignUp } from '../../api/api';
 import { checkIdAvailable } from '../../api/api';
-import { instance } from '../../api/axios';
+import { getCookie } from '../../utils/cookie';
+import AlertLoginState from '../../components/common/AlertLoginState';
 
 interface SignupForm {
   name: string;
@@ -98,190 +98,201 @@ const SignUp = () => {
 
   return (
     <Main>
-      <Div>
-        <img src="/logo_fincok.png" style={{ margin: '20px auto' }} />
-      </Div>
-      <h1 style={{ paddingBottom: '30px' }}>Sign up</h1>
-      <form onSubmit={handleSubmit((data) => submitData(data))}>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>이름</CategoryTitle>
-            {errors?.name ? (
-              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                {errors.name?.message}
-              </span>
-            ) : null}
-          </div>
-          <input id="name" type="text" placeholder="이름을 입력해 주세요." {...register('name')} />
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>아이디</CategoryTitle>
-            {errors?.memberId ? (
-              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                {errors.memberId?.message}
-              </span>
-            ) : null}
-          </div>
-          <div style={{ display: 'flex' }}>
-            <input
-              id="memberId"
-              type="text"
-              placeholder="abc@google.com"
-              style={{ width: '330px', marginRight: '10px' }}
-              {...register('memberId')}
-            />
-            <button
-              style={{ fontWeight: 600 }}
-              onClick={(e) => {
-                e.preventDefault();
-                checkIdAvailable(watchId);
-              }}
-            >
-              중복 확인
-            </button>
-          </div>
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>비밀번호</CategoryTitle>
-            {errors?.password && (
-              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                {errors.password?.message}
-              </span>
-            )}
-          </div>
-          <input
-            id="password"
-            type="password"
-            placeholder="8글자 이상 입력해 주세요"
-            {...register('password')}
-          />
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>비밀번호 확인</CategoryTitle>
-            {errors?.checkPw && (
-              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                {errors.checkPw?.message}
-              </span>
-            )}
-          </div>
-          <input
-            id="checkPw"
-            type="password"
-            placeholder="비밀번호를 한번 더 입력해주세요."
-            {...register('checkPw')}
-          />
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>생년월일</CategoryTitle>
-          </div>
-          <div style={{ display: 'flex', gap: '5px', height: '40px', lineHeight: '40px' }}>
-            <select id="year" required {...register('year')} style={{ width: '40%' }}>
-              {yearArr.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            년
-            <select
-              id="month"
-              required
-              {...register('month')}
-              style={{ width: '20%', marginLeft: '8px' }}
-            >
-              {monthArr.map((month) => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-            월
-            <select
-              id="date"
-              required
-              {...register('date')}
-              style={{ width: '20%', marginLeft: '8px' }}
-            >
-              {dateArr.map((date) => (
-                <option key={date} value={date}>
-                  {date}
-                </option>
-              ))}
-            </select>
-            일
-          </div>
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>직업</CategoryTitle>
-          </div>
-          <select id="job" required {...register('job')}>
-            {jobList.map((job, index) => (
-              <option key={index} value={job}>
-                {job}
-              </option>
-            ))}
-          </select>
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>지역</CategoryTitle>
-          </div>
-          <select id="district" required {...register('district')}>
-            {addressList.map((district, index) => (
-              <option key={index} value={district}>
-                {district}
-              </option>
-            ))}
-          </select>
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>선호 은행</CategoryTitle>
-          </div>
-          <select id="bank" required {...register('bank')}>
-            {bankList.map((bank, index) => (
-              <option key={index} value={bank}>
-                {bank}
-              </option>
-            ))}
-          </select>
-        </Div>
-        <Div>
-          <div>
-            <Required>*</Required>
-            <CategoryTitle>관심있는 상품</CategoryTitle>
-          </div>
-          <RadioDiv>
-            {productList.map((category, index) => (
-              <div key={index}>
-                <input
-                  type="radio"
-                  id={category}
-                  value={category}
-                  defaultChecked={index === 0 ? true : false}
-                  style={{ display: 'none' }}
-                  {...register('category')}
-                />
-                <Label htmlFor={category}>{category}</Label>
+      {getCookie('accessToken') ? (
+        <AlertLoginState text={'이미 로그인 상태입니다.'} />
+      ) : (
+        <>
+          <Div>
+            <img src="/logo_fincok.png" style={{ margin: '20px auto' }} />
+          </Div>
+          <h1 style={{ paddingBottom: '30px' }}>Sign up</h1>
+          <form onSubmit={handleSubmit((data) => submitData(data))}>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>이름</CategoryTitle>
+                {errors?.name ? (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.name?.message}
+                  </span>
+                ) : null}
               </div>
-            ))}
-          </RadioDiv>
-        </Div>
-        <SubmitButton type="submit">회원가입</SubmitButton>
-      </form>
+              <input
+                id="name"
+                type="text"
+                placeholder="이름을 입력해 주세요."
+                {...register('name')}
+              />
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>아이디</CategoryTitle>
+                {errors?.memberId ? (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.memberId?.message}
+                  </span>
+                ) : null}
+              </div>
+              <div style={{ display: 'flex' }}>
+                <input
+                  id="memberId"
+                  type="text"
+                  placeholder="abc@google.com"
+                  style={{ width: '330px', marginRight: '10px' }}
+                  {...register('memberId')}
+                />
+                <button
+                  style={{ fontWeight: 600 }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    checkIdAvailable(watchId);
+                  }}
+                >
+                  중복 확인
+                </button>
+              </div>
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>비밀번호</CategoryTitle>
+                {errors?.password && (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.password?.message}
+                  </span>
+                )}
+              </div>
+              <input
+                id="password"
+                type="password"
+                placeholder="8글자 이상 입력해 주세요"
+                {...register('password')}
+              />
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>비밀번호 확인</CategoryTitle>
+                {errors?.checkPw && (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.checkPw?.message}
+                  </span>
+                )}
+              </div>
+              <input
+                id="checkPw"
+                type="password"
+                placeholder="비밀번호를 한번 더 입력해주세요."
+                {...register('checkPw')}
+              />
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>생년월일</CategoryTitle>
+              </div>
+              <div style={{ display: 'flex', gap: '5px', height: '40px', lineHeight: '40px' }}>
+                <select id="year" required {...register('year')} style={{ width: '40%' }}>
+                  {yearArr.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+                년
+                <select
+                  id="month"
+                  required
+                  {...register('month')}
+                  style={{ width: '20%', marginLeft: '8px' }}
+                >
+                  {monthArr.map((month) => (
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+                월
+                <select
+                  id="date"
+                  required
+                  {...register('date')}
+                  style={{ width: '20%', marginLeft: '8px' }}
+                >
+                  {dateArr.map((date) => (
+                    <option key={date} value={date}>
+                      {date}
+                    </option>
+                  ))}
+                </select>
+                일
+              </div>
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>직업</CategoryTitle>
+              </div>
+              <select id="job" required {...register('job')}>
+                {jobList.map((job, index) => (
+                  <option key={index} value={job}>
+                    {job}
+                  </option>
+                ))}
+              </select>
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>지역</CategoryTitle>
+              </div>
+              <select id="district" required {...register('district')}>
+                {addressList.map((district, index) => (
+                  <option key={index} value={district}>
+                    {district}
+                  </option>
+                ))}
+              </select>
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>선호 은행</CategoryTitle>
+              </div>
+              <select id="bank" required {...register('bank')}>
+                {bankList.map((bank, index) => (
+                  <option key={index} value={bank}>
+                    {bank}
+                  </option>
+                ))}
+              </select>
+            </Div>
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>관심있는 상품</CategoryTitle>
+              </div>
+              <RadioDiv>
+                {productList.map((category, index) => (
+                  <div key={index}>
+                    <input
+                      type="radio"
+                      id={category}
+                      value={category}
+                      defaultChecked={index === 0 ? true : false}
+                      style={{ display: 'none' }}
+                      {...register('category')}
+                    />
+                    <Label htmlFor={category}>{category}</Label>
+                  </div>
+                ))}
+              </RadioDiv>
+            </Div>
+            <SubmitButton type="submit">회원가입</SubmitButton>
+          </form>
+        </>
+      )}
     </Main>
   );
 };
@@ -343,4 +354,5 @@ export const SubmitButton = styled.button`
   margin: 50px auto;
   font-size: 20px;
 `;
+
 export default SignUp;

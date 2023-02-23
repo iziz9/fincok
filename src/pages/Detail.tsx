@@ -5,9 +5,11 @@ import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
-import { getProductDetail} from '../api/api';
-import { requestSetWishList, requestDelWishList } from '../api/wishApi'
+import { getProductDetail } from '../api/api';
+import { requestSetWishList, requestDelWishList } from '../api/wishApi';
 import NotFound from './NotFound';
+import { getCookie } from '../utils/cookie';
+import AlertLoginState from '../components/common/AlertLoginState';
 
 export interface ProductType {
   bank: string;
@@ -25,19 +27,32 @@ export interface ProductType {
   delay?: string | null;
   maxRate?: number;
   minRate?: number;
+  wish: boolean;
+}
+export type CartArrayType = CartType[][];
+export interface CartType {
+  itemId?: number;
+  category?: string;
+  bank?: string;
+  itemName?: string;
 }
 
 const Detail = () => {
   const navigate = useNavigate();
   const [info, setInfo] = useState<ProductType>();
-  // redux로 추후 관심상품 상태관리 변경
+  const [cartList, setCartList] = useState<CartArrayType>([]);
+  const [isOnCart, setIsOnCart] = useState<boolean>(false);
   const [likeState, setLikeState] = useState<boolean>(false);
 
   //navigate로 들어올 때 category, item 전달해서 함수실행
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail('deposit', '45');
+      const data = await getProductDetail('loan', '61');
       setInfo(data);
+      setLikeState(data.wish);
+      const list = [];
+      list.push([data.itemId, data.itemName, data.bank, data.category]);
+      setCartList(list);
     }
     getData();
   }, []);
@@ -87,18 +102,30 @@ const Detail = () => {
     borderRadius: '50px',
   };
 
-  const matureText = info?.mature?.split('%');
   const delayText = info?.delay?.split('%');
 
   const addCartHandler = () => {
-    if (localStorage.getItem('cart')) {
-      alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
-    } else {
-      localStorage.setItem('cart', JSON.stringify(info));
+    console.log(localStorage.getItem('cart'));
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify(cartList));
       window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
         ? navigate('/cart')
         : null;
-      console.log(localStorage.getItem('cart'));
+      return;
+    } else if (
+      localStorage
+        .getItem('cart')
+        ?.includes(JSON.stringify([info?.itemId, info?.itemName, info?.bank, info?.category]))
+    ) {
+      alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
+      return;
+    } else {
+      const prevList = JSON.parse(localStorage.getItem('cart')!);
+      const nextList = [...prevList, ...cartList];
+      localStorage.setItem('cart', JSON.stringify(nextList));
+      window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
+        ? navigate('/cart')
+        : null;
     }
   };
 
@@ -110,113 +137,125 @@ const Detail = () => {
 
   return (
     <main>
-      {info ? (
+      {getCookie('accessToken') ? (
         <>
-          <ColoredSection style={colorState}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-              <TbArrowBack
-                onClick={() => history.back()}
-                style={{
-                  cursor: 'pointer',
-                  backgroundColor: '#fff',
-                  width: '20px',
-                  height: '20px',
-                  padding: '10px',
-                  borderRadius: '100%',
-                }}
-              />
-            </div>
-            <H1>
-              <span>{info.bank}</span> <br /> <span>{info.itemName}</span>
-            </H1>
-            <TagDiv>
-              <Tag style={deepColorState}>{info.category}</Tag>
-              {info.target ? <Tag style={deepColorState}>{info.target}</Tag> : null}
-              {info.type ? <Tag style={deepColorState}>{info.type}</Tag> : null}
-            </TagDiv>
-            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-              <ColDiv>
-                <FcMoneyTransfer style={iconStyle} />
-                {info?.category === '정기예금' || info.category === '적금' ? (
-                  <>
-                    <SummaryTitle>최고우대금리</SummaryTitle>
-                    <SummaryContent>연 {info.prefRate}%</SummaryContent>
-                    <SummaryTitle>(12개월 세전)</SummaryTitle>
-                  </>
-                ) : (
-                  <>
-                    <SummaryTitle>최저대출금리</SummaryTitle>
-                    <SummaryContent>연 {info.minRate}%</SummaryContent>
-                  </>
-                )}
-              </ColDiv>
-              <ColDiv>
-                <FcSalesPerformance style={iconStyle} />
-                <SummaryTitle>
-                  {info?.category === '정기예금' || info.category === '적금'
-                    ? '저축한도'
-                    : '최고대출금리'}
-                </SummaryTitle>
-                {info.maxRate && <SummaryContent>연 {info.maxRate}%</SummaryContent>}
-                {(info?.category === '정기예금' || info.category === '적금') && (
-                  <SummaryContent>
-                    {info.limit ? '월 ' + info.limit + ' 만원' : '없음'}
-                  </SummaryContent>
-                )}
-              </ColDiv>
-            </div>
-            <Heart>
-              {likeState ? (
-                <HiHeart
-                  style={heartStyle}
-                  onClick={() => {
-                    requestDelWishList(info.itemId, setLikeState);
-                  }}
-                />
-              ) : (
-                <HiOutlineHeart
-                  style={heartStyle}
-                  onClick={() => {
-                    addwishHandler(info.itemId);
-                  }}
-                />
-              )}
-              <HiOutlineShoppingBag style={cartStyle} onClick={() => addCartHandler()} />
-            </Heart>
-          </ColoredSection>
-          <FlatSection>
-            <ProductDetailTitle>
-              {info.target
-                ? `${info.target}을 위한 ${info.category}상품`
-                : `${info.bank} ${info.category}상품`}
-            </ProductDetailTitle>
-            <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
-              '{info.join}'을 통해 가입할 수 있습니다.
-            </span>
-            {info.mature && (
-              <ProductDesc>
-                <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
-                  만기 후 이자율은?
+          {info ? (
+            <>
+              <ColoredSection style={colorState}>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}
+                >
+                  <TbArrowBack
+                    onClick={() => history.back()}
+                    style={{
+                      cursor: 'pointer',
+                      backgroundColor: '#fff',
+                      width: '20px',
+                      height: '20px',
+                      padding: '10px',
+                      borderRadius: '100%',
+                    }}
+                  />
                 </div>
-                {info.mature}
-              </ProductDesc>
-            )}
-            {info.delay && (
-              <ProductDesc>
-                <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
-                  연체 이자율은?
+                <H1>
+                  <span>{info.bank}</span> <br /> <span>{info.itemName}</span>
+                </H1>
+                <TagDiv>
+                  <Tag style={deepColorState}>{info.category}</Tag>
+                  {info.target ? <Tag style={deepColorState}>{info.target}</Tag> : null}
+                  {info.type ? <Tag style={deepColorState}>{info.type}</Tag> : null}
+                </TagDiv>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <ColDiv>
+                    <FcMoneyTransfer style={iconStyle} />
+                    {info?.category === '정기예금' || info.category === '적금' ? (
+                      <>
+                        <SummaryTitle>최고우대금리</SummaryTitle>
+                        <SummaryContent>연 {info.prefRate}%</SummaryContent>
+                        <SummaryTitle>(12개월 세전)</SummaryTitle>
+                      </>
+                    ) : (
+                      <>
+                        <SummaryTitle>최저대출금리</SummaryTitle>
+                        <SummaryContent>연 {info.minRate}%</SummaryContent>
+                      </>
+                    )}
+                  </ColDiv>
+                  <ColDiv>
+                    <FcSalesPerformance style={iconStyle} />
+                    <SummaryTitle>
+                      {info?.category === '정기예금' || info.category === '적금'
+                        ? '저축한도'
+                        : '최고대출금리'}
+                    </SummaryTitle>
+                    {info.maxRate && <SummaryContent>연 {info.maxRate}%</SummaryContent>}
+                    {(info?.category === '정기예금' || info.category === '적금') && (
+                      <SummaryContent>
+                        {info.limit ? '월 ' + info.limit + ' 만원' : '없음'}
+                      </SummaryContent>
+                    )}
+                  </ColDiv>
                 </div>
-                {delayText?.map((delay, index) => (
-                  <div key={index}>
-                    {index !== delayText.length - 1 ? <div>{delay}%</div> : <span>{delay}</span>}
-                  </div>
-                ))}
-              </ProductDesc>
-            )}
-          </FlatSection>
+                <Heart>
+                  {likeState ? (
+                    <HiHeart
+                      style={heartStyle}
+                      onClick={() => {
+                        requestDelWishList(info.itemId, setLikeState);
+                      }}
+                    />
+                  ) : (
+                    <HiOutlineHeart
+                      style={heartStyle}
+                      onClick={() => {
+                        addwishHandler(info.itemId);
+                      }}
+                    />
+                  )}
+                  <HiOutlineShoppingBag style={cartStyle} onClick={() => addCartHandler()} />
+                </Heart>
+              </ColoredSection>
+              <FlatSection>
+                <ProductDetailTitle>
+                  {info.target
+                    ? `${info.target}을 위한 ${info.category}상품`
+                    : `${info.bank} ${info.category}상품`}
+                </ProductDetailTitle>
+                <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
+                  '{info.join}'을 통해 가입할 수 있습니다.
+                </span>
+                {info.mature && (
+                  <ProductDesc>
+                    <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
+                      만기 후 이자율은?
+                    </div>
+                    {info.mature}
+                  </ProductDesc>
+                )}
+                {info.delay && (
+                  <ProductDesc>
+                    <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
+                      연체 이자율은?
+                    </div>
+                    {delayText?.map((delay, index) => (
+                      <div key={index}>
+                        {index !== delayText.length - 1 ? (
+                          <div>{delay}%</div>
+                        ) : (
+                          <span>{delay}</span>
+                        )}
+                      </div>
+                    ))}
+                  </ProductDesc>
+                )}
+              </FlatSection>
+            </>
+          ) : (
+            <NotFound />
+          )}
         </>
       ) : (
-        <NotFound />
+        <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
       )}
     </main>
   );

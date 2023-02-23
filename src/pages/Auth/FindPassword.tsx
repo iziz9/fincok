@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
 import { requestFindPw } from '../../api/api';
 import { BeatLoader } from 'react-spinners';
+import { FcHighPriority } from 'react-icons/fc';
+import { getCookie } from '../../utils/cookie';
+import AlertLoginState from '../../components/common/AlertLoginState';
 
 type findForm = {
   memberId: string;
@@ -36,70 +39,78 @@ const FindPassword = () => {
 
   return (
     <Main>
-      <Div>
-        <img
-          src="/logo_fincok.png"
-          style={{ margin: '20px auto', cursor: 'pointer' }}
-          onClick={() => navigate('/')}
-        />
-      </Div>
-      <Flexdiv>
-        <h1 style={{ margin: '0 0 30px', color: '#f74440', fontSize: '30px' }}>비밀번호 찾기</h1>
-      </Flexdiv>
-      <FlexText>
-        핀콕에 가입했던 회원정보를 입력해주세요. <br />
-        비밀번호 재설정 메일을 보내드립니다.
-      </FlexText>
-      <form
-        onSubmit={handleSubmit((data) => {
-          requestFindPw(data.memberId, data.name, setLoading);
-        })}
-      >
-        <Div>
-          <div>
-            <CategoryTitle>이름</CategoryTitle>
-            {errors?.name ? (
-              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                {errors.name?.message}
-              </span>
-            ) : null}
-          </div>
-          <div style={{ position: 'relative', marginBottom: '30px' }}>
-            <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
-            <input
-              id="name"
-              type="text"
-              placeholder="김핀콕"
-              style={{ width: '380px', paddingLeft: '45px' }}
-              {...register('name')}
+      {getCookie('accessToken') ? (
+        <AlertLoginState text={'이미 로그인 상태입니다.'} />
+      ) : (
+        <>
+          <Div>
+            <img
+              src="/logo_fincok.png"
+              style={{ margin: '20px auto', cursor: 'pointer' }}
+              onClick={() => navigate('/')}
             />
-          </div>
-          <div>
-            <CategoryTitle>아이디</CategoryTitle>
-            {errors?.memberId ? (
-              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                {errors.memberId?.message}
-              </span>
-            ) : null}
-          </div>
-          <div style={{ position: 'relative', marginBottom: '30px' }}>
-            <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
-            <input
-              id="memberId"
-              type="text"
-              placeholder="abc@google.com"
-              style={{ width: '380px', paddingLeft: '45px' }}
-              {...register('memberId')}
-            />
-          </div>
-        </Div>
-        {loading && (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <BeatLoader size="20px" margin="2px" />
-          </div>
-        )}
-        <SubmitButton type="submit">비밀번호 재설정하기</SubmitButton>
-      </form>
+          </Div>
+          <Flexdiv>
+            <h1 style={{ margin: '0 0 30px', color: '#f74440', fontSize: '30px' }}>
+              비밀번호 찾기
+            </h1>
+          </Flexdiv>
+          <FlexText>
+            핀콕에 가입했던 회원정보를 입력해주세요. <br />
+            비밀번호 재설정 메일을 보내드립니다.
+          </FlexText>
+          <form
+            onSubmit={handleSubmit((data) => {
+              requestFindPw(data.memberId, data.name, setLoading);
+            })}
+          >
+            <Div>
+              <div>
+                <CategoryTitle>이름</CategoryTitle>
+                {errors?.name ? (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.name?.message}
+                  </span>
+                ) : null}
+              </div>
+              <div style={{ position: 'relative', marginBottom: '30px' }}>
+                <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="김핀콕"
+                  style={{ width: '380px', paddingLeft: '45px' }}
+                  {...register('name')}
+                />
+              </div>
+              <div>
+                <CategoryTitle>아이디</CategoryTitle>
+                {errors?.memberId ? (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.memberId?.message}
+                  </span>
+                ) : null}
+              </div>
+              <div style={{ position: 'relative', marginBottom: '30px' }}>
+                <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
+                <input
+                  id="memberId"
+                  type="text"
+                  placeholder="abc@google.com"
+                  style={{ width: '380px', paddingLeft: '45px' }}
+                  {...register('memberId')}
+                />
+              </div>
+            </Div>
+            {loading && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <BeatLoader size="20px" margin="2px" />
+              </div>
+            )}
+            <SubmitButton type="submit">비밀번호 재설정하기</SubmitButton>
+          </form>
+        </>
+      )}
     </Main>
   );
 };
