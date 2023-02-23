@@ -8,9 +8,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { getProductDetail } from '../api/api';
 import { requestSetWishList, requestDelWishList } from '../api/wishApi';
 import { getCookie } from '../utils/cookie';
-import { HashLoader } from 'react-spinners';
 import AlertLoginState from '../components/common/AlertLoginState';
 import { setColor, setDeepColor } from '../utils/list';
+import { useAppDispatch } from '../hooks/useDispatchHooks';
+import { hideLoading, showLoading } from '../store/loadingSlice';
 
 export interface ProductType {
   bank: string;
@@ -40,6 +41,7 @@ export interface CartType {
 
 const Detail = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const category = pathname.split('/')[2];
   const itemId = pathname.split('/')[3];
@@ -51,11 +53,18 @@ const Detail = () => {
 
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail(category, itemId, setIsNotFound);
-      setInfo(data);
-      setLikeState(data.wish);
-      const list = [[data.itemId, data.itemName, data.bank, data.category]];
-      setCartList(list);
+      try {
+        dispatch(showLoading());
+        const data = await getProductDetail(category, itemId, setIsNotFound);
+        setInfo(data);
+        setLikeState(data.wish);
+        const list = [[data.itemId, data.itemName, data.bank, data.category]];
+        setCartList(list);
+      } catch (err) {
+        alert(err);
+      } finally {
+        dispatch(hideLoading());
+      }
     }
     getData();
   }, []);
@@ -128,7 +137,7 @@ const Detail = () => {
     <main>
       {getCookie('accessToken') ? (
         <>
-          {info ? (
+          {info && (
             <>
               <ColoredSection style={colorState}>
                 <div
@@ -244,10 +253,6 @@ const Detail = () => {
                 )}
               </FlatSection>
             </>
-          ) : (
-            <div style={{ marginTop: '200px', display: 'flex', justifyContent: 'center' }}>
-              <HashLoader color="#f74440" size={100} speedMultiplier={1} />
-            </div>
           )}
         </>
       ) : (

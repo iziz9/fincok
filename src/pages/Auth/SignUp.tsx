@@ -93,7 +93,37 @@ const SignUp = () => {
       }
     }
     formData.set('birth', birth);
-    requestSignUp(formData);
+    return formData;
+  };
+
+  const onSignup = async (data: SignupForm) => {
+    const formData = submitData(data);
+    try {
+      const { isExistId, res } = await requestSignUp(formData);
+      if (isExistId.data) {
+        alert('이미 존재하는 아이디로는 가입할 수 없습니다. 비밀번호 찾기를 이용해주세요.');
+      } else if (res.data.resultCode === 'failed') {
+        throw new Error('정상적인 가입 요청이 아닙니다.');
+      } else {
+        alert('회원가입이 완료되었습니다!');
+        location.pathname = '/login';
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const handleCheckDuplicate = async (watchId: string) => {
+    try {
+      const res = await checkIdAvailable(watchId);
+      if (res.data === true) {
+        alert('이미 존재하는 아이디입니다. 비밀번호 찾기를 이용해주세요.');
+      } else {
+        alert('사용 가능한 아이디입니다.');
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
@@ -106,7 +136,7 @@ const SignUp = () => {
             <img src="/logo_fincok.png" style={{ margin: '20px auto' }} />
           </Div>
           <h1 style={{ paddingBottom: '30px' }}>Sign up</h1>
-          <form onSubmit={handleSubmit((data) => submitData(data))}>
+          <form onSubmit={handleSubmit((data) => onSignup(data))}>
             <Div>
               <div>
                 <Required>*</Required>
@@ -146,7 +176,7 @@ const SignUp = () => {
                   style={{ fontWeight: 600 }}
                   onClick={(e) => {
                     e.preventDefault();
-                    checkIdAvailable(watchId);
+                    handleCheckDuplicate(watchId);
                   }}
                 >
                   중복 확인
