@@ -94,7 +94,7 @@ export const requestFindPw = async (id: string, name: string, setLoading: any) =
 };
 
 // 상품 상세조회
-export const getProductDetail = async (category: string, itemId: string) => {
+export const getProductDetail = async (category: string, itemId: string, setIsNotFound: any) => {
   let res: any = {};
   try {
     res = await authInstance.get(`search/${category}/detail/${itemId}`);

@@ -23,7 +23,7 @@ const ProductItem = ({ item }: productItem) => {
     item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan';
 
   return (
-    <Div onClick={() => navigate(`detail/${item.itemId}`, { state: category })}>
+    <Div onClick={() => navigate(`detail/${category}/${item.itemId}`, { state: category })}>
       <Item bankName={bankName}>
         <div>
           <h4>{item.bank}</h4>

@@ -7,7 +7,7 @@ type Props = { item: DataType };
 function LoanProductCard({ item }: Props) {
   const navigate = useNavigate();
   return (
-    <LinkWrap onClick={() => navigate(`/detail/${item.itemId}`, { state: 'loan' })}>
+    <LinkWrap onClick={() => navigate(`/detail/loan/${item.itemId}`)}>
       <Item bankName={item.bank}>
         <div>
           <h4>{item.bank}</h4>

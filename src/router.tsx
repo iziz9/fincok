@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
-        path: 'detail/:productId',
+        path: 'detail/:category/:productId',
         element: <Detail />,
       },
       {
@@ -63,10 +63,6 @@ const router = createBrowserRouter([
         element: <AllProducts />,
       },
       {
-        path: '*',
-        element: <NotFound />,
-      },
-      {
         path: 'allproducts/depositlist',
         element: <DepositList />,
       },
@@ -85,6 +81,10 @@ const router = createBrowserRouter([
       {
         path: 'wish',
         element: <Wish />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

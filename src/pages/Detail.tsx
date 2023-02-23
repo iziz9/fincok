@@ -40,16 +40,19 @@ export interface CartType {
 const Detail = () => {
   const navigate = useNavigate();
   const { pathname, state } = useLocation();
-  const category = state;
-  const itemId = pathname.split('/')[2];
+  // const category = state;
+  const category = pathname.split('/')[2];
+  const itemId = pathname.split('/')[3];
+  console.log(category, itemId);
   const [info, setInfo] = useState<ProductType>();
   const [cartList, setCartList] = useState<CartArrayType>([]);
   const [isOnCart, setIsOnCart] = useState<boolean>(false);
   const [likeState, setLikeState] = useState<boolean>(false);
+  const [isNotfound, setIsNotFound] = useState<boolean>(false);
 
   useEffect(() => {
     async function getData() {
-      const data = await getProductDetail(category, itemId);
+      const data = await getProductDetail(category, itemId, setIsNotFound);
       setInfo(data);
       setLikeState(data.wish);
       const list = [];
