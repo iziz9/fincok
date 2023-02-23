@@ -109,67 +109,74 @@ const Search = () => {
 
   return (
     <Container>
-      <SearchForm>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <input
-            type="text"
-            value={searchTitle}
-            placeholder="검색어를 입력해 주세요"
-            onChange={(e) => handleChange(e)}
-          />
-          <button
-            aria-label="submit"
-            onClick={() => {
-              handleSubmit(searchTitle);
-            }}
-          >
-            <BiSearch size="24" color="var(--color-light-grey)" />
-          </button>
-        </form>
-      </SearchForm>
-      <SearchList>
-        <ProductTap>
-          <button className={active[0] ? 'active' : ''} onClick={handleDeposits}>
-            적금 / 예금 상품
-          </button>
-          <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
-            대출 상품
-          </button>
-        </ProductTap>
-        {onProduct === 1 ? (
-          deposits.length > 0 ? (
-            deposits.map((item: any, idx) => {
-              return <SearchItem item={item} key={idx} />;
-            })
-          ) : (
-            <span>
-              <NoList>검색결과가 없습니다.</NoList>
-            </span>
-          )
-        ) : onProduct === 2 ? (
-          loans.length > 0 ? (
-            loans.map((item: any, idx) => {
-              return <SearchItem item={item} key={idx} />;
-            })
-          ) : (
-            <span>
-              <NoList>검색결과가 없습니다.</NoList>
-            </span>
-          )
-        ) : searchList.length > 0 ? (
-          searchList.map((item: any, idx) => {
-            return <SearchItem item={item} key={idx} />;
-          })
-        ) : (
-          <span>
-            <NoList>검색결과가 없습니다.</NoList>
-          </span>
-        )}
-      </SearchList>
+      {getCookie('accessToken') ? (
+        <>
+          <SearchForm>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <input
+                type="text"
+                value={searchTitle}
+                placeholder="검색어를 입력해 주세요"
+                onChange={(e) => handleChange(e)}
+              />
+              <button
+                aria-label="submit"
+                onClick={() => {
+                  handleSubmit(searchTitle);
+                }}
+              >
+                <BiSearch size="24" color="var(--color-light-grey)" />
+              </button>
+            </form>
+          </SearchForm>
+          <SearchList>
+            <ProductTap>
+              <button className={active[0] ? 'active' : ''} onClick={handleDeposits}>
+                적금 / 예금 상품
+              </button>
+              <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
+                대출 상품
+              </button>
+            </ProductTap>
+            {onProduct === 1 ? (
+              deposits.length > 0 ? (
+                deposits.map((item: any, idx) => {
+                  return <SearchItem item={item} key={idx} />;
+                })
+              ) : (
+                <span>
+                  <NoList>검색결과가 없습니다.</NoList>
+                </span>
+              )
+            ) : onProduct === 2 ? (
+              loans.length > 0 ? (
+                loans.map((item: any, idx) => {
+                  return <SearchItem item={item} key={idx} />;
+                })
+              ) : (
+                <span>
+                  <NoList>검색결과가 없습니다.</NoList>
+                </span>
+              )
+            ) : searchList.length > 0 ? (
+              searchList.map((item: any, idx) => {
+                return <SearchItem item={item} key={idx} />;
+              })
+            ) : (
+              <span>
+                <NoList>검색결과가 없습니다.</NoList>
+              </span>
+            )}
+          </SearchList>
+        </>
+      ) : (
+        <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
+      )}
+
       <div ref={ref}></div>
     </Container>
   );
