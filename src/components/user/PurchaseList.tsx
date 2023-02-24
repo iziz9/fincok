@@ -19,10 +19,6 @@ function PurchaseList() {
     }
   };
 
-  // const newList = () => {
-  //   for ()
-  // }
-
   useEffect(() => {
     const getList = async () => {
       try {
