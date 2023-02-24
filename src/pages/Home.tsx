@@ -73,7 +73,7 @@ const Home = () => {
             <p>가입한 상품</p>
             <p>{cart} 건</p>
           </Cart>
-          <Link to={'/cart'}>장바구니 보러가기</Link>
+          <Link to={'/purchase'}>가입상품 보러가기</Link>
         </MyPage>
       ) : (
         <NotUser>

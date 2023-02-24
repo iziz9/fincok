@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { TbArrowBack } from 'react-icons/tb';
 import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
 import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getProductDetail } from '../api/api';
+import { getProductDetail, purchaseAlert } from '../api/api';
 import { requestSetWishList, requestDelWishList } from '../api/wishApi';
 import { getCookie } from '../utils/cookie';
 import AlertLoginState from '../components/common/AlertLoginState';
@@ -13,7 +13,6 @@ import { setColor, setDeepColor } from '../utils/list';
 import { useAppDispatch } from '../hooks/useDispatchHooks';
 import { hideLoading, showLoading } from '../store/loadingSlice';
 import AlertModal from '../utils/AlertModal';
-import { authInstance } from '../api/axios';
 
 export interface ProductType {
   bank: string;
@@ -50,6 +49,8 @@ const Detail = () => {
   const [info, setInfo] = useState<ProductType>();
   const [cartList, setCartList] = useState<CartArrayType>([]);
   const [likeState, setLikeState] = useState<boolean>(false);
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const [list, setList] = useState(cart);
 
   useEffect(() => {
     async function getData() {
@@ -93,29 +94,15 @@ const Detail = () => {
     setDeepColorState(setDeepColor);
   }, []);
 
-  const heartStyle: object = {
-    backgroundColor: '#fff',
-    width: '28px',
-    height: '28px',
-    cursor: 'pointer',
-    borderRadius: '25px',
-    padding: '12px',
-  };
-  const cartStyle: object = {
-    backgroundColor: '#fff',
-    width: '28px',
-    height: '28px',
-    cursor: 'pointer',
-    borderRadius: '25px',
-    padding: '12px',
-    color: 'black',
-  };
-  const iconStyle: object = {
-    width: '45px',
-    height: '45px',
-    padding: '10px',
-    backgroundColor: '#fff',
-    borderRadius: '50px',
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(list));
+  }, [list]);
+
+  const deleteItem = (id: number) => {
+    const deleted = list.filter((item: any) => {
+      return item[0] !== id;
+    });
+    setList(deleted);
   };
 
   const delayText = info?.delay?.split('%');
@@ -157,6 +144,30 @@ const Detail = () => {
     requestSetWishList(formData, setLikeState);
   };
 
+  const heartStyle: object = {
+    backgroundColor: '#fff',
+    width: '28px',
+    height: '28px',
+    cursor: 'pointer',
+    borderRadius: '25px',
+    padding: '12px',
+  };
+  const cartStyle: object = {
+    backgroundColor: '#fff',
+    width: '28px',
+    height: '28px',
+    cursor: 'pointer',
+    borderRadius: '25px',
+    padding: '12px',
+    color: 'black',
+  };
+  const iconStyle: object = {
+    width: '45px',
+    height: '45px',
+    padding: '10px',
+    backgroundColor: '#fff',
+    borderRadius: '50px',
+  };
   return (
     <main>
       {getCookie('accessToken') ? (
@@ -239,6 +250,9 @@ const Detail = () => {
                       }}
                     />
                   )}
+                  <button onClick={() => purchaseAlert({ id: info.itemId, dispatch })}>
+                    상품 신청하기
+                  </button>
                   <HiOutlineShoppingBag style={cartStyle} onClick={() => addCartHandler()} />
                 </Heart>
               </ColoredSection>
@@ -287,7 +301,7 @@ const Detail = () => {
 };
 
 const ColoredSection = styled.section`
-  height: 500px;
+  height: 520px;
   position: relative;
 `;
 const FlatSection = styled.section`
@@ -319,14 +333,18 @@ const Tag = styled.div`
   text-align: center;
 `;
 const Heart = styled.div`
-  width: 150px;
+  width: 100%
   height: 80px;
   display: flex;
   gap: 20px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  justify-content: center;
+  position: relative;
+  top: 30px;
   color: #f74440;
+
+  button {
+    width: 300px;
+  }
 `;
 const ColDiv = styled.div`
   display: flex;

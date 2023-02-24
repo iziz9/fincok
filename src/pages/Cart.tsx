@@ -8,7 +8,7 @@ import { getCookie } from '../utils/cookie';
 import AlertLoginState from '../components/common/AlertLoginState';
 
 const Cart = () => {
-  const cart = JSON.parse(localStorage.getItem('cart') || "[]");
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const [list, setList] = useState(cart);
 
   useEffect(() => {
