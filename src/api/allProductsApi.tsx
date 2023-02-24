@@ -1,3 +1,4 @@
+import AlertModal from '../utils/AlertModal';
 import { instance } from './axios';
 
 // 전체 적금 상품 조회
@@ -15,7 +16,10 @@ export const getSavingsList = async (
     setLastPage(data.last);
     setLoading(false);
   } catch (err) {
-    alert(err);
+    AlertModal({
+      message: '에러가 발생했습니다. 다시 시도해주세요.',
+      type: 'alert',
+    });
   }
 };
 
@@ -34,7 +38,10 @@ export const getDepositList = async (
     setLastPage(data.last);
     setLoading(false);
   } catch (err) {
-    alert(err);
+    AlertModal({
+      message: '에러가 발생했습니다. 다시 시도해주세요.',
+      type: 'alert',
+    });
   }
 };
 
@@ -53,11 +60,14 @@ export const getMortgageLoan = async (
     setLastPage(data.last);
     setLoading(false);
   } catch (err) {
-    alert(err);
+    AlertModal({
+      message: '에러가 발생했습니다. 다시 시도해주세요.',
+      type: 'alert',
+    });
   }
 };
 
-// 전체 전세자금대출 조회 
+// 전체 전세자금대출 조회
 export const getCharterLoan = async (
   page = 1,
   setResult: any,
@@ -72,6 +82,9 @@ export const getCharterLoan = async (
     setLastPage(data.last);
     setLoading(false);
   } catch (err) {
-    alert(err);
+    AlertModal({
+      message: '에러가 발생했습니다. 다시 시도해주세요.',
+      type: 'alert',
+    });
   }
 };

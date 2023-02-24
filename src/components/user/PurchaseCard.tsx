@@ -53,6 +53,7 @@ const Button = styled.button`
   transform: translateY(-50%);
   right: 20px;
   background-color: var(--color-dark-grey);
+  border-radius: 100%;
 
   :hover {
     background-color: #fff;
