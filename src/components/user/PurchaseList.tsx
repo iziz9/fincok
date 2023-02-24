@@ -12,16 +12,11 @@ function PurchaseList() {
     try {
       removePurchase(Number(itemId));
       alert(`${itemName} 상품 신청이 취소되었습니다.`);
-      // setAllData()
       console.log(allData);
     } catch (err) {
       alert('에러가 발생했습니다.');
     }
   };
-
-  // const newList = () => {
-  //   for ()
-  // }
 
   useEffect(() => {
     const getList = async () => {
