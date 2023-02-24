@@ -28,7 +28,7 @@
 
 ### 참고자료
 
-- [icons8](https://icons8.kr/icons/clouds)
+- <a href="https://www.flaticon.com/free-icons/shop" title="shop icons">Shop icons created by smalllikeart - Flaticon</a>
 - <a href="https://www.freepik.com/free-vector/404-error-lost-space-concept-illustration_20602744.htm#query=404&position=35&from_view=search&track=sph">Image by storyset</a> on Freepik
 - <a href="https://kr.freepik.com/free-vector/bank-login-concept-illustration_20602901.htm#page=5&query=login&position=44&from_view=search&track=sph">작가 storyset</a> 출처 Freepik
 - <a href="https://kr.freepik.com/free-vector/flat-design-do-not-enter-sign_22204216.htm#page=4&query=enter&position=26&from_view=search&track=sph">Freepik</a>

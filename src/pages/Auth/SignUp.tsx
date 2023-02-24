@@ -355,13 +355,13 @@ const SignUp = () => {
                 <span>이용약관 동의</span>
                 <span style={{ color: 'red' }}>(필수)</span>
               </div>
-              <Policy1 />
+              <Policy2 />
               <div className="flex">
                 <input type="checkbox" required />
                 <span>개인정보 수집 및 이용 동의</span>
                 <span style={{ color: 'red' }}>(필수)</span>
               </div>
-              <Policy2 />
+              <Policy1 />
             </Div>
 
             <SubmitButton type="submit">회원가입</SubmitButton>
