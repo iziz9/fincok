@@ -5,7 +5,7 @@ import SignUp from './pages/Auth/SignUp';
 import Cart from './pages/Cart';
 import Detail from './pages/Detail';
 import Home from './pages/Home';
-import MyPage from './pages/MyPage';
+import MyPage from './pages/user/MyPage';
 import Search from './pages/Search';
 import Recommend from './pages/Recommend';
 import AllProducts from './pages/allProducts/AllProducts';
@@ -16,6 +16,8 @@ import SavingsList from './pages/allProducts/SavingsList';
 import MortgageLoan from './pages/allProducts/MortgageLoan';
 import CharterLoan from './pages/allProducts/CharterLoan';
 import Wish from './pages/Wish';
+import UserInfoEdit from './pages/user/UserInfoEdit';
+import CertifyUser from './pages/user/CertifyUser';
 
 const router = createBrowserRouter([
   {
@@ -85,6 +87,14 @@ const router = createBrowserRouter([
       {
         path: '*',
         element: <NotFound />,
+      },
+      {
+        path: 'user/info',
+        element: <UserInfoEdit />,
+      },
+      {
+        path: 'user/certify',
+        element: <CertifyUser />
       },
     ],
   },
