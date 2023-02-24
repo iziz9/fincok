@@ -4,14 +4,12 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 type ConfirmType = {
-  type: string;
-  message: string;
-  action?: any;
+  type: string; // alert, confirm 구분
+  message: string; // 확인 눌렀을 때 동작할 함수
+  action?: any; // 띄울 메시지
 };
-// 타입: alert, confirm 구분
-// 액션: 확인 눌렀을 때 동작할 함수
-// 메시지 : 띄울 메시지
 
+// 사용방법
 // AlertModal({
 //   message: '이동하시겠습니까?',
 //   action: () => {
