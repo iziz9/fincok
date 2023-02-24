@@ -117,6 +117,27 @@ const GlobalStyles = createGlobalStyle`
   }
   .react-confirm-alert-overlay {
     background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+  }
+  .popup-overlay {
+    // background-color: rgba(243, 185, 152, 0.7);
+    background-color: beige;
+    width: 300px;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+  }
+  .react-confirm-alert-overlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  .confirm-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    button {
+      width: 100px;
+    }
   }
 `;
 

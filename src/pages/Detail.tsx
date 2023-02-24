@@ -12,6 +12,7 @@ import AlertLoginState from '../components/common/AlertLoginState';
 import { setColor, setDeepColor } from '../utils/list';
 import { useAppDispatch } from '../hooks/useDispatchHooks';
 import { hideLoading, showLoading } from '../store/loadingSlice';
+import AlertModal from '../utils/AlertModal';
 
 export interface ProductType {
   bank: string;
@@ -61,7 +62,10 @@ const Detail = () => {
         const list = [[data.itemId, data.itemName, data.bank, data.category]];
         setCartList(list);
       } catch (err) {
-        alert(err);
+        AlertModal({
+          message: '다시 시도해주세요.',
+          type: 'alert',
+        });
       } finally {
         dispatch(hideLoading());
       }
@@ -106,24 +110,31 @@ const Detail = () => {
   const addCartHandler = () => {
     if (!localStorage.getItem('cart')) {
       localStorage.setItem('cart', JSON.stringify(cartList));
-      window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
-        ? navigate('/cart')
-        : null;
+      AlertModal({
+        message: '장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?',
+        action: () => navigate('/cart'),
+        type: 'confirm',
+      });
       return;
     } else if (
       localStorage
         .getItem('cart')
         ?.includes(JSON.stringify([info?.itemId, info?.itemName, info?.bank, info?.category]))
     ) {
-      alert('이미 담긴 상품입니다. 장바구니를 확인해주세요.');
+      AlertModal({
+        message: '이미 담긴 상품입니다. 장바구니를 확인해주세요.',
+        type: 'alert',
+      });
       return;
     } else {
       const prevList = JSON.parse(localStorage.getItem('cart')!);
       const nextList = [...prevList, ...cartList];
       localStorage.setItem('cart', JSON.stringify(nextList));
-      window.confirm('장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?')
-        ? navigate('/cart')
-        : null;
+      AlertModal({
+        message: '장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?',
+        action: () => navigate('/cart'),
+        type: 'confirm',
+      });
     }
   };
 

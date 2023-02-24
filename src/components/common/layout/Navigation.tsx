@@ -13,6 +13,7 @@ import { RiPushpinLine } from 'react-icons/ri';
 import { useAppSelector, useAppDispatch } from '../../../hooks/useDispatchHooks';
 import { userInit } from '../../../store/userSlice';
 import { userLoginInit } from '../../../store/loginSlice';
+import AlertModal from '../../../utils/AlertModal';
 
 type Props = {
   setActive: (active: boolean) => void;
@@ -49,14 +50,19 @@ const Navigation = ({ setActive }: Props) => {
       dispatch(userLoginInit());
       closeNav;
       if (res.resultCode === 'failed') {
-        throw new Error('로그아웃 에러');
+        AlertModal({
+          message: '로그아웃이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+          type: 'alert',
+        });
       } else {
         removeCookie('accessToken');
-        alert('로그아웃 되었습니다.');
         location.pathname = '/';
       }
     } catch (err) {
-      alert('로그아웃에 실패했습니다.');
+      AlertModal({
+        message: '로그아웃이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 

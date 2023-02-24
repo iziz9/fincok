@@ -12,6 +12,7 @@ import AlertLoginState from '../../components/common/AlertLoginState';
 import { useAppDispatch } from '../../hooks/useDispatchHooks';
 import { userLogin } from '../../store/loginSlice';
 import { setCookie } from '../../utils/cookie';
+import AlertModal from '../../utils/AlertModal';
 
 interface LoginForm {
   id: string;
@@ -46,16 +47,21 @@ const Login = () => {
     try {
       const res = await requestLogin(formData);
       if (res.resultCode === 'failed') {
-        throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
+        AlertModal({
+          message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+          type: 'alert',
+        });
       } else {
         const accessToken = res.accessToken;
         setCookie('accessToken', accessToken);
-        alert('로그인 완료');
         dispatch(userLogin(formData));
         location.pathname = '/';
       }
     } catch (err) {
-      alert(err);
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 
