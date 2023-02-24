@@ -10,12 +10,24 @@ import { MdOutlineEditOff } from 'react-icons/md';
 import { TbEdit, TbEditOff } from 'react-icons/tb';
 
 function UserInfoEdit() {
+
+  const formSchema = yup.object({
+    password: yup
+      .string()
+      .min(8, '영문, 숫자 포함 8자 이상 입력해주세요.')
+      .max(15, '최대 15자까지 입력 가능합니다.')
+      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/, '영문, 숫자를 모두 포함해야 합니다.'),
+    checkPw: yup
+      .string()
+      .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.')
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors }, // 버전 6라면 errors라고 작성함.
   } = useForm({
-    // resolver: yupResolver(),
+    resolver: yupResolver(formSchema),
   });
 
   const [userName, userMemberId, userBirth, userCategory, userBank, userDistrict, userJob] =
@@ -46,9 +58,67 @@ function UserInfoEdit() {
     );
   }, []);
 
+  const submitData = (data: SignupForm) => {
+    let birth =
+      data.year +
+      '-' +
+      (data.month.length === 1 ? data.month.padStart(2, '0') : data.month) +
+      '-' +
+      (data.date.length === 1 ? data.date.padStart(2, '0') : data.date) +
+      'T00:00:00';
+    const formData = new FormData();
+
+    for (let i = 0; i < 11; i += 1) {
+      if (
+        Object.keys(data)[i] === 'year' ||
+        Object.keys(data)[i] === 'month' ||
+        Object.keys(data)[i] === 'date' ||
+        Object.keys(data)[i] === 'checkPw'
+      ) {
+        null;
+      } else {
+        formData.append(Object.keys(data)[i], Object.values(data)[i]);
+      }
+    }
+    formData.set('birth', birth);
+    return formData;
+  };
+
+  const onSignup = async (data: SignupForm) => {
+    const formData = submitData(data);
+    try {
+      const { isExistId, res } = await requestSignUp(formData);
+      if (isExistId.data) {
+        AlertModal({
+          message: '이미 존재하는 아이디로는 가입할 수 없습니다. 비밀번호 찾기를 이용해주세요.',
+          type: 'alert',
+        });
+      } else if (res.data.resultCode === 'failed') {
+        AlertModal({
+          message: '에러가 발생했습니다. 다시 시도해주세요.',
+          type: 'alert',
+        });
+      } else {
+        AlertModal({
+          message: '회원가입이 완료되었습니다.',
+          type: 'alert',
+          action: () => {
+            location.pathname = '/login';
+          },
+        });
+      }
+    } catch (err) {
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
+    }
+  };
+
+
   return (
     <Wrap>
-      <form /* onSubmit={} */>
+      <form onSubmit={handleSubmit((data) => onSignup(data))}>
         <Div>
           <div>
             <RequiredOff>
@@ -81,7 +151,7 @@ function UserInfoEdit() {
             <Required><TbEdit /></Required>
             <CategoryTitle>직업</CategoryTitle>
           </div>
-          <select id="job" value={userJob} required {...register('job')}>
+          <select id="job" defaultValue={userJob} required {...register('job')}>
             {jobList.map((job, index) => (
               <option key={index} value={job}>
                 {job}
@@ -94,9 +164,9 @@ function UserInfoEdit() {
             <Required><TbEdit /></Required>
             <CategoryTitle>지역</CategoryTitle>
           </div>
-          <select id="district" value={userDistrict} required {...register('district')}>
+          <select id="district" defaultValue={userDistrict} required {...register('district')}>
             {addressList.map((district, index) => (
-              <option key={index} value={district}>
+              <option key={index} value={district} >
                 {district}
               </option>
             ))}
@@ -107,7 +177,7 @@ function UserInfoEdit() {
             <Required><TbEdit /></Required>
             <CategoryTitle>선호 은행</CategoryTitle>
           </div>
-          <select id="bank" value={userBank} required {...register('bank')}>
+          <select id="bank" defaultValue={userBank} required {...register('bank')}>
             {bankList.map((bank, index) => (
               <option key={index} value={bank}>
                 {bank}
@@ -129,7 +199,7 @@ function UserInfoEdit() {
                   value={category}
                   style={{ display: 'none' }}
                   {...register('category')}
-                  checked={category === userCategory ? true : false}
+                  defaultChecked={category === userCategory ? true : false}
                 />
                 <Label htmlFor={category}>{category}</Label>
               </div>
@@ -202,4 +272,17 @@ export const SubmitButton = styled.button`
   margin: 50px auto;
   font-size: 20px;
 `;
+interface SignupForm {
+  name: string;
+  memberId: string;
+  password: string;
+  checkPw?: string;
+  year: string;
+  month: string;
+  date: string;
+  job: string;
+  district: string;
+  bank: string;
+  category: string;
+}
 export default UserInfoEdit;

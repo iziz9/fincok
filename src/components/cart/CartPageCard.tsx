@@ -146,6 +146,14 @@ const Card = styled.div<{ bankName: string }>`
       ? 'var(--color-bank-green)'
       : props.bankName === '우리은행'
       ? 'var(--color-bank-puple)'
+      : props.bankName === '한국스탠다드차타드은행'
+      ? 'var(--color-bank-sky)'
+      : props.bankName === '농협은행'
+      ? 'var(--color-bank-pink)'
+      : props.bankName === '한국씨티은행'
+      ? 'var(--color-bank-teal)'
+      : props.bankName === '중소기업은행'
+      ? 'var(--color-bank-orange)'
       : 'var(--color-bg-grey)'};
 
   .name {

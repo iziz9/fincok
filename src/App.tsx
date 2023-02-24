@@ -18,6 +18,7 @@ function App() {
   const getLogin = useCallback(async () => {
     const response = await requestUserInfo();
     if (response) {
+      console.log(response);
       dispatch(
         userInfo({
           memberId: response.memberId,

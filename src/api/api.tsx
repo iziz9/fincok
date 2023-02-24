@@ -49,7 +49,7 @@ export const getRecommendProducts = async (page: number) => {
 };
 
 // 상품 상세조회
-export const getProductDetail = async (category: string, itemId: string, setIsNotFound: any) => {
+export const getProductDetail = async (category: string, itemId: string) => {
   const res = await authInstance.get(`search/${category}/detail/${itemId}`);
   return res.data;
 };
@@ -86,7 +86,8 @@ export const requestPurchase = async (formData: FormData) => {
 };
 // 신청상품 삭제
 export const removePurchase = async (itemId: number) => {
-  authInstance.put(`delete/purchase/${itemId}`)
+  authInstance
+    .put(`delete/purchase/${itemId}`)
     .then(function (res) {
       console.log(res.data);
       return res.data
@@ -116,7 +117,7 @@ export const editUserInfo = async (formData: FormData) => {
   return await authInstance.patch('member/update');
 };
 
-// 신청상품 전체 개수 
+// 신청상품 전체 개수
 export const getPurchaseLength = async () => {
-  return authInstance.get('count_purchase').then(res => res.data.resultData)
-}
+  return authInstance.get('count_purchase').then((res) => res.data.resultData);
+};
