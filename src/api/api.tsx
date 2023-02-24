@@ -88,8 +88,8 @@ export const requestPurchase = async (formData: FormData) => {
 export const removePurchase = async (itemId: number) => {
   authInstance.put(`delete/purchase/${itemId}`)
     .then(function (res) {
-      console.log(res);
-      return res
+      console.log(res.data);
+      return res.data
     })
     .catch(function (error) {
       console.log(error);
@@ -103,12 +103,12 @@ export const getDepositPurchase = async (setResult: SetStateAction<any>) => {
 };
 
 // 대출 신청상품 조회
-export const getLoanPurchase = async (setResult: SetStateAction<any>, setLoading: any) => {
+export const getLoanPurchase = async (setResult: SetStateAction<any>, setLoading: any, loading:boolean) => {
   const res = await authInstance.get(`loan/purchase_list?page=1`);
   const data = res.data.resultData;
   // console.log(data);
   setResult([...data.content]);
-  setLoading(true);
+  setLoading(!loading);
 };
 
 // 회원정보 수정

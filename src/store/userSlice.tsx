@@ -7,6 +7,8 @@ interface UserInfoState {
   birth: string | any;
   category: string | any;
   bank: string | any;
+  district: string | any;
+  job: string | any;
 }
 
 const initialState: UserInfoState = {
@@ -15,6 +17,8 @@ const initialState: UserInfoState = {
   birth: '',
   category: '',
   bank: '',
+  district: '',
+  job: '',
 };
 
 let user = createSlice({
@@ -27,6 +31,8 @@ let user = createSlice({
       state.birth = action.payload.birth;
       state.category = action.payload.category;
       state.bank = action.payload.bank;
+      state.district = action.payload.district;
+      state.job = action.payload.job
     },
     userInit(state) {
       state.memberId = '';
@@ -34,6 +40,8 @@ let user = createSlice({
       state.birth = '';
       state.category = '';
       state.bank = '';
+      state.district= '';
+      state.job = ''
     },
   },
 });

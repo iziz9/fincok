@@ -16,15 +16,15 @@ function PurchaseList() {
 
   const removeButton = (itemId:number) => {
     removePurchase(itemId);
+    setAllData([])
   }
 
   useEffect(() => {
     (async () => {
-      setAllData([])
       await getDepositPurchase(setDepositData);
-      await getLoanPurchase(setLoanData, setLoading);
+      await getLoanPurchase(setLoanData, setLoading, loading);
     })();
-  }, []);
+  }, [allData]);
 
   useEffect(() => {
     setAllData([...depositData, ...loanData]);

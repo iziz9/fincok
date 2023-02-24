@@ -25,6 +25,8 @@ function App() {
           birth: response.birth,
           category: response.category,
           bank: response.bank,
+          district: response.district,
+          job: response.job,
         }),
       );
     }

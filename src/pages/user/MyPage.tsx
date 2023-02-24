@@ -1,10 +1,10 @@
 import React from 'react';
-import PurchaseList from '../components/user/PurchaseList';
-import UserProfile from '../components/user/UserProfile';
-import Setting from '../components/user/Setting';
+import PurchaseList from '../../components/user/PurchaseList';
+import UserProfile from '../../components/user/UserProfile';
+import Setting from '../../components/user/Setting';
 import styled from 'styled-components';
-import { getCookie } from '../utils/cookie';
-import AlertLoginState from '../components/common/AlertLoginState';
+import { getCookie } from '../../utils/cookie';
+import AlertLoginState from '../../components/common/AlertLoginState';
 
 const MyPage = () => {
   return (

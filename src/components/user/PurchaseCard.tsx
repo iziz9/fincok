@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function PurchaseCard({ item, removeButton }: any) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Wrap>
       <LinkWrap
         onClick={() =>
           navigate(
-            `/detail/${item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan'}/${
-              item.itemId
-            }`,
+            `/detail/${
+              item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan'
+            }/${item.itemId}`
           )
         }
       >
@@ -28,7 +28,10 @@ function PurchaseCard({ item, removeButton }: any) {
       </LinkWrap>
       <Button
         onClick={() => {
-          removeButton(item.itemId);
+          if (confirm(`${item.itemName}상품을 정말로 삭제 하시겠습니까?`)) {
+            removeButton(Number(item.purchaseId));
+            alert(`${item.itemName}상품이 삭제되었습니다.`);
+          }
         }}
       >
         <MdDelete size={30} color={'#fff'} />

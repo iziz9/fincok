@@ -2,24 +2,25 @@ import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useDispatchHooks';
 
 function UserProfile() {
-  const name = useAppSelector((state) => state.user.name);
+  const name = useAppSelector((state) => state.user.name); 
+  const navigate = useNavigate()
 
   return (
     <>
       <ProfileBox>
         <FaUserCircle size="80" color="var(--color-light-grey)" />
-        <MoreBox to="/">
+        <MoreBox onClick={()=>navigate('info')}>
           <UserText>
             <strong>{name}</strong>&nbsp;님
           </UserText>
-          <p>
+          <div>
             내 정보 확인하기
             <MdKeyboardArrowRight />
-          </p>
+          </div>
         </MoreBox>
       </ProfileBox>
 
@@ -41,8 +42,9 @@ const ProfileBox = styled.div`
   align-items: center;
   margin-bottom: 20px;
 `;
-const MoreBox = styled(Link)`
+const MoreBox = styled.div`
   padding-left: 26px;
+  cursor: pointer;
   p {
     :last-child {
       display: flex;
