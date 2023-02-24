@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import LoanProductCard from '../../components/allProducts/LoanProductCard';
 import { DataType } from './AllProducts';
 import styled from 'styled-components';
+import AlertModal from '../../utils/AlertModal';
 
 function MortgageLoan() {
   const [mortgageLoanData, setMortgageLoanData] = useState<DataType>([]);
@@ -23,7 +24,11 @@ function MortgageLoan() {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     if (inView && !loading) {
       if (!lastPage) setPageNumber((prevState) => prevState + 1);
-      // else alert('마지막 상품입니다.')
+      else
+        AlertModal({
+          message: '마지막 상품입니다.',
+          type: 'alert',
+        });
     }
   }, [inView, loading]);
 
@@ -47,5 +52,5 @@ function MortgageLoan() {
 }
 const Wrap = styled.div`
   padding: 0 30px;
-`
+`;
 export default MortgageLoan;

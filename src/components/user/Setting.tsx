@@ -41,14 +41,14 @@ function Setting() {
       <LinkBox to="/cart">
         <FelxBox>
           <AiOutlineShoppingCart size="22" />
-          <p>장바구니 상품</p>
+          <p>장바구니</p>
         </FelxBox>
         <MdKeyboardArrowRight size="22" />
       </LinkBox>
       <LinkBox to="/wish">
         <FelxBox>
           <HiOutlineHeart size="22" />
-          <p>관심 상품</p>
+          <p>관심상품</p>
         </FelxBox>
         <MdKeyboardArrowRight size="22" />
       </LinkBox>
