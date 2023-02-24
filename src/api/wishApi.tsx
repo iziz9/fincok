@@ -1,6 +1,7 @@
 import { instance, authInstance } from './axios';
 import { setCookie, getCookie, removeCookie } from '../utils/cookie';
 import { SetStateAction } from 'react';
+import AlertModal from '../utils/AlertModal';
 
 // 관심상품등록
 export const requestSetWishList = async (
@@ -12,7 +13,10 @@ export const requestSetWishList = async (
     const res = await authInstance.post('wish', formData);
     setLikeState(true);
     if (res.data.resultCode === 'duplicate') {
-      alert('이미 관심등록된 상품입니다.');
+      AlertModal({
+        message: '이미 관심등록된 상품입니다.',
+        type: 'alert',
+      });
     }
     console.log(res.data);
   } catch (err) {
@@ -75,7 +79,7 @@ export const getLoanWishList = async (
   }
 };
 
-// 관심상품 갯수 조회
+// 가입신청중인 상품 갯수 조회 (신청취소 제외)
 export const getWishCount = async () => {
   return await authInstance.get('count_purchase');
 };

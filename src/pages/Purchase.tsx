@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { getDepositPurchase, getLoanPurchase, removePurchase } from '../../api/api';
-import PurchaseCard from './PurchaseCard';
+import { getDepositPurchase, getLoanPurchase, removePurchase } from '../api/api';
+import { getWishCount } from '../api/wishApi';
+import PurchaseCard from '../components/user/PurchaseCard';
 import styled from 'styled-components';
 
-function PurchaseList() {
+function Purchase() {
   const [depositData, setDepositData] = useState([]);
   const [loanData, setLoanData] = useState([]);
   const [allData, setAllData] = useState([]);
+  const [count, setCount] = useState([]);
+  const [toggle, setToggle] = useState(true);
 
   const removeButton = (itemId: number, itemName: string) => {
     try {
@@ -23,6 +26,8 @@ function PurchaseList() {
       try {
         const depositList = await getDepositPurchase();
         const loanList = await getLoanPurchase();
+        const countOnPurchase = await getWishCount();
+        setCount(countOnPurchase.data.resultData);
         setDepositData(depositList.data.resultData);
         setLoanData(loanList.data.resultData);
       } catch (err) {
@@ -35,30 +40,34 @@ function PurchaseList() {
   useEffect(() => {
     setAllData([...depositData, ...loanData]);
   }, [depositData, loanData]);
-  allData?.map((item: any) => console.log(item))
+  // allData?.map((item: any) => console.log(item));
+
   return (
-    <Wrap>
-      <h3>가입상품</h3>
-      <p>가입한 {}개의 상품이 있습니다.</p>
-      <div>
-        {allData?.length ? (
-          allData?.map((item: any) => {
-            return item.status === '신청완료' ? (
-              <div key={item.purchaseId}>
-                <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton} />
-              </div>
-            ) : null;
-          })
-        ) : (
-          <p>구매 상품이 없습니다.</p>
-        )}
-      </div>
-    </Wrap>
+    <main>
+      <Wrap>
+        <h1>가입상품</h1>
+        <p>가입(신청)중인 {count}개의 상품이 있습니다.</p>
+        <div>
+          {allData?.length ? (
+            allData?.map((item: any) => {
+              return item.status === '신청완료' ? (
+                <div key={item.purchaseId}>
+                  <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton} />
+                </div>
+              ) : null;
+            })
+          ) : (
+            <p>구매 상품이 없습니다.</p>
+          )}
+        </div>
+      </Wrap>
+    </main>
   );
 }
 const Wrap = styled.div`
+  padding: 20px 35px 60px;
   margin-top: 50px;
-  h3 {
+  h1 {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 15px;
@@ -87,5 +96,4 @@ const Wrap = styled.div`
     color: #fff;
   }
 `;
-
-export default PurchaseList;
+export default Purchase;

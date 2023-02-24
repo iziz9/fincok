@@ -1,7 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { requestLogout } from '../../api/api';
-import { HiOutlineHeart } from 'react-icons/hi';
+import { HiOutlineHeart, HiOutlineClipboardCheck } from 'react-icons/hi';
 import { MdKeyboardArrowRight, MdErrorOutline } from 'react-icons/md';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useAppDispatch } from '../../hooks/useDispatchHooks';
@@ -11,7 +10,7 @@ import { removeCookie } from '../../utils/cookie';
 import styled from 'styled-components';
 import AlertModal from '../../utils/AlertModal';
 
-function Setting() {
+function MyMenu() {
   const dispatch = useAppDispatch();
   const handleLogout = async () => {
     try {
@@ -37,7 +36,7 @@ function Setting() {
 
   return (
     <SettingWrap>
-      <h3>설정</h3>
+      <h3>마이메뉴</h3>
       <LinkBox to="/cart">
         <FelxBox>
           <AiOutlineShoppingCart size="22" />
@@ -52,6 +51,15 @@ function Setting() {
         </FelxBox>
         <MdKeyboardArrowRight size="22" />
       </LinkBox>
+
+      <LinkBox to="/purchase">
+        <FelxBox>
+          <HiOutlineClipboardCheck size="22" />
+          <p>가입상품</p>
+        </FelxBox>
+        <MdKeyboardArrowRight size="22" />
+      </LinkBox>
+
       <Logout onClick={() => handleLogout()}>
         <FelxBox>
           <MdErrorOutline size="22" color="var(--color-orange)" />
@@ -104,4 +112,4 @@ const FelxBox = styled.div`
     padding-left: 10px;
   }
 `;
-export default Setting;
+export default MyMenu;
