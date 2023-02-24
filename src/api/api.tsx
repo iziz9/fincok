@@ -1,5 +1,6 @@
 import { instance, authInstance } from './axios';
-import { SetStateAction } from 'react';
+import { hideLoading, showLoading } from '../store/loadingSlice';
+import AlertModal from '../utils/AlertModal';
 
 //로그인
 export const requestLogin = async (formData: FormData) => {
@@ -119,4 +120,64 @@ export const editUserInfo = async (formData: FormData) => {
 // 신청상품 전체 개수
 export const getPurchaseLength = async () => {
   return await authInstance.get('count_purchase').then((res) => res.data.resultData);
+};
+
+// 상품신청 시 알림 이메일 전송
+export const sendPurchaseMail = async (formData: FormData) => {
+  const res = await authInstance.post('purchase/send_mail', formData);
+  return res;
+};
+
+// 상품신청 alert 추가
+export const purchaseAlert = async ({
+  id,
+  deleteItem,
+  dispatch,
+}: {
+  id: number;
+  deleteItem?: any;
+  dispatch?: any;
+}) => {
+  const res = await getPurchaseLength();
+  if (res <= 10) {
+    const formData = new FormData();
+    formData.append('itemId', String(id));
+    try {
+      dispatch(showLoading());
+      const res = await requestPurchase(formData);
+      const email = await sendPurchaseMail(formData);
+      if (res.data.resultCode === 'duplicate') {
+        AlertModal({
+          message: '이미 신청한 상품입니다.',
+          type: 'alert',
+        });
+      } else if (res.data.resultCode === 'failed') {
+        AlertModal({
+          message: '신청할 수 없는 상품입니다. 해당 은행으로 문의 바랍니다.',
+          type: 'alert',
+        });
+      } else {
+        deleteItem && deleteItem(id);
+        AlertModal({
+          message: `신청이 완료되었습니다. 이메일로 신청 내역을 확인해주세요.
+            신청하신 은행에서 영업일 기준 3일 이내 확인 연락을 드릴 예정입니다.`,
+          type: 'alert',
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
+    } finally {
+      dispatch(hideLoading());
+    }
+  } else {
+    AlertModal({
+      message:
+        '최대 신청개수(10개)를 초과했습니다. \n 마이페이지에서 가입하지 않을 상품을 삭제하고 다시 시도해주세요.',
+      type: 'alert',
+    });
+  }
 };

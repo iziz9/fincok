@@ -8,8 +8,8 @@ import { GrClose } from 'react-icons/gr';
 import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
-import { HiOutlineUser, HiOutlineClipboardList } from 'react-icons/hi';
-import { RiPushpinLine } from 'react-icons/ri';
+import { HiOutlineUser, HiOutlineClipboardCheck, HiOutlineHeart } from 'react-icons/hi';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useAppSelector, useAppDispatch } from '../../../hooks/useDispatchHooks';
 import { userInit } from '../../../store/userSlice';
 import { userLoginInit } from '../../../store/loginSlice';
@@ -122,17 +122,24 @@ const Navigation = ({ setActive }: Props) => {
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
-          <Link to={'/recommend'} onClick={closeNav}>
+          <Link to={'/cart'} onClick={closeNav}>
             <li>
-              <RiPushpinLine color="var(--color-black)" />
-              맞춤 추천
+              <AiOutlineShoppingCart color="var(--color-black)" />
+              장바구니
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
-          <Link to={'/allproducts'} onClick={closeNav}>
+          <Link to={'/wish'} onClick={closeNav}>
             <li>
-              <HiOutlineClipboardList color="var(--color-black)" />
-              전체 상품
+              <HiOutlineHeart color="var(--color-black)" />
+              관심상품
+              <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
+            </li>
+          </Link>
+          <Link to={'/purchase'} onClick={closeNav}>
+            <li>
+              <HiOutlineClipboardCheck color="var(--color-black)" />
+              가입상품
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
