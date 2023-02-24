@@ -1,14 +1,23 @@
 import { HiHeart } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
 
 type Props = { item: DataType; wishClick: Function };
 
 function WishCard({ item, wishClick }: Props) {
+  const navigate = useNavigate();
+
   return (
     <Wrap>
-      <LinkWrap to={`/detail/${item.itemId}`}>
+      <LinkWrap
+        onClick={() =>
+          navigate(
+            `/detail/${
+              item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan'
+            }/${item.itemId}`,
+          )
+        }
+      >
         <Item bankName={item.bank}>
           <div>
             <h4>{item.bank}</h4>
@@ -24,7 +33,7 @@ function WishCard({ item, wishClick }: Props) {
           wishClick(item.itemId);
         }}
       >
-        <HiHeart size={30} color={'var(--color-dark-grey)'}/>
+        <HiHeart size={30} color={'var(--color-dark-grey)'} />
       </Button>
     </Wrap>
   );
@@ -32,7 +41,8 @@ function WishCard({ item, wishClick }: Props) {
 const Wrap = styled.div`
   position: relative;
 `;
-const LinkWrap = styled(Link)`
+const LinkWrap = styled.div`
+  cursor: pointer;
   width: 100%;
 `;
 const Button = styled.button`
@@ -40,12 +50,11 @@ const Button = styled.button`
   top: 0;
   right: 0;
   background-color: transparent;
-  :hover{
-  background-color: transparent;
-
+  :hover {
+    background-color: transparent;
   }
-  svg{
-    :hover{
+  svg {
+    :hover {
       fill: var(--color-orange);
     }
   }
@@ -95,7 +104,6 @@ const Item = styled.div<{ bankName: string }>`
     margin-top: auto;
   }
 `;
-
 
 export type DataType = {
   itemId: string;

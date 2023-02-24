@@ -1,14 +1,21 @@
 import React from 'react';
-import { HiHeart } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
+import { MdDelete } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-function PurchaseCard({ item }: any) {
-  console.log(item)
-
+function PurchaseCard({ item, removeButton }: any) {
+  const navigate = useNavigate()
   return (
     <Wrap>
-      <LinkWrap to={`/detail/${item.itemId}`}>
+      <LinkWrap
+        onClick={() =>
+          navigate(
+            `/detail/${item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan'}/${
+              item.itemId
+            }`,
+          )
+        }
+      >
         <Item bankName={item.bank}>
           <div>
             <h4>{item.bank}</h4>
@@ -19,8 +26,12 @@ function PurchaseCard({ item }: any) {
           </span>
         </Item>
       </LinkWrap>
-      <Button onClick={() => {}}>
-        <HiHeart size={30} color={'var(--color-dark-grey)'} />
+      <Button
+        onClick={() => {
+          removeButton(item.itemId);
+        }}
+      >
+        <MdDelete size={30} color={'#fff'} />
       </Button>
     </Wrap>
   );
@@ -28,26 +39,28 @@ function PurchaseCard({ item }: any) {
 
 const Wrap = styled.div`
   position: relative;
+  cursor: pointer;
 `;
-const LinkWrap = styled(Link)`
+const LinkWrap = styled.div`
   width: 100%;
 `;
 const Button = styled.button`
   position: absolute;
-  top: 0;
-  right: 0;
-  background-color: transparent;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  background-color: var(--color-dark-grey);
+
   :hover {
-    background-color: transparent;
-  }
-  svg {
-    :hover {
+    background-color: #fff;
+    svg {
       fill: var(--color-orange);
     }
   }
 `;
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;
+  padding-right: 50px;
   height: 100px;
   border-radius: 15px;
   display: flex;
@@ -85,6 +98,7 @@ const Item = styled.div<{ bankName: string }>`
     font-size: 20px;
     line-height: 1.2em;
     font-weight: bold;
+    padding-right: 20px;
   }
   span {
     font-weight: bold;

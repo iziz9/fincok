@@ -11,7 +11,6 @@ export const getSavingsList = async (
     setLoading(true);
     const res = await instance.get(`savings_list?page=${page}`);
     const data = res.data;
-    console.log(data);
     setResult((prevState: any) => [...prevState, ...data.content]);
     setLastPage(data.last);
     setLoading(false);
@@ -31,7 +30,6 @@ export const getDepositList = async (
     setLoading(true);
     const res = await instance.get(`deposit_list?page=${page}`);
     const data = res.data;
-    console.log(data);
     setResult((prevState: any) => [...prevState, ...data.content]);
     setLastPage(data.last);
     setLoading(false);
@@ -51,7 +49,6 @@ export const getMortgageLoan = async (
     setLoading(true);
     const res = await instance.get(`mortgage_loan?page=${page}`);
     const data = res.data;
-    console.log(data);
     setResult((prevState: any) => [...prevState, ...data.content]);
     setLastPage(data.last);
     setLoading(false);
@@ -71,7 +68,6 @@ export const getCharterLoan = async (
     setLoading(true);
     const res = await instance.get(`charter_loan?page=${page}`);
     const data = res.data;
-    console.log(data);
     setResult((prevState: any) => [...prevState, ...data.content]);
     setLastPage(data.last);
     setLoading(false);
