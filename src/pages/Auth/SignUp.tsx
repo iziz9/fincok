@@ -7,6 +7,8 @@ import { requestSignUp } from '../../api/api';
 import { checkIdAvailable } from '../../api/api';
 import { getCookie } from '../../utils/cookie';
 import AlertLoginState from '../../components/common/AlertLoginState';
+import AlertModal from '../../utils/AlertModal';
+import { Policy1, Policy2 } from '../../components/singup/Policy';
 
 interface SignupForm {
   name: string;
@@ -101,15 +103,29 @@ const SignUp = () => {
     try {
       const { isExistId, res } = await requestSignUp(formData);
       if (isExistId.data) {
-        alert('이미 존재하는 아이디로는 가입할 수 없습니다. 비밀번호 찾기를 이용해주세요.');
+        AlertModal({
+          message: '이미 존재하는 아이디로는 가입할 수 없습니다. 비밀번호 찾기를 이용해주세요.',
+          type: 'alert',
+        });
       } else if (res.data.resultCode === 'failed') {
-        throw new Error('정상적인 가입 요청이 아닙니다.');
+        AlertModal({
+          message: '에러가 발생했습니다. 다시 시도해주세요.',
+          type: 'alert',
+        });
       } else {
-        alert('회원가입이 완료되었습니다!');
-        location.pathname = '/login';
+        AlertModal({
+          message: '회원가입이 완료되었습니다.',
+          type: 'alert',
+          action: () => {
+            location.pathname = '/login';
+          },
+        });
       }
     } catch (err) {
-      alert(err);
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 
@@ -117,12 +133,21 @@ const SignUp = () => {
     try {
       const res = await checkIdAvailable(watchId);
       if (res.data === true) {
-        alert('이미 존재하는 아이디입니다. 비밀번호 찾기를 이용해주세요.');
+        AlertModal({
+          message: '이미 존재하는 아이디입니다. 비밀번호 찾기를 이용해주세요.',
+          type: 'alert',
+        });
       } else {
-        alert('사용 가능한 아이디입니다.');
+        AlertModal({
+          message: '사용 가능한 아이디입니다.',
+          type: 'alert',
+        });
       }
     } catch (err) {
-      alert(err);
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 
@@ -319,6 +344,26 @@ const SignUp = () => {
                 ))}
               </RadioDiv>
             </Div>
+
+            <Div>
+              <div>
+                <Required>*</Required>
+                <CategoryTitle>이용약관</CategoryTitle>
+              </div>
+              <div className="flex">
+                <input type="checkbox" required />
+                <span>이용약관 동의</span>
+                <span style={{ color: 'red' }}>(필수)</span>
+              </div>
+              <Policy1 />
+              <div className="flex">
+                <input type="checkbox" required />
+                <span>개인정보 수집 및 이용 동의</span>
+                <span style={{ color: 'red' }}>(필수)</span>
+              </div>
+              <Policy2 />
+            </Div>
+
             <SubmitButton type="submit">회원가입</SubmitButton>
           </form>
         </>
@@ -338,6 +383,20 @@ export const Div = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .flex {
+    display: flex;
+    line-height: 25px;
+
+    span {
+      padding-left: 5px;
+    }
+  }
 `;
 const Required = styled.span`
   font-size: 20px;

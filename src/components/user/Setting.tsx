@@ -9,6 +9,7 @@ import { userInit } from '../../store/userSlice';
 import { userLoginInit } from '../../store/loginSlice';
 import { removeCookie } from '../../utils/cookie';
 import styled from 'styled-components';
+import AlertModal from '../../utils/AlertModal';
 
 function Setting() {
   const dispatch = useAppDispatch();
@@ -18,14 +19,19 @@ function Setting() {
       dispatch(userInit());
       dispatch(userLoginInit());
       if (res.resultCode === 'failed') {
-        throw new Error('로그아웃 에러');
+        AlertModal({
+          message: '로그아웃이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+          type: 'alert',
+        });
       } else {
         removeCookie('accessToken');
-        alert('로그아웃 되었습니다.');
         location.pathname = '/';
       }
     } catch (err) {
-      alert('로그아웃에 실패했습니다.');
+      AlertModal({
+        message: '로그아웃이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 

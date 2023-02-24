@@ -4,6 +4,7 @@ import { hideLoading, showLoading } from '../../store/loadingSlice';
 import { useAppDispatch } from '../../hooks/useDispatchHooks';
 import { useNavigate } from 'react-router-dom';
 import { getPurchaseLength, requestPurchase } from '../../api/api';
+import AlertModal from '../../utils/AlertModal';
 
 function CartPageCard({ storage, deleteItem }: any) {
   const navigate = useNavigate();
@@ -19,24 +20,39 @@ function CartPageCard({ storage, deleteItem }: any) {
         dispatch(showLoading());
         const res = await requestPurchase(formData);
         if (res.data.resultCode === 'duplicate') {
-          alert('이미 신청한 상품입니다.');
+          AlertModal({
+            message: '이미 신청한 상품입니다.',
+            type: 'alert',
+          });
         } else if (res.data.resultCode === 'failed') {
-          alert('신청할 수 없는 상품입니다. 해당 은행으로 문의 바랍니다.');
+          AlertModal({
+            message: '신청할 수 없는 상품입니다. 해당 은행으로 문의 바랍니다.',
+            type: 'alert',
+          });
         } else {
-          alert(
-            '신청이 완료되었습니다. 신청하신 은행에서 영업일 기준 3일 이내 확인 연락을 드릴 예정입니다.',
-          );
+          AlertModal({
+            message:
+              '신청이 완료되었습니다. 신청하신 은행에서 영업일 기준 3일 이내 확인 연락을 드릴 예정입니다.',
+            type: 'alert',
+          });
           deleteItem(itemId);
         }
       } catch (err) {
         console.log(err);
+        AlertModal({
+          message: '에러가 발생했습니다. 다시 시도해주세요.',
+          type: 'alert',
+        });
       } finally {
         dispatch(hideLoading());
       }
-    } else
-      alert(
-        '최대 신청개수(10개)를 초과했습니다. \n 마이페이지에서 신청상품을 삭제하고 다시 시도해주세요.',
-      );
+    } else {
+      AlertModal({
+        message:
+          '최대 신청개수(10개)를 초과했습니다. \n 마이페이지에서 신청상품을 삭제하고 다시 시도해주세요.',
+        type: 'alert',
+      });
+    }
   };
 
   return (
