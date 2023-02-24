@@ -91,7 +91,7 @@ const Home = () => {
         {token ? (
           <Swiper
             slidesPerView={1.3}
-            spaceBetween={15}
+            spaceBetween={20}
             pagination={{
               clickable: true,
             }}

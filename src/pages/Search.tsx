@@ -219,7 +219,7 @@ const SearchList = styled.div`
   padding: 30px 35px;
   display: flex;
   flex-flow: column;
-  gap: 20px;
+  gap: 25px;
   span {
     margin-top: 40px;
   }
