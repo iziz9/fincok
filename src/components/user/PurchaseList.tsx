@@ -11,24 +11,23 @@ import { Pagination } from 'swiper';
 function PurchaseList() {
   const [depositData, setDepositData] = useState([]);
   const [loanData, setLoanData] = useState([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [allData, setAllData] = useState([]);
-
+  
   const removeButton = (itemId:number) => {
     removePurchase(itemId);
-    setAllData([])
   }
-
+  
   useEffect(() => {
     (async () => {
       await getDepositPurchase(setDepositData);
-      await getLoanPurchase(setLoanData, setLoading, loading);
+      await getLoanPurchase(setLoanData);
     })();
-  }, [allData]);
-
+  }, []);
+  
+  console.log('PurchaseList')
   useEffect(() => {
     setAllData([...depositData, ...loanData]);
-  }, [loading]);
+  }, [loanData]);
 
   const pagination = {
     clickable: true,

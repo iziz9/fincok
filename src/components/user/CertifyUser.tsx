@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { getCookie } from '../../utils/cookie';
 import { Main, SubmitButton, Div, CategoryTitle } from '../../pages/Auth/SignUp';
-import AlertLoginState from '../../components/common/AlertLoginState';
+import AlertLoginState from '../common/AlertLoginState';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useDispatchHooks';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,7 +14,7 @@ import { requestLogin } from '../../api/api';
 import { IoMailOutline } from 'react-icons/io5';
 import { SlLock } from 'react-icons/sl';
 
-function CertifyUser() {
+function CertifyUser({setCertify, setPassword}:any) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userMemberId =
@@ -52,7 +52,7 @@ function CertifyUser() {
         });
       } else {
         dispatch(userLogin(formData));
-        location.pathname = 'user/info';
+        setCertify(true)
       }
     } catch (err) {
       AlertModal({
@@ -69,6 +69,7 @@ function CertifyUser() {
         <form
           onSubmit={handleSubmit((data) => {
             onSubmit(data.id, data.pw);
+            setPassword(data.pw)
           })}
         >
           <Div>
@@ -116,7 +117,6 @@ function CertifyUser() {
         </form>
         <Flexdiv>
           <NavSpan onClick={() => navigate('/findpassword')}>비밀번호 찾기</NavSpan> /{' '}
-          <NavSpan onClick={() => navigate('/signup')}>회원가입</NavSpan>
         </Flexdiv>
       </>
       ) : (

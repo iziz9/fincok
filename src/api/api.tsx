@@ -104,12 +104,11 @@ export const getDepositPurchase = async (setResult: SetStateAction<any>) => {
 };
 
 // 대출 신청상품 조회
-export const getLoanPurchase = async (setResult: SetStateAction<any>, setLoading: any, loading:boolean) => {
+export const getLoanPurchase = async (setResult: SetStateAction<any>) => {
   const res = await authInstance.get(`loan/purchase_list?page=1`);
   const data = res.data.resultData;
-  // console.log(data);
-  setResult([...data.content]);
-  setLoading(!loading);
+  console.log(data);
+  return setResult([...data.content]);
 };
 
 // 회원정보 수정
