@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Loading from './components/common/Loading';
 import CategoryBar from './components/common/layout/CategoryBar';
@@ -15,25 +15,13 @@ function App() {
   const dispatch = useAppDispatch();
   const token = getCookie('accessToken');
 
-  // const getSecrets = useCallback(async () => {
-  //   const response = await requestUserInfo();
-  //   if (response) {
-  //     dispatch(
-  //       userInfo({
-  //         memberId: response.memberId,
-  //         name: response.name,
-  //         birth: response.birth,
-  //         category: response.category,
-  //         bank: response.bank,
-  //       }),
-  //     );
-  //   }
-  // }, []);
+  useEffect(() => {
+    token ? null : localStorage.setItem('cart', '[]');
+  }, []);
 
   const getLogin = useCallback(async () => {
     const response = await requestUserInfo();
     if (response) {
-      console.log(response);
       dispatch(
         userInfo({
           memberId: response.memberId,

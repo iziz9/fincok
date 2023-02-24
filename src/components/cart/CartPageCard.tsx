@@ -1,59 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { hideLoading, showLoading } from '../../store/loadingSlice';
 import { useAppDispatch } from '../../hooks/useDispatchHooks';
 import { useNavigate } from 'react-router-dom';
-import { getPurchaseLength, requestPurchase } from '../../api/api';
-import AlertModal from '../../utils/AlertModal';
+import { purchaseAlert } from '../../api/api';
 
 function CartPageCard({ storage, deleteItem }: any) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [itemId, setItemId] = useState();
-
-  const purchase = async (id: number) => {
-    const res = await getPurchaseLength();
-    if (res <= 10) {
-      const formData = new FormData();
-      formData.append('itemId', String(id));
-      try {
-        dispatch(showLoading());
-        const res = await requestPurchase(formData);
-        if (res.data.resultCode === 'duplicate') {
-          AlertModal({
-            message: '이미 신청한 상품입니다.',
-            type: 'alert',
-          });
-        } else if (res.data.resultCode === 'failed') {
-          AlertModal({
-            message: '신청할 수 없는 상품입니다. 해당 은행으로 문의 바랍니다.',
-            type: 'alert',
-          });
-        } else {
-          AlertModal({
-            message:
-              '신청이 완료되었습니다. 신청하신 은행에서 영업일 기준 3일 이내 확인 연락을 드릴 예정입니다.',
-            type: 'alert',
-          });
-          deleteItem(itemId);
-        }
-      } catch (err) {
-        console.log(err);
-        AlertModal({
-          message: '에러가 발생했습니다. 다시 시도해주세요.',
-          type: 'alert',
-        });
-      } finally {
-        dispatch(hideLoading());
-      }
-    } else {
-      AlertModal({
-        message:
-          '최대 신청개수(10개)를 초과했습니다. \n 마이페이지에서 신청상품을 삭제하고 다시 시도해주세요.',
-        type: 'alert',
-      });
-    }
-  };
 
   return (
     <>
@@ -79,13 +33,13 @@ function CartPageCard({ storage, deleteItem }: any) {
             <div className="buttonbox">
               <button
                 onClick={() => {
-                  purchase(item[0]);
+                  purchaseAlert({ id: item[0], deleteItem, dispatch });
                   setItemId(item[0]);
                 }}
               >
                 신청
               </button>
-              <button onClick={() => deleteItem(item[0])}>삭제</button>
+              <button onClick={() => deleteItem(item[0], dispatch)}>삭제</button>
             </div>
           </td>
         </Tr>

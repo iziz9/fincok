@@ -17,6 +17,7 @@ import MortgageLoan from './pages/allProducts/MortgageLoan';
 import CharterLoan from './pages/allProducts/CharterLoan';
 import Wish from './pages/Wish';
 import UserInfo from './pages/user/UserInfo';
+import Purchase from './pages/Purchase';
 
 const router = createBrowserRouter([
   {
@@ -84,12 +85,16 @@ const router = createBrowserRouter([
         element: <Wish />,
       },
       {
-        path: '*',
-        element: <NotFound />,
-      },
-      {
         path: 'user/info',
         element: <UserInfo />,
+      },
+      {
+        path: 'purchase',
+        element: <Purchase />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

@@ -6,7 +6,7 @@ import AlertModal from '../../utils/AlertModal';
 import { getCookie } from '../../utils/cookie';
 
 function MyProducts() {
-  const cart = JSON.parse(localStorage.getItem('cart')!);
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const [wishList, setWishList] = useState(0);
   const token = getCookie('accessToken');
 
@@ -32,7 +32,7 @@ function MyProducts() {
         </LinkBox>
         <LinkBox to="/cart">
           <img src="/bag.png" alt="관심상품" style={{ width: '70px' }} />
-          {token ? <p>장바구니 {cart.length}개</p> : <p>장바구니 목록</p>}
+          {token ? <p>장바구니 {cart?.length}개</p> : <p>장바구니 목록</p>}
         </LinkBox>
       </FlexBox>
       <FlexBox>
