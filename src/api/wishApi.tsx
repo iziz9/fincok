@@ -74,3 +74,8 @@ export const getLoanWishList = async (
     alert(err);
   }
 };
+
+// 관심상품 갯수 조회
+export const getWishCount = async () => {
+  return await authInstance.get('count_purchase');
+};
