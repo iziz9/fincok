@@ -7,6 +7,7 @@ import { requestSignUp } from '../../api/api';
 import { checkIdAvailable } from '../../api/api';
 import { getCookie } from '../../utils/cookie';
 import AlertLoginState from '../../components/common/AlertLoginState';
+import AlertModal from '../../utils/AlertModal';
 
 interface SignupForm {
   name: string;
@@ -101,15 +102,29 @@ const SignUp = () => {
     try {
       const { isExistId, res } = await requestSignUp(formData);
       if (isExistId.data) {
-        alert('이미 존재하는 아이디로는 가입할 수 없습니다. 비밀번호 찾기를 이용해주세요.');
+        AlertModal({
+          message: '이미 존재하는 아이디로는 가입할 수 없습니다. 비밀번호 찾기를 이용해주세요.',
+          type: 'alert',
+        });
       } else if (res.data.resultCode === 'failed') {
-        throw new Error('정상적인 가입 요청이 아닙니다.');
+        AlertModal({
+          message: '에러가 발생했습니다. 다시 시도해주세요.',
+          type: 'alert',
+        });
       } else {
-        alert('회원가입이 완료되었습니다!');
-        location.pathname = '/login';
+        AlertModal({
+          message: '회원가입이 완료되었습니다.',
+          type: 'alert',
+          action: () => {
+            location.pathname = '/login';
+          },
+        });
       }
     } catch (err) {
-      alert(err);
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 
@@ -117,12 +132,21 @@ const SignUp = () => {
     try {
       const res = await checkIdAvailable(watchId);
       if (res.data === true) {
-        alert('이미 존재하는 아이디입니다. 비밀번호 찾기를 이용해주세요.');
+        AlertModal({
+          message: '이미 존재하는 아이디입니다. 비밀번호 찾기를 이용해주세요.',
+          type: 'alert',
+        });
       } else {
-        alert('사용 가능한 아이디입니다.');
+        AlertModal({
+          message: '사용 가능한 아이디입니다.',
+          type: 'alert',
+        });
       }
     } catch (err) {
-      alert(err);
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 

@@ -11,6 +11,7 @@ import { BeatLoader } from 'react-spinners';
 import { getCookie } from '../../utils/cookie';
 import AlertLoginState from '../../components/common/AlertLoginState';
 import { instance } from '../../api/axios';
+import AlertModal from '../../utils/AlertModal';
 
 type findForm = {
   memberId: string;
@@ -41,7 +42,10 @@ const FindPassword = () => {
     const isCorrectUser = await requestFindPw(memberId, name);
     try {
       if (isCorrectUser.data.resultCode === 'failed') {
-        alert('일치하는 회원정보가 없습니다. 다시 확인해주세요.');
+        AlertModal({
+          message: '일치하는 회원정보가 없습니다. 다시 확인해주세요.',
+          type: 'alert',
+        });
       } else {
         //로딩애니메이션 시작
         setLoading(true);
@@ -50,11 +54,20 @@ const FindPassword = () => {
         );
         setLoading(false);
         res.data.resultCode === 'success'
-          ? alert('비밀번호 재설정 메일이 전송되었습니다. 메일함을 확인해주세요.')
-          : alert('에러가 발생했습니다. 다시 시도해주세요.');
+          ? AlertModal({
+              message: '비밀번호 재설정 메일이 전송되었습니다. 메일함을 확인해주세요.',
+              type: 'alert',
+            })
+          : AlertModal({
+              message: '에러가 발생했습니다. 다시 시도해주세요.',
+              type: 'alert',
+            });
       }
     } catch (err) {
-      alert(err);
+      AlertModal({
+        message: '에러가 발생했습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
     }
   };
 
