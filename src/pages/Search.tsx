@@ -25,12 +25,9 @@ const Search = () => {
   const [loans, setLoans] = useState([]);
   const [loansLast, setLoansLast] = useState<boolean>(false);
 
-  // 전체 검색 리스트
-  const searchList = [...deposits, ...loans];
-
   // 상품별 조회 탭
-  const [active, setActive] = useState([false, false]);
-  const [onProduct, setOnProduct] = useState(0);
+  const [active, setActive] = useState([true, false]);
+  const [onProduct, setOnProduct] = useState(1);
 
   // 쿼리스트링
   const useQuery = () => {
@@ -88,7 +85,7 @@ const Search = () => {
   useEffect(() => {
     getSearchDeposit(setDeposits, setDepositsLast);
     getSearchLoan(setLoans, setLoansLast);
-  }, [getSearchDeposit, getSearchLoan, onProduct]);
+  }, [getSearchDeposit, getSearchLoan]);
 
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 마지막 페이지 일 때
@@ -114,6 +111,28 @@ const Search = () => {
   const handleLoans = () => {
     setActive([false, true]);
     setOnProduct(2);
+  };
+
+  const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    let { value } = e.target;
+    if (value === '0') {
+      if (onProduct === 1) {
+        let copyDeposits = [...deposits];
+        setDeposits(copyDeposits.sort((a: any, b: any) => a.itemName.localeCompare(b.itemName)));
+      } else {
+        let copyLoans = [...loans];
+        setLoans(copyLoans.sort((a: any, b: any) => a.itemName.localeCompare(b.itemName)));
+      }
+    }
+    if (value === '1') {
+      if (onProduct === 1) {
+        let copyDeposits = [...deposits];
+        setDeposits(copyDeposits.sort((a: any, b: any) => a.bank.localeCompare(b.bank)));
+      } else {
+        let copyLoans = [...loans];
+        setLoans(copyLoans.sort((a: any, b: any) => a.bank.localeCompare(b.bank)));
+      }
+    }
   };
 
   return (
@@ -150,6 +169,11 @@ const Search = () => {
               <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
                 대출 상품
               </button>
+              <select onChange={(e) => handleSort(e)}>
+                <option value="">선택</option>
+                <option value="0">이름순</option>
+                <option value="1">은행순</option>
+              </select>
             </ProductTap>
             {onProduct === 1 ? (
               deposits.length > 0 ? (
@@ -161,18 +185,8 @@ const Search = () => {
                   <NoList>검색결과가 없습니다.</NoList>
                 </span>
               )
-            ) : onProduct === 2 ? (
-              loans.length > 0 ? (
-                loans.map((item: any, idx) => {
-                  return <SearchItem item={item} key={idx} />;
-                })
-              ) : (
-                <span>
-                  <NoList>검색결과가 없습니다.</NoList>
-                </span>
-              )
-            ) : searchList.length > 0 ? (
-              searchList.map((item: any, idx) => {
+            ) : loans.length > 0 ? (
+              loans.map((item: any, idx) => {
                 return <SearchItem item={item} key={idx} />;
               })
             ) : (
@@ -205,14 +219,14 @@ const SearchList = styled.div`
   padding: 30px 35px;
   display: flex;
   flex-flow: column;
-  gap: 20px;
+  gap: 25px;
   span {
     margin-top: 40px;
   }
 `;
 
 const ProductTap = styled.div`
-  width: 60%;
+  width: 100%;
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -226,6 +240,11 @@ const ProductTap = styled.div`
       background-color: var(--color-black);
       color: var(--color-white);
     }
+  }
+  select {
+    margin-left: auto;
+    border: 1px solid var(--color-stroke);
+    background-color: var(--color-background);
   }
 `;
 

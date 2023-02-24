@@ -155,7 +155,7 @@ const Card = styled.div<{ bankName: string }>`
       : props.bankName === '중소기업은행'
       ? 'var(--color-bank-orange)'
       : 'var(--color-bg-grey)'};
-
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
   .name {
     font-size: 18px;
     font-weight: bold;

@@ -54,6 +54,7 @@ const Button = styled.button`
   transform: translateY(-50%);
   right: 20px;
   background-color: var(--color-dark-grey);
+  border-radius: 100%;
 
   :hover {
     background-color: #fff;
@@ -89,6 +90,7 @@ const Item = styled.div<{ bankName: string }>`
       : props.bankName === '중소기업은행'
       ? 'var(--color-bank-orange)'
       : 'var(--color-bg-grey)'};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
   div {
     display: flex;
     align-items: center;

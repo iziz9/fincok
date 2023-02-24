@@ -82,7 +82,8 @@ export const getLoan = async (title: string, page: number) => {
 
 // 상품 신청
 export const requestPurchase = async (formData: FormData) => {
-  return authInstance.post('purchase', formData);
+  const res = await authInstance.post('purchase', formData);
+  return res;
 };
 // 신청상품 삭제
 export const removePurchase = async (itemId: number) => {
@@ -90,35 +91,32 @@ export const removePurchase = async (itemId: number) => {
     .put(`delete/purchase/${itemId}`)
     .then(function (res) {
       console.log(res.data);
-      return res.data
+      return res.data;
     })
     .catch(function (error) {
       console.log(error);
     });
 };
 // 예/적금 신청상품 조회
-export const getDepositPurchase = async (setResult: SetStateAction<any>) => {
+export const getDepositPurchase = async () => {
   const res = await authInstance.get(`deposit/purchase_list?page=1`);
-  const data = res.data.resultData;
-  setResult([...data.content]);
+  return res;
 };
 
 // 대출 신청상품 조회
-export const getLoanPurchase = async (setResult: SetStateAction<any>) => {
+export const getLoanPurchase = async () => {
   const res = await authInstance.get(`loan/purchase_list?page=1`);
-  const data = res.data.resultData;
-  console.log(data);
-  return setResult([...data.content]);
+  return res;
 };
 
 // 회원정보 수정
 export const editUserInfo = async (formData: FormData) => {
   const res = await authInstance.patch('member/update', formData);
-  console.log(res.data)
-  return res
+  console.log(res.data);
+  return res;
 };
 
 // 신청상품 전체 개수
 export const getPurchaseLength = async () => {
-  return authInstance.get('count_purchase').then((res) => res.data.resultData);
+  return await authInstance.get('count_purchase').then((res) => res.data.resultData);
 };
