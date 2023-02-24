@@ -50,7 +50,7 @@ function MyProducts() {
 export const BoxWrap = styled.div`
   width: 100%;
   padding: 40px;
-  background-color: var(--color-dark-grey);
+  background-color: var(--color-background);
   box-sizing: border-box;
   margin-top: 40px;
   border-radius: 20px;
@@ -67,7 +67,7 @@ export const BoxWrap = styled.div`
     text-align: center;
   }
   p {
-    color: white;
+    font-weight: 600;
   }
 `;
 const FlexBox = styled.div`
