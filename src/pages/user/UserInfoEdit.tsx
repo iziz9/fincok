@@ -6,6 +6,8 @@ import { addressList, bankList, jobList, productList } from '../../utils/list';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { MdOutlineEditOff } from 'react-icons/md';
+import { TbEdit, TbEditOff } from 'react-icons/tb';
 
 function UserInfoEdit() {
   const {
@@ -46,76 +48,96 @@ function UserInfoEdit() {
 
   return (
     <Wrap>
-      <form action="">
-        <input type="text" value={userName} disabled />
-        <input type="text" value={userMemberId} disabled />
-        <input type="text" value={userBirthString} disabled />
+      <form /* onSubmit={} */>
+        <Div>
+          <div>
+            <RequiredOff>
+              <TbEditOff />
+            </RequiredOff>
+            <CategoryTitle>이름</CategoryTitle>
+          </div>
+          <input type="text" value={userName} disabled />
+        </Div>
+        <Div>
+          <div>
+            <RequiredOff>
+              <TbEditOff />
+            </RequiredOff>
+            <CategoryTitle>아이디(e-mail)</CategoryTitle>
+          </div>
+          <input type="text" value={userMemberId} disabled />
+        </Div>
+        <Div>
+          <div>
+            <RequiredOff>
+              <TbEditOff />
+            </RequiredOff>
+            <CategoryTitle>생년월일</CategoryTitle>
+          </div>
+          <input type="text" value={userBirthString} disabled />
+        </Div>
+        <Div>
+          <div>
+            <Required><TbEdit /></Required>
+            <CategoryTitle>직업</CategoryTitle>
+          </div>
+          <select id="job" value={userJob} required {...register('job')}>
+            {jobList.map((job, index) => (
+              <option key={index} value={job}>
+                {job}
+              </option>
+            ))}
+          </select>
+        </Div>
+        <Div>
+          <div>
+            <Required><TbEdit /></Required>
+            <CategoryTitle>지역</CategoryTitle>
+          </div>
+          <select id="district" value={userDistrict} required {...register('district')}>
+            {addressList.map((district, index) => (
+              <option key={index} value={district}>
+                {district}
+              </option>
+            ))}
+          </select>
+        </Div>
+        <Div>
+          <div>
+            <Required><TbEdit /></Required>
+            <CategoryTitle>선호 은행</CategoryTitle>
+          </div>
+          <select id="bank" value={userBank} required {...register('bank')}>
+            {bankList.map((bank, index) => (
+              <option key={index} value={bank}>
+                {bank}
+              </option>
+            ))}
+          </select>
+        </Div>
+        <Div>
+          <div>
+            <Required><TbEdit /></Required>
+            <CategoryTitle>관심있는 상품</CategoryTitle>
+          </div>
+          <RadioDiv>
+            {productList.map((category, index) => (
+              <div key={index}>
+                <input
+                  type="radio"
+                  id={category}
+                  value={category}
+                  style={{ display: 'none' }}
+                  {...register('category')}
+                  checked={category === userCategory ? true : false}
+                />
+                <Label htmlFor={category}>{category}</Label>
+              </div>
+            ))}
+          </RadioDiv>
+        </Div>
+        <SubmitButton type="submit">회원정보 수정</SubmitButton>
       </form>
-      <Div>
-        <div>
-          <Required>*</Required>
-          <CategoryTitle>직업</CategoryTitle>
-        </div>
-        <select id="job" required {...register('job')}>
-          {jobList.map((job, index) => (
-            <option key={index} value={job} selected={job === userJob ? true : false}>
-              {job}
-            </option>
-          ))}
-        </select>
-      </Div>
-      <Div>
-        <div>
-          <Required>*</Required>
-          <CategoryTitle>지역</CategoryTitle>
-        </div>
-        <select id="district" required {...register('district')}>
-          {addressList.map((district, index) => (
-            <option
-              key={index}
-              value={district}
-              selected={district === userDistrict ? true : false}
-            >
-              {district}
-            </option>
-          ))}
-        </select>
-      </Div>
-      <Div>
-        <div>
-          <Required>*</Required>
-          <CategoryTitle>선호 은행</CategoryTitle>
-        </div>
-        <select id="bank" required {...register('bank')}>
-          {bankList.map((bank, index) => (
-            <option key={index} value={bank} selected={bank === userBank ? true : false}>
-              {bank}
-            </option>
-          ))}
-        </select>
-      </Div>
-      <Div>
-        <div>
-          <Required>*</Required>
-          <CategoryTitle>관심있는 상품</CategoryTitle>
-        </div>
-        <RadioDiv>
-          {productList.map((category, index) => (
-            <div key={index}>
-              <input
-                type="radio"
-                id={category}
-                value={category}
-                defaultChecked={index === 0 ? true : false}
-                style={{ display: 'none' }}
-                {...register('category')}
-                checked={category === userCategory ? true : false}
-              />
-              <Label htmlFor={category}>{category}</Label>
-            </div>
-          ))}
-        </RadioDiv>
-      </Div>
     </Wrap>
   );
 }
@@ -129,11 +151,17 @@ export const Div = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
+const RequiredOff = styled.span`
+  font-size: 20px;
+  font-weight: 700;
+  color: #f74440;
+  margin-right: 5px;
+`
 const Required = styled.span`
   font-size: 20px;
   font-weight: 700;
+  color: #40f75b;
   margin-right: 5px;
-  color: #f74440;
 `;
 export const CategoryTitle = styled.span`
   display: inline-block;
@@ -168,5 +196,10 @@ const Label = styled.label`
     background-color: var(--color-orange);
     color: white;
   }
+`;
+export const SubmitButton = styled.button`
+  width: 100%;
+  margin: 50px auto;
+  font-size: 20px;
 `;
 export default UserInfoEdit;
