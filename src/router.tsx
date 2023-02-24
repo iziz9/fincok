@@ -17,6 +17,7 @@ import MortgageLoan from './pages/allProducts/MortgageLoan';
 import CharterLoan from './pages/allProducts/CharterLoan';
 import Wish from './pages/Wish';
 import UserInfoEdit from './pages/user/UserInfoEdit';
+import CertifyUser from './pages/user/CertifyUser';
 
 const router = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: 'user/info',
         element: <UserInfoEdit />,
+      },
+      {
+        path: 'user/certify',
+        element: <CertifyUser />
       },
     ],
   },

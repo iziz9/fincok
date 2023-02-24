@@ -114,7 +114,9 @@ export const getLoanPurchase = async (setResult: SetStateAction<any>, setLoading
 
 // 회원정보 수정
 export const editUserInfo = async (formData: FormData) => {
-  return await authInstance.patch('member/update');
+  const res = await authInstance.patch('member/update', formData);
+  console.log(res.data)
+  return res
 };
 
 // 신청상품 전체 개수
