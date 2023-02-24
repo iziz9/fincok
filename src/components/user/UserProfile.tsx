@@ -13,7 +13,7 @@ function UserProfile() {
     <>
       <ProfileBox>
         <FaUserCircle size="80" color="var(--color-light-grey)" />
-        <MoreBox onClick={()=>navigate('certify')}>
+        <MoreBox onClick={()=>navigate('info')}>
           <UserText>
             <strong>{name}</strong>&nbsp;님
           </UserText>

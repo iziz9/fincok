@@ -9,21 +9,25 @@ import { TbEdit, TbEditOff } from 'react-icons/tb';
 import AlertModal from '../../utils/AlertModal';
 import { editUserInfo } from '../../api/api';
 
-function UserInfoEdit() {
+function EditUser({ userPassword }: any) {
   const formSchema = yup.object({
     password: yup
       .string()
       .min(8, '영문, 숫자 포함 8자 이상 입력해주세요.')
       .max(15, '최대 15자까지 입력 가능합니다.')
       .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/, '영문, 숫자를 모두 포함해야 합니다.'),
-    checkPw: yup.string().oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.'),
+    checkPw: yup
+      .string()
+      .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.')
+      .required('필수 입력란입니다.'),
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors }, // 버전 6라면 errors라고 작성함.
-  } = useForm({
+  } = useForm<SignupForm>({
+    mode: 'onChange',
     resolver: yupResolver(formSchema),
   });
 
@@ -41,8 +45,9 @@ function UserInfoEdit() {
       ];
     });
   let userBirth = new Date(birth);
+  const date = new Date();
   const userYear = userBirth.getFullYear();
-  const userMonth = userBirth.getMonth();
+  const userMonth = userBirth.getMonth() + 1;
   const userDate = userBirth.getDate();
 
   useEffect(() => {
@@ -50,7 +55,7 @@ function UserInfoEdit() {
       userName,
       userMemberId,
       userYear,
-      userMonth,
+      userMonth + 1,
       userDate,
       userCategory,
       userBank,
@@ -73,8 +78,8 @@ function UserInfoEdit() {
       if (
         Object.keys(data)[i] === 'year' ||
         Object.keys(data)[i] === 'month' ||
-        Object.keys(data)[i] === 'date'
-        // || Object.keys(data)[i] === 'checkPw'
+        Object.keys(data)[i] === 'date' ||
+        Object.keys(data)[i] === 'checkPw'
       ) {
         null;
       } else {
@@ -202,10 +207,38 @@ function UserInfoEdit() {
             <Require>
               <TbEdit />
             </Require>
+            {errors?.password && (
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                {errors.checkPw?.message}
+              </span>
+            )}
             <CategoryTitle>비밀번호</CategoryTitle>
           </div>
-
-          <input type="password" id="password" defaultValue="a12345678" {...register('password')} />
+          <input
+            type="password"
+            id="password"
+            defaultValue={userPassword}
+            {...register('password')}
+          />
+        </Div>
+        <Div>
+          <div>
+            <Require>
+              <TbEdit />
+            </Require>
+            <CategoryTitle>비밀번호 체크</CategoryTitle>
+            {errors?.checkPw && (
+              <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                {errors.checkPw?.message}
+              </span>
+            )}
+          </div>
+          <input
+            type="password"
+            id="checkPw"
+            defaultValue={userPassword}
+            {...register('checkPw')}
+          />
         </Div>
         <Div>
           <div>
@@ -382,4 +415,4 @@ interface SignupForm {
   bank: string;
   category: string;
 }
-export default UserInfoEdit;
+export default EditUser;

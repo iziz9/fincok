@@ -47,8 +47,9 @@ const LinkWrap = styled.div`
 `;
 const Button = styled.button`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 24px;
+  right: 23px;
+  height: max-content;
   background-color: transparent;
   :hover {
     background-color: transparent;

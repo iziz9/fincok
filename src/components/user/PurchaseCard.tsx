@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import AlertModal from '../../utils/AlertModal';
 
 function PurchaseCard({ item, removeButton, setAllData }: any) {
+  console.log(item)
   const navigate = useNavigate();
   return (
     <Wrap>

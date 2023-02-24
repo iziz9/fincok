@@ -35,19 +35,19 @@ function PurchaseList() {
   useEffect(() => {
     setAllData([...depositData, ...loanData]);
   }, [depositData, loanData]);
-
+  allData?.map((item: any) => console.log(item))
   return (
     <Wrap>
       <h3>가입상품</h3>
-      <p>가입한 {allData.length}개의 상품이 있습니다.</p>
+      <p>가입한 {}개의 상품이 있습니다.</p>
       <div>
         {allData?.length ? (
           allData?.map((item: any) => {
-            return (
+            return item.status === '신청완료' ? (
               <div key={item.purchaseId}>
                 <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton} />
               </div>
-            );
+            ) : null;
           })
         ) : (
           <p>구매 상품이 없습니다.</p>
