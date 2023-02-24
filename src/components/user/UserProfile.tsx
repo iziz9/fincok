@@ -6,19 +6,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useDispatchHooks';
 
 function UserProfile() {
-  const name = useAppSelector((state) => state.user.name); 
-  const navigate = useNavigate()
+  const name = useAppSelector((state) => state.user.name);
+  const navigate = useNavigate();
 
   return (
     <>
       <ProfileBox>
         <FaUserCircle size="80" color="var(--color-light-grey)" />
-        <MoreBox onClick={()=>navigate('info')}>
+        <MoreBox onClick={() => navigate('info')}>
           <UserText>
             <strong>{name}</strong>&nbsp;님
           </UserText>
           <div>
-            내 정보 확인하기
+            내 정보 수정하기
             <MdKeyboardArrowRight />
           </div>
         </MoreBox>
@@ -27,10 +27,10 @@ function UserProfile() {
       <RecommendWrap>
         <TextBox>
           <strong>맞춤상품 추천</strong>
-          <p>나에게 맞는 상품 추천</p>
+          <p>나에게 맞는 상품이 궁금하다면?</p>
         </TextBox>
         <SignButton to="/recommend">
-          <button>가입</button>
+          <button>보러가기</button>
         </SignButton>
       </RecommendWrap>
     </>
@@ -81,8 +81,8 @@ const TextBox = styled.div`
   }
 `;
 const SignButton = styled(Link)`
-  width: 57px;
-  height: 38px;
+  width: 80px;
+  height: 40px;
   button {
     width: 100%;
     height: 100%;
