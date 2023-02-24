@@ -2,8 +2,10 @@ import React from 'react';
 import { MdDelete } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import AlertModal from '../../utils/AlertModal';
 
-function PurchaseCard({ item, removeButton }: any) {
+function PurchaseCard({ item, removeButton, setAllData }: any) {
+  console.log(item)
   const navigate = useNavigate();
   return (
     <Wrap>
@@ -27,15 +29,17 @@ function PurchaseCard({ item, removeButton }: any) {
         </Item>
       </LinkWrap>
       <Button
-        onClick={(e) => {
-          e.preventDefault();
-          if (confirm(`${item.itemName}상품을 정말로 삭제 하시겠습니까?`)) {
-            removeButton(Number(item.purchaseId));
-            alert(`${item.itemName}상품이 삭제되었습니다.`);
-          }
+        onClick={() => {
+          AlertModal({
+            message: `${item.itemName} 상품의 신청을 취소하시겠습니까?`,
+            action: () => {
+              removeButton(Number(item.purchaseId), item.itemName);
+            },
+            type: 'confirm',
+          });
         }}
       >
-        <MdDelete size={30} color={'#fff'} />
+        신청취소
       </Button>
     </Wrap>
   );
@@ -50,17 +54,13 @@ const LinkWrap = styled.div`
 `;
 const Button = styled.button`
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 60%;
   right: 20px;
+  padding: 10px;
   background-color: var(--color-dark-grey);
-  border-radius: 100%;
 
   :hover {
-    background-color: #fff;
-    svg {
-      fill: var(--color-orange);
-    }
+    background-color: var(--color-orange);
   }
 `;
 const Item = styled.div<{ bankName: string }>`
