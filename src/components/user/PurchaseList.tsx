@@ -2,25 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { getDepositPurchase, getLoanPurchase, removePurchase } from '../../api/api';
 import PurchaseCard from './PurchaseCard';
 import styled from 'styled-components';
-import { Pagination } from 'swiper';
 
 function PurchaseList() {
   const [depositData, setDepositData] = useState([]);
   const [loanData, setLoanData] = useState([]);
   const [allData, setAllData] = useState([]);
 
-  const removeButton = (itemId: number) => {
-    removePurchase(itemId);
-    setAllData([]);
+  const removeButton = (itemId: number, itemName: string) => {
+    try {
+      removePurchase(Number(itemId));
+      alert(`${itemName} 상품 신청이 취소되었습니다.`);
+      // setAllData()
+      console.log(allData);
+    } catch (err) {
+      alert('에러가 발생했습니다.');
+    }
   };
+
+  // const newList = () => {
+  //   for ()
+  // }
 
   useEffect(() => {
     const getList = async () => {
       try {
         const depositList = await getDepositPurchase();
         const loanList = await getLoanPurchase();
-        setDepositData(depositList.data.resultData.content);
-        setLoanData(loanList.data.resultData.content);
+        setDepositData(depositList.data.resultData);
+        setLoanData(loanList.data.resultData);
       } catch (err) {
         console.log(err);
       }
@@ -30,7 +39,6 @@ function PurchaseList() {
 
   useEffect(() => {
     setAllData([...depositData, ...loanData]);
-    console.log(allData);
   }, [depositData, loanData]);
 
   return (

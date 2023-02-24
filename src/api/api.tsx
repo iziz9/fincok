@@ -99,13 +99,13 @@ export const removePurchase = async (itemId: number) => {
 };
 // 예/적금 신청상품 조회
 export const getDepositPurchase = async () => {
-  const res = await authInstance.get(`deposit/purchase_list?page=1`);
+  const res = await authInstance.get(`deposit/purchase_list`);
   return res;
 };
 
 // 대출 신청상품 조회
 export const getLoanPurchase = async () => {
-  const res = await authInstance.get(`loan/purchase_list?page=1`);
+  const res = await authInstance.get(`loan/purchase_list`);
   return res;
 };
 
