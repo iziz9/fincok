@@ -11,7 +11,7 @@ type ConfirmType = {
 
 // 사용방법
 // AlertModal({
-//   message: '이동하시겠습니까?',
+//   message: '',
 //   action: () => {
 //     console.log('내비게이트');
 //   },
