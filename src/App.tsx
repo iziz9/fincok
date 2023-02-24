@@ -15,6 +15,21 @@ function App() {
   const dispatch = useAppDispatch();
   const token = getCookie('accessToken');
 
+  // const getSecrets = useCallback(async () => {
+  //   const response = await requestUserInfo();
+  //   if (response) {
+  //     dispatch(
+  //       userInfo({
+  //         memberId: response.memberId,
+  //         name: response.name,
+  //         birth: response.birth,
+  //         category: response.category,
+  //         bank: response.bank,
+  //       }),
+  //     );
+  //   }
+  // }, []);
+
   const getLogin = useCallback(async () => {
     const response = await requestUserInfo();
     if (response) {
