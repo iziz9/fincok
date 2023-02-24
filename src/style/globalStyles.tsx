@@ -18,8 +18,12 @@ const GlobalStyles = createGlobalStyle`
     --color-background: #fafaff;
     --color-bank-yellow: #fedC32;
     --color-bank-blue: #4091dc;
-    --color-bank-green: #1bd760;
+    --color-bank-green: #7ACF7D;
     --color-bank-puple: #bb90f4;
+    --color-bank-pink: #F5B1A8;
+    --color-bank-sky: #34C2EF;
+    --color-bank-orange: #FF9E44;
+    --color-bank-teal: #6CA9AD;
   }
   @font-face {
     font-family: 'SCoreDream';

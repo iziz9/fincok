@@ -178,6 +178,8 @@ export const Policy1 = () => {
         개인정보보호법 제31조 제1항에 따른 당행의 개인정보보호 책임자는 다음과 같습니다.
         구분	개인정보보호 책임자	개인정보보호 담당부서	개인정보 민원처리센터
         담당	정보보호그룹장 제원석	정보보호부	소비자지원부
+        FE : https://github.com/KDT3-MiniProject-8/MiniProject-FE
+        BE : https://github.com/KDT3-MiniProject-8/MiniProject-BE
         전화번호/FAX	02-0000-0000 / (FAX) 0505-000-0000	080-000-0000(내선6)
         개인정보 처리방침 버전번호 :V8.0
         개인정보 처리방침 변경공고일자: 2022.12.01

@@ -13,6 +13,7 @@ import { setColor, setDeepColor } from '../utils/list';
 import { useAppDispatch } from '../hooks/useDispatchHooks';
 import { hideLoading, showLoading } from '../store/loadingSlice';
 import AlertModal from '../utils/AlertModal';
+import { authInstance } from '../api/axios';
 
 export interface ProductType {
   bank: string;
@@ -48,24 +49,36 @@ const Detail = () => {
   const itemId = pathname.split('/')[3];
   const [info, setInfo] = useState<ProductType>();
   const [cartList, setCartList] = useState<CartArrayType>([]);
-  const [isOnCart, setIsOnCart] = useState<boolean>(false);
   const [likeState, setLikeState] = useState<boolean>(false);
-  const [isNotfound, setIsNotFound] = useState<boolean>(false);
 
   useEffect(() => {
     async function getData() {
       try {
         dispatch(showLoading());
-        const data = await getProductDetail(category, itemId, setIsNotFound);
+        const data = await getProductDetail(category, itemId);
         setInfo(data);
         setLikeState(data.wish);
         const list = [[data.itemId, data.itemName, data.bank, data.category]];
         setCartList(list);
-      } catch (err) {
-        AlertModal({
-          message: '다시 시도해주세요.',
-          type: 'alert',
-        });
+      } catch (err: any) {
+        if (err.response.status === 403) {
+          AlertModal({
+            message: '로그인 후 이용 가능합니다.',
+            type: 'alert',
+          });
+          return;
+        } else if (err.response.status === 500) {
+          AlertModal({
+            message: '상품이 존재하지 않습니다. 이전페이지로 돌아갑니다.',
+            type: 'alert',
+            action: () => history.back(),
+          });
+        } else {
+          AlertModal({
+            message: '에러가 발생했습니다. 잠시 후 다시 시도해주세요.',
+            type: 'alert',
+          });
+        }
       } finally {
         dispatch(hideLoading());
       }
