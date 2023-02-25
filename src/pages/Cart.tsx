@@ -46,6 +46,10 @@ const Cart = () => {
                     <CartPageCard storage={list} deleteItem={deleteItem} />
                   </tbody>
                 </Table>
+                <div className="spanDiv">
+                  <span>장바구니는 로그아웃 시 초기화됩니다.</span>
+                  <span>오래 보관하시려면 ❤️관심상품 기능을 이용해주세요.</span>
+                </div>
               </div>
             </>
           ) : (
@@ -77,6 +81,16 @@ const CartWrap = styled.div`
     font-size: 15px;
     font-weight: bold;
     color: var(--color-orange);
+  }
+  .spanDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 20px;
+    text-align: center;
+    span {
+      color: var(--color-orange);
+    }
   }
 `;
 

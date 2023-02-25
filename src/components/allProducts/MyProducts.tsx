@@ -26,7 +26,7 @@ function MyProducts() {
     <BoxWrap>
       <h3>나의 상품 바구니</h3>
       <FlexBox>
-        <LinkBox to="/user">
+        <LinkBox to="/purchase">
           <img src="/writing.png" alt="가입중인 상품" style={{ width: '70px' }} />
           {token ? <p>가입신청 {wishList}개</p> : <p>가입신청 목록</p>}
         </LinkBox>
