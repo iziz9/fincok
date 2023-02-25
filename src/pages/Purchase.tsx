@@ -11,29 +11,30 @@ function Purchase() {
   const [count, setCount] = useState([]);
   const [toggle, setToggle] = useState(true);
 
+  const getList = async () => {
+    try {
+      const depositList = await getDepositPurchase();
+      const loanList = await getLoanPurchase();
+      const countOnPurchase = await getWishCount();
+      setCount(countOnPurchase.data.resultData);
+      setDepositData(depositList.data.resultData);
+      setLoanData(loanList.data.resultData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const removeButton = (itemId: number, itemName: string) => {
     try {
       removePurchase(Number(itemId));
       alert(`${itemName} 상품 신청이 취소되었습니다.`);
-      console.log(allData);
+      getList();
     } catch (err) {
       alert('에러가 발생했습니다.');
     }
   };
 
   useEffect(() => {
-    const getList = async () => {
-      try {
-        const depositList = await getDepositPurchase();
-        const loanList = await getLoanPurchase();
-        const countOnPurchase = await getWishCount();
-        setCount(countOnPurchase.data.resultData);
-        setDepositData(depositList.data.resultData);
-        setLoanData(loanList.data.resultData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     getList();
   }, []);
 
