@@ -1,11 +1,4 @@
-export const jobList = [
-  '무직',
-  '학생',
-  '군인',
-  '자영업자',
-  '전문직',
-  '일반 직장인',
-];
+export const jobList = ['무직', '학생', '군인', '자영업자', '전문직', '직장인'];
 export const addressList = [
   '강원도',
   '경기도',
@@ -40,3 +33,9 @@ export const bankList = [
   '한국씨티은행',
 ];
 export const productList = ['적금', '정기예금', '전세자금대출', '주택담보대출'];
+
+const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
+const tagColor: Array<string> = ['#0C216F', '#09551A', '#645508', '#601783', '#2F2F2F', '#660936'];
+const colorIndex: number = Math.floor(Math.random() * bgColor.length);
+export const setColor: object = { backgroundColor: bgColor[colorIndex] };
+export const setDeepColor: object = { backgroundColor: tagColor[colorIndex] };

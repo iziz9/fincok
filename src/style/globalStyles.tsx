@@ -18,35 +18,54 @@ const GlobalStyles = createGlobalStyle`
     --color-background: #fafaff;
     --color-bank-yellow: #fedC32;
     --color-bank-blue: #4091dc;
-    --color-bank-green: #1bd760;
+    --color-bank-green: #7ACF7D;
     --color-bank-puple: #bb90f4;
+    --color-bank-pink: #F5B1A8;
+    --color-bank-sky: #34C2EF;
+    --color-bank-orange: #FF9E44;
+    --color-bank-teal: #6CA9AD;
   }
   @font-face {
-    font-family: 'S-CoreDream-3Light';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+    font-family: 'SCoreDream';
+    font-weight: lighter;
+    font-style: normal; 
+    src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff2) format('woff2'),
+         url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff) format('woff');
+    font-display: swap;
+  }
   @font-face {
-    font-family: 'Noto Sans KR';
-    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap') format('font-woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'SCoreDream';
+      font-weight: normal; 
+      font-style: normal; 
+      src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff2) format('woff2'),
+          url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff) format('woff');
+      font-display: swap;
+  }
+  @font-face {
+      font-family: 'SCoreDream';
+      font-weight: bold; 
+      font-style: normal; 
+      src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff2) format('woff2'),
+          url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff) format('woff');
+      font-display: swap;
   }
   body {
     width: 500px;
     min-height: 100vh;
     height: 100%;
     margin: 0 auto;
-    font-family: 'S-CoreDream-3Light', 'Noto Sans KR', sans-serif;
+    font-family: 'SCoreDream', sans-serif;
     font-size: 14px;
     background-color: var(--color-white);
     color: var(--color-black);
     position: relative;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    box-sizing: border-box;
   }
   h1 {
     font-size: 35px;
-    margin: 30px 0 0;
+    margin: 25px 0 0;
     font-weight: 600;
   }
   ul, li {
@@ -60,12 +79,14 @@ const GlobalStyles = createGlobalStyle`
     display: flex;
     cursor: pointer;
     outline: none;
+    border: none;
     border-radius: 8px;
     height: 50px;
     align-items: center;
     justify-content: center;
     background-color: var(--color-black);
     color: var(--color-white);
+    font-weight: bold;
 
     :hover {
       border-color: var(--color-orange);
@@ -100,6 +121,27 @@ const GlobalStyles = createGlobalStyle`
   }
   .react-confirm-alert-overlay {
     background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+  }
+  .popup-overlay {
+    // background-color: rgba(243, 185, 152, 0.7);
+    background-color: beige;
+    width: 300px;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+  }
+  .react-confirm-alert-overlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  .confirm-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    button {
+      width: 100px;
+    }
   }
 `;
 

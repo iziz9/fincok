@@ -1,30 +1,94 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TiHeartOutline, TiHeart } from 'react-icons/ti';
-import { IoMdArrowRoundBack } from 'react-icons/io';
-import { FcSalesPerformance } from 'react-icons/fc';
-import { FcMoneyTransfer } from 'react-icons/fc';
-import { GoHome } from 'react-icons/go';
-import { useNavigate } from 'react-router-dom';
+import { TbArrowBack } from 'react-icons/tb';
+import { FcSalesPerformance, FcMoneyTransfer } from 'react-icons/fc';
+import { HiOutlineHeart, HiHeart } from 'react-icons/hi';
+import { HiOutlineShoppingBag } from 'react-icons/hi2';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getProductDetail, purchaseAlert } from '../api/api';
+import { requestSetWishList, requestDelWishList } from '../api/wishApi';
+import { getCookie } from '../utils/cookie';
+import AlertLoginState from '../components/common/AlertLoginState';
+import { setColor, setDeepColor } from '../utils/list';
+import { useAppDispatch } from '../hooks/useDispatchHooks';
+import { hideLoading, showLoading } from '../store/loadingSlice';
+import AlertModal from '../utils/AlertModal';
+
+export interface ProductType {
+  bank: string;
+  category: string;
+  itemId: number;
+  itemName: string;
+  join: string;
+  limit: number | null;
+  mature?: string;
+  prefRate?: number;
+  preferences: string | null;
+  rate?: number;
+  target: string | null;
+  type: string;
+  delay?: string | null;
+  maxRate?: number;
+  minRate?: number;
+  wish: boolean;
+}
+export type CartArrayType = CartType[][];
+export interface CartType {
+  itemId?: number;
+  category?: string;
+  bank?: string;
+  itemName?: string;
+}
 
 const Detail = () => {
   const navigate = useNavigate();
-  // redux로 추후 관심상품 상태관리 변경
+  const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
+  const category = pathname.split('/')[2];
+  const itemId = pathname.split('/')[3];
+  const [info, setInfo] = useState<ProductType>();
+  const [cartList, setCartList] = useState<CartArrayType>([]);
   const [likeState, setLikeState] = useState<boolean>(false);
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const [list, setList] = useState(cart);
 
-  // 컬러차트도 헤더에 똑같이 적용하기
-  const bgColor: Array<string> = ['#4D9FEB', '#33B155', '#D1B311', '#A985D8', '#979797', '#D06BB4'];
-  const tagColor: Array<string> = [
-    '#0C216F',
-    '#09551A',
-    '#645508',
-    '#601783',
-    '#2F2F2F',
-    '#660936',
-  ];
-  const colorIndex: number = Math.floor(Math.random() * bgColor.length);
-  const setColor: object = { backgroundColor: bgColor[colorIndex] };
-  const setDeepColor: object = { backgroundColor: tagColor[colorIndex] };
+  useEffect(() => {
+    async function getData() {
+      try {
+        dispatch(showLoading());
+        const data = await getProductDetail(category, itemId);
+        console.log(data);
+        setInfo(data);
+        setLikeState(data.wish);
+        const list = [
+          [data.itemId, data.itemName, data.bank, data.category, data.rate || data.minRate],
+        ];
+        setCartList(list);
+      } catch (err: any) {
+        if (err.response.status === 403) {
+          AlertModal({
+            message: '로그인 후 이용 가능합니다.',
+            type: 'alert',
+          });
+          return;
+        } else if (err.response.status === 500) {
+          AlertModal({
+            message: '상품이 존재하지 않습니다. 이전페이지로 돌아갑니다.',
+            type: 'alert',
+            action: () => history.back(),
+          });
+        } else {
+          AlertModal({
+            message: '에러가 발생했습니다. 잠시 후 다시 시도해주세요.',
+            type: 'alert',
+          });
+        }
+      } finally {
+        dispatch(hideLoading());
+      }
+    }
+    getData();
+  }, []);
 
   const [colorState, setColorState] = useState<object>(setColor);
   const [deepColorState, setDeepColorState] = useState<object>(setDeepColor);
@@ -33,104 +97,207 @@ const Detail = () => {
     setDeepColorState(setDeepColor);
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(list));
+  }, [list]);
+
+  const delayText = info?.delay?.split('%');
+
+  const addCartHandler = () => {
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify(cartList));
+      AlertModal({
+        message: '장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?',
+        action: () => navigate('/cart'),
+        type: 'confirm',
+      });
+      return;
+    } else if (
+      localStorage
+        .getItem('cart')
+        ?.includes(JSON.stringify([info?.itemId, info?.itemName, info?.bank, info?.category]))
+    ) {
+      AlertModal({
+        message: '이미 담긴 상품입니다. 장바구니를 확인해주세요.',
+        type: 'alert',
+      });
+      return;
+    } else {
+      const prevList = JSON.parse(localStorage.getItem('cart')!);
+      const nextList = [...prevList, ...cartList];
+      localStorage.setItem('cart', JSON.stringify(nextList));
+      AlertModal({
+        message: '장바구니에 상품이 담겼습니다. 장바구니로 이동할까요?',
+        action: () => navigate('/cart'),
+        type: 'confirm',
+      });
+    }
+  };
+
+  const addwishHandler = (itemId: number) => {
+    const formData = new FormData();
+    formData.append('itemId', `${itemId}`);
+    requestSetWishList(formData, setLikeState);
+  };
+
   const heartStyle: object = {
     backgroundColor: '#fff',
-    width: '35px',
-    height: '35px',
+    width: '28px',
+    height: '28px',
     cursor: 'pointer',
-    borderRadius: '20px',
-    padding: '5px',
+    borderRadius: '25px',
+    padding: '12px',
+  };
+  const cartStyle: object = {
+    backgroundColor: '#fff',
+    width: '28px',
+    height: '28px',
+    cursor: 'pointer',
+    borderRadius: '25px',
+    padding: '12px',
+    color: 'black',
   };
   const iconStyle: object = {
     width: '45px',
     height: '45px',
-    cursor: 'pointer',
     padding: '10px',
     backgroundColor: '#fff',
     borderRadius: '50px',
   };
-
   return (
     <main>
-      <ColoredSection style={colorState}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-          <IoMdArrowRoundBack
-            onClick={() => history.back()}
-            style={{
-              cursor: 'pointer',
-              backgroundColor: '#fff',
-              width: '15px',
-              height: '15px',
-              padding: '10px',
-              borderRadius: '100%',
-            }}
-          />
-          <GoHome
-            onClick={() => navigate('/')}
-            style={{
-              cursor: 'pointer',
-              backgroundColor: '#fff',
-              width: '15px',
-              height: '15px',
-              padding: '10px',
-              borderRadius: '100%',
-            }}
-          />
-        </div>
-        <H1>
-          <span>신한</span> <br /> <span>신한 플러스 아무튼 적금</span>
-        </H1>
-        <TagDiv>
-          {/* 옵셔널체이닝으로 응답값에 태그 있을 경우에만 */}
-          <Tag style={deepColorState}>상품종류</Tag>
-          <Tag style={deepColorState}>지역</Tag>
-          <Tag style={deepColorState}>직종</Tag>
-        </TagDiv>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <ColDiv>
-            <FcMoneyTransfer style={iconStyle} />
-            {/* 상품별 응답값에 따라 텍스트 내용 변경 */}
-            <SummaryTitle>최고우대금리</SummaryTitle>
-            <SummaryContent>연 9.00%</SummaryContent>
-            <SummaryTitle>(12개월 세전)</SummaryTitle>
-          </ColDiv>
-          <ColDiv>
-            <FcSalesPerformance style={iconStyle} />
-            <SummaryTitle>저축한도</SummaryTitle>
-            {/* 응답값 null이면 `없음` 표시*/}
-            <SummaryContent>월 30만원</SummaryContent>
-          </ColDiv>
-        </div>
-        <Heart>
-          {likeState ? (
-            <TiHeart style={heartStyle} onClick={() => setLikeState(!likeState)} />
-          ) : (
-            <TiHeartOutline style={heartStyle} onClick={() => setLikeState(!likeState)} />
+      {getCookie('accessToken') ? (
+        <>
+          {info && (
+            <>
+              <ColoredSection style={colorState}>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}
+                >
+                  <TbArrowBack
+                    onClick={() => history.back()}
+                    style={{
+                      cursor: 'pointer',
+                      backgroundColor: '#fff',
+                      width: '20px',
+                      height: '20px',
+                      padding: '10px',
+                      borderRadius: '100%',
+                    }}
+                  />
+                </div>
+                <H1>
+                  <span>{info.bank}</span> <br /> <span>{info.itemName}</span>
+                </H1>
+                <TagDiv>
+                  <Tag style={deepColorState}>{info.category}</Tag>
+                  {info.target ? <Tag style={deepColorState}>{info.target}</Tag> : null}
+                  {info.type ? <Tag style={deepColorState}>{info.type}</Tag> : null}
+                </TagDiv>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <ColDiv>
+                    <FcMoneyTransfer style={iconStyle} />
+                    {info?.category === '정기예금' || info.category === '적금' ? (
+                      <>
+                        <SummaryTitle>최고우대금리</SummaryTitle>
+                        <SummaryContent>연 {info.prefRate}%</SummaryContent>
+                        <SummaryTitle>(12개월 세전)</SummaryTitle>
+                      </>
+                    ) : (
+                      <>
+                        <SummaryTitle>최저대출금리</SummaryTitle>
+                        <SummaryContent>연 {info.minRate}%</SummaryContent>
+                      </>
+                    )}
+                  </ColDiv>
+                  <ColDiv>
+                    <FcSalesPerformance style={iconStyle} />
+                    <SummaryTitle>
+                      {info?.category === '정기예금' || info.category === '적금'
+                        ? '저축한도'
+                        : '최고대출금리'}
+                    </SummaryTitle>
+                    {info.maxRate && <SummaryContent>연 {info.maxRate}%</SummaryContent>}
+                    {info?.category === '정기예금' && (
+                      <SummaryContent>
+                        {info.limit ? info.limit + '천만 원' : '없음'}
+                      </SummaryContent>
+                    )}
+                    {info.category === '적금' && (
+                      <SummaryContent>
+                        {info.limit ? '월 ' + info.limit + '천만 원' : '없음'}
+                      </SummaryContent>
+                    )}
+                  </ColDiv>
+                </div>
+                <Heart>
+                  {likeState ? (
+                    <HiHeart
+                      style={heartStyle}
+                      onClick={() => {
+                        requestDelWishList(info.itemId, setLikeState);
+                      }}
+                    />
+                  ) : (
+                    <HiOutlineHeart
+                      style={heartStyle}
+                      onClick={() => {
+                        addwishHandler(info.itemId);
+                      }}
+                    />
+                  )}
+                  <button onClick={() => purchaseAlert({ id: info.itemId, dispatch })}>
+                    상품 신청하기
+                  </button>
+                  <HiOutlineShoppingBag style={cartStyle} onClick={() => addCartHandler()} />
+                </Heart>
+              </ColoredSection>
+              <FlatSection>
+                <ProductDetailTitle>
+                  {info.target
+                    ? `${info.target}을 위한 ${info.category}상품`
+                    : `${info.bank} ${info.category}상품`}
+                </ProductDetailTitle>
+                <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
+                  '{info.join}'을 통해 가입할 수 있습니다.
+                </span>
+                {info.mature && (
+                  <ProductDesc>
+                    <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
+                      만기 후 이자율은?
+                    </div>
+                    {info.mature}
+                  </ProductDesc>
+                )}
+                {info.delay && (
+                  <ProductDesc>
+                    <div style={{ color: 'orange', fontSize: '18px', marginBottom: '10px' }}>
+                      연체 이자율은?
+                    </div>
+                    {delayText?.map((delay, index) => (
+                      <div key={index}>
+                        {index !== delayText.length - 1 ? (
+                          <div>{delay}%</div>
+                        ) : (
+                          <span>{delay}</span>
+                        )}
+                      </div>
+                    ))}
+                  </ProductDesc>
+                )}
+              </FlatSection>
+            </>
           )}
-        </Heart>
-      </ColoredSection>
-      <FlatSection>
-        <ProductDetailTitle>
-          {/* target: null이 아니면 `~을 위한` */}
-          직장인을 위한 신한은행 정기적금
-        </ProductDetailTitle>
-        <span style={{ color: '#131519', fontSize: '16px', fontWeight: 600 }}>
-          `영업점, 인터넷, 스마트폰` 을 통해 가입할 수 있습니다.
-        </span>
-        <ProductDesc>
-          만기 후 이자율은? <br />
-          -1개월 이하:(일반) 정기예금 기본금리 1/2 -1개월 초과~6개월 이하: (일반) 정기예금
-          기본금리의 1/4 -6개월 초과 0.2% -1개월 이하:(일반) 정기예금 기본금리 1/2 -1개월 초과~6개월
-          이하: (일반) 정기예금 기본금리의 1/4 -6개월 초과 0.2% -1개월 이하:(일반) 정기예금 기본금리
-          1/2 -1개월 초과~6개월 이하: (일반) 정기예금 기본금리의 1/4 -6개월 초과 0.2%
-        </ProductDesc>
-      </FlatSection>
+        </>
+      ) : (
+        <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
+      )}
     </main>
   );
 };
 
 const ColoredSection = styled.section`
-  height: 500px;
+  height: 520px;
   position: relative;
 `;
 const FlatSection = styled.section`
@@ -146,7 +313,7 @@ const H1 = styled.h1`
 `;
 const TagDiv = styled.div`
   height: 60px;
-  magin: 20px 0;
+  margin: 20px 0;
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -162,17 +329,20 @@ const Tag = styled.div`
   text-align: center;
 `;
 const Heart = styled.div`
-  width: 80px;
+  width: 100%
   height: 80px;
   display: flex;
-  flex-direction: column;
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  gap: 20px;
+  justify-content: center;
+  position: relative;
+  top: 30px;
   color: #f74440;
+
+  button {
+    width: 300px;
+  }
 `;
 const ColDiv = styled.div`
-  margin: 20px 0;
   display: flex;
   flex-direction: column;
   text-align: center;

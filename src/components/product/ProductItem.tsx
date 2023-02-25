@@ -1,26 +1,29 @@
 import react from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type productItem = {
   item: {
-    itemId: number;
+    itemId: string;
     category: string;
     bank: string;
     itemName: string;
     type: string;
     dtype: string;
-    rate: number;
-    prefRate: number;
+    rate: string;
+    prefRate: string;
   };
   key: number;
 };
 
 const ProductItem = ({ item }: productItem) => {
+  const navigate = useNavigate();
   const bankName: string = item.bank;
+  const category: string =
+    item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan';
 
   return (
-    <Link to={`detail/${item.itemId}`}>
+    <Div onClick={() => navigate(`/detail/${category}/${item.itemId}`)}>
       <Item bankName={bankName}>
         <div>
           <h4>{item.bank}</h4>
@@ -29,9 +32,13 @@ const ProductItem = ({ item }: productItem) => {
         <h3>{item.itemName}</h3>
         <span>{item.category}</span>
       </Item>
-    </Link>
+    </Div>
   );
 };
+
+const Div = styled.div`
+  cursor: pointer;
+`;
 
 const Item = styled.div<{ bankName: string }>`
   padding: 30px;
@@ -49,7 +56,16 @@ const Item = styled.div<{ bankName: string }>`
       ? 'var(--color-bank-green)'
       : props.bankName === '우리은행'
       ? 'var(--color-bank-puple)'
+      : props.bankName === '한국스탠다드차타드은행'
+      ? 'var(--color-bank-sky)'
+      : props.bankName === '농협은행'
+      ? 'var(--color-bank-pink)'
+      : props.bankName === '한국씨티은행'
+      ? 'var(--color-bank-teal)'
+      : props.bankName === '중소기업은행'
+      ? 'var(--color-bank-orange)'
       : 'var(--color-bg-grey)'};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
   div {
     display: flex;
     align-items: center;

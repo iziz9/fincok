@@ -2,31 +2,35 @@ import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/useDispatchHooks';
 
 function UserProfile() {
+  const name = useAppSelector((state) => state.user.name);
+  const navigate = useNavigate();
+
   return (
     <>
       <ProfileBox>
         <FaUserCircle size="80" color="var(--color-light-grey)" />
-        <MoreBox to="/">
+        <MoreBox onClick={() => navigate('info')}>
           <UserText>
-            <strong>USER</strong>&nbsp;님
+            <strong>{name}</strong>&nbsp;님
           </UserText>
-          <p>
-            내 정보 확인하기
+          <div>
+            내 정보 수정하기
             <MdKeyboardArrowRight />
-          </p>
+          </div>
         </MoreBox>
       </ProfileBox>
 
       <RecommendWrap>
         <TextBox>
           <strong>맞춤상품 추천</strong>
-          <p>나에게 맞는 상품 추천</p>
+          <p>나에게 맞는 상품이 궁금하다면?</p>
         </TextBox>
-        <SignButton to="/auth/signup">
-          <button>가입</button>
+        <SignButton to="/recommend">
+          <button>보러가기</button>
         </SignButton>
       </RecommendWrap>
     </>
@@ -38,19 +42,26 @@ const ProfileBox = styled.div`
   align-items: center;
   margin-bottom: 20px;
 `;
-const MoreBox = styled(Link)`
+const MoreBox = styled.div`
   padding-left: 26px;
+  cursor: pointer;
+  p {
+    :last-child {
+      display: flex;
+      gap: 2px;
+    }
+  }
 `;
 const UserText = styled.p`
   font-size: 22px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   strong {
     font-weight: bold;
   }
 `;
 const RecommendWrap = styled.div`
   border-radius: 15px;
-  background-color: var(--color-background);
+  background-color: var(--color-bg-grey);
   display: flex;
   justify-content: space-between;
   padding: 0 22px;
@@ -66,11 +77,12 @@ const TextBox = styled.div`
   }
   p {
     color: rgba(0, 0, 0, 0.5);
+    font-size: 13px;
   }
 `;
 const SignButton = styled(Link)`
-  width: 57px;
-  height: 38px;
+  width: 80px;
+  height: 40px;
   button {
     width: 100%;
     height: 100%;

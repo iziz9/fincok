@@ -2,30 +2,36 @@ import { useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useOutSideClick from '../../../hooks/useOutSideClick';
 import styled from 'styled-components';
+import { requestLogout } from '../../../api/api';
+import { getCookie, removeCookie } from '../../../utils/cookie';
 import { GrClose } from 'react-icons/gr';
 import { BiSearch, BiLogOut } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdKeyboardArrowRight } from 'react-icons/md';
-import {
-  HiOutlineHeart,
-  HiOutlineClipboardList,
-  HiOutlineShoppingBag,
-} from 'react-icons/hi';
+import { HiOutlineUser, HiOutlineClipboardCheck, HiOutlineHeart } from 'react-icons/hi';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { useAppSelector, useAppDispatch } from '../../../hooks/useDispatchHooks';
+import { userInit } from '../../../store/userSlice';
+import { userLoginInit } from '../../../store/loginSlice';
+import AlertModal from '../../../utils/AlertModal';
 
 type Props = {
   setActive: (active: boolean) => void;
 };
 
-const Navigation = (props: Props) => {
+const Navigation = ({ setActive }: Props) => {
   const naviRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [value, setValue] = useState('');
+  const dispatch = useAppDispatch();
+  const name = useAppSelector((state) => state.user.name);
+  const token = getCookie('accessToken');
 
   // 모달창 닫기 hook
-  useOutSideClick(naviRef, () => props.setActive(false));
+  useOutSideClick(naviRef, () => setActive(false));
 
   const closeNav = () => {
-    props.setActive(false);
+    setActive(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +40,30 @@ const Navigation = (props: Props) => {
   };
 
   const handleSubmit = (value: string) => {
-    return navigate(`/search?content=${value}`);
+    return navigate(`/search?title=${value}`);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const res = await requestLogout();
+      dispatch(userInit());
+      dispatch(userLoginInit());
+      closeNav;
+      if (res.resultCode === 'failed') {
+        AlertModal({
+          message: '로그아웃이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+          type: 'alert',
+        });
+      } else {
+        removeCookie('accessToken');
+        location.pathname = '/';
+      }
+    } catch (err) {
+      AlertModal({
+        message: '로그아웃이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+        type: 'alert',
+      });
+    }
   };
 
   return (
@@ -43,10 +72,23 @@ const Navigation = (props: Props) => {
         <Close onClick={closeNav}>
           <GrClose size="22" color="var(--color-grey)" />
         </Close>
-        <User>
-          <FaUserCircle size="50" color="var(--color-light-grey)" />
-          <h2>유저명</h2>
-        </User>
+        {token ? (
+          <User>
+            <FaUserCircle size="50" color="var(--color-light-grey)" />
+            <h2>{name}</h2>
+          </User>
+        ) : (
+          <Login
+            onClick={() => {
+              navigate('/login');
+              closeNav();
+            }}
+          >
+            <FaUserCircle size="50" color="var(--color-light-grey)" />
+            <h2>로그인을 해주세요</h2>
+            <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
+          </Login>
+        )}
         <SearchForm>
           <form
             onSubmit={(e) => {
@@ -75,30 +117,50 @@ const Navigation = (props: Props) => {
           <h2>메뉴</h2>
           <Link to={'/user'} onClick={closeNav}>
             <li>
-              <HiOutlineHeart color="var(--color-black)" />
+              <HiOutlineUser color="var(--color-black)" />
               마이페이지
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
-          <Link to={'/recommend'} onClick={closeNav}>
+          <Link to={'/cart'} onClick={closeNav}>
             <li>
-              <HiOutlineClipboardList color="var(--color-black)" />
-              맞춤 추천
+              <AiOutlineShoppingCart color="var(--color-black)" />
+              장바구니
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
-          <Link to={'/allproducts'} onClick={closeNav}>
+          <Link to={'/wish'} onClick={closeNav}>
             <li>
-              <HiOutlineShoppingBag color="var(--color-black)" />
-              전체 상품
+              <HiOutlineHeart color="var(--color-black)" />
+              관심상품
+              <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
+            </li>
+          </Link>
+          <Link to={'/purchase'} onClick={closeNav}>
+            <li>
+              <HiOutlineClipboardCheck color="var(--color-black)" />
+              가입상품
               <MdKeyboardArrowRight size="20" color="var(--color-light-grey)" />
             </li>
           </Link>
         </ul>
-        <Foot onClick={closeNav}>
-          로그아웃
-          <BiLogOut size="18" color="var(--color-white)" />
-        </Foot>
+
+        {token ? (
+          <Foot onClick={() => handleLogout()}>
+            로그아웃
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        ) : (
+          <Foot
+            onClick={() => {
+              navigate('/login');
+              closeNav();
+            }}
+          >
+            로그인
+            <BiLogOut size="18" color="var(--color-white)" />
+          </Foot>
+        )}
       </Inner>
     </Container>
   );
@@ -113,6 +175,7 @@ const Container = styled.div`
   z-index: 100;
   background: rgba(0, 0, 0, 0.4);
 `;
+
 const Inner = styled.div`
   position: absolute;
   right: 0;
@@ -143,18 +206,17 @@ const Inner = styled.div`
     li {
       height: 60px;
       font-size: 15px;
-      font-weight: bold;
       display: flex;
       gap: 8px;
       align-items: center;
       box-sizing: border-box;
       margin: 0 2px;
       padding: 0 30px;
-      &:hover {
+      :hover {
         background-color: var(--color-bg-grey);
       }
       svg {
-        &:last-child {
+        :last-child {
           margin-left: auto;
         }
       }
@@ -184,7 +246,26 @@ const User = styled.div`
     font-weight: bold;
   }
 `;
-const SearchForm = styled.div`
+
+const Login = styled.div`
+  padding: 0 30px;
+  margin: 20px 0 25px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  cursor: pointer;
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  svg {
+    :last-child {
+      margin-left: auto;
+    }
+  }
+`;
+
+export const SearchForm = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,9 +279,9 @@ const SearchForm = styled.div`
   input {
     box-sizing: border-box;
     width: 100%;
-    font-size: 14px;
+    font-size: 15px;
     padding: 10px 10px 10px 15px;
-    &::placeholder {
+    ::placeholder {
       color: var(--color-light-grey);
     }
   }
@@ -210,9 +291,9 @@ const SearchForm = styled.div`
     position: absolute;
     right: 35px;
     cursor: pointer;
-    &:hover {
-      border-color: none;
-      background-color: none;
+    :hover {
+      border-color: transparent;
+      background-color: transparent;
     }
   }
 `;
@@ -232,7 +313,7 @@ const Foot = styled.div`
   color: var(--color-white);
   gap: 5px;
   cursor: pointer;
-  &:hover {
+  :hover {
     background-color: var(--color-orange);
   }
 `;
