@@ -151,6 +151,7 @@ export const purchaseAlert = async ({
           message: '이미 신청한 상품입니다.',
           type: 'alert',
         });
+        deleteItem && deleteItem(id);
       } else if (res.data.resultCode === 'failed') {
         AlertModal({
           message: '신청할 수 없는 상품입니다. 해당 은행으로 문의 바랍니다.',

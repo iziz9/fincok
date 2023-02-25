@@ -7,7 +7,6 @@ import { purchaseAlert } from '../../api/api';
 function CartPageCard({ storage, deleteItem }: any) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [itemId, setItemId] = useState();
 
   return (
     <>
@@ -27,6 +26,7 @@ function CartPageCard({ storage, deleteItem }: any) {
               <div className="bank">{item[2]}</div>
               <div className="name">{item[1]}</div>
               <div className="category">{item[3]}</div>
+              <div className="rate">금리 {item[4]}%</div>
             </Card>
           </td>
           <td>
@@ -34,7 +34,6 @@ function CartPageCard({ storage, deleteItem }: any) {
               <button
                 onClick={() => {
                   purchaseAlert({ id: item[0], deleteItem, dispatch });
-                  setItemId(item[0]);
                 }}
               >
                 신청
@@ -82,6 +81,7 @@ const Tr = styled.tr`
 
 const Card = styled.div<{ bankName: string }>`
   cursor: pointer;
+  position: relative;
   width: 100%;
   height: 120px;
   margin: 0 auto;
@@ -118,6 +118,19 @@ const Card = styled.div<{ bankName: string }>`
     font-size: 12px;
     font-weight: bold;
     color: var(--color-dark-grey);
+  }
+  .rate {
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    background-color: #fff;
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 20px;
   }
 `;
 

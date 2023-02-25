@@ -57,9 +57,12 @@ const Detail = () => {
       try {
         dispatch(showLoading());
         const data = await getProductDetail(category, itemId);
+        console.log(data);
         setInfo(data);
         setLikeState(data.wish);
-        const list = [[data.itemId, data.itemName, data.bank, data.category]];
+        const list = [
+          [data.itemId, data.itemName, data.bank, data.category, data.rate || data.minRate],
+        ];
         setCartList(list);
       } catch (err: any) {
         if (err.response.status === 403) {
@@ -97,13 +100,6 @@ const Detail = () => {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(list));
   }, [list]);
-
-  const deleteItem = (id: number) => {
-    const deleted = list.filter((item: any) => {
-      return item[0] !== id;
-    });
-    setList(deleted);
-  };
 
   const delayText = info?.delay?.split('%');
 
