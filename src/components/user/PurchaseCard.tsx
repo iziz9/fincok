@@ -114,8 +114,9 @@ const LinkWrap = styled.div`
 `;
 const Button = styled.button`
   position: absolute;
-  top: 60%;
+  top: 58%;
   right: 20px;
+  width: 80px;
   background-color: var(--color-dark-grey);
 
   :hover {
