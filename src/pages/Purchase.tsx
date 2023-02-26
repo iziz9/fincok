@@ -40,7 +40,6 @@ function Purchase() {
   }, []);
 
   useEffect(() => {
-    console.log(depositData, loanData);
     setAllData([...depositData, ...loanData]);
   }, [depositData, loanData]);
 

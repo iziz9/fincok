@@ -114,8 +114,9 @@ const LinkWrap = styled.div`
 `;
 const Button = styled.button`
   position: absolute;
-  top: 60%;
+  top: 58%;
   right: 20px;
+  width: 80px;
   background-color: var(--color-dark-grey);
 
   :hover {
@@ -191,7 +192,7 @@ const Item = styled.div<{ bankName: string }>`
     position: absolute;
     bottom: 20px;
     color: white;
-    text-shadow: 1px 1px 1px var(--color-dark-grey);
+    text-shadow: 1px 1px 1px var(--color-grey);
   }
 `;
 

@@ -4,15 +4,15 @@ import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
 import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
 import { SlLock } from 'react-icons/sl';
-import { requestLogin } from '../../api/api';
+import { requestLogin } from '../api/api';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { getCookie } from '../../utils/cookie';
-import AlertLoginState from '../../components/common/AlertLoginState';
-import { useAppDispatch } from '../../hooks/useDispatchHooks';
-import { userLogin } from '../../store/loginSlice';
-import { setCookie } from '../../utils/cookie';
-import AlertModal from '../../utils/AlertModal';
+import { getCookie } from '../utils/cookie';
+import AlertLoginState from '../components/common/AlertLoginState';
+import { useAppDispatch } from '../hooks/useDispatchHooks';
+import { userLogin } from '../store/loginSlice';
+import { setCookie } from '../utils/cookie';
+import AlertModal from '../utils/AlertModal';
 
 interface LoginForm {
   id: string;
