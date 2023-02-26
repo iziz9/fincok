@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDepositList } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
-import DepositProductCard from '../../components/allProducts/DepositProductCard';
+import ProductCard from '../../components/allProducts/ProductCard';
 import { DataType } from './AllProducts';
 import styled from 'styled-components';
 
@@ -20,7 +20,6 @@ function DepositList() {
   }, [pageNumber]);
 
   useEffect(() => {
-    // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     if (inView && !loading) {
       if (!lastPage) setPageNumber((prevState) => prevState + 1);
     }
@@ -32,11 +31,11 @@ function DepositList() {
         <div key={index}>
           {depositData.length - 1 == index ? (
             <div ref={ref}>
-              <DepositProductCard item={item} />
+              <ProductCard item={item} />
             </div>
           ) : (
             <div>
-              <DepositProductCard item={item} />
+              <ProductCard item={item} />
             </div>
           )}
         </div>

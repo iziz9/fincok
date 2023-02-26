@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getMortgageLoan } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
-import LoanProductCard from '../../components/allProducts/LoanProductCard';
+import ProductCard from '../../components/allProducts/ProductCard';
 import { DataType } from './AllProducts';
 import styled from 'styled-components';
-import AlertModal from '../../utils/AlertModal';
 
 function MortgageLoan() {
   const [mortgageLoanData, setMortgageLoanData] = useState<DataType>([]);
@@ -21,7 +20,6 @@ function MortgageLoan() {
   }, [pageNumber]);
 
   useEffect(() => {
-    // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     if (inView && !loading) {
       if (!lastPage) setPageNumber((prevState) => prevState + 1);
     }
@@ -33,11 +31,11 @@ function MortgageLoan() {
         <div key={index}>
           {mortgageLoanData.length - 1 == index ? (
             <div ref={ref}>
-              <LoanProductCard item={item} />
+              <ProductCard item={item} />
             </div>
           ) : (
             <div>
-              <LoanProductCard item={item} />
+              <ProductCard item={item} />
             </div>
           )}
         </div>
