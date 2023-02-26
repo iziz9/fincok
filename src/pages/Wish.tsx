@@ -28,8 +28,7 @@ function Wish() {
 }
 
 const Title = styled.h1`
-  margin-top: 40px;
-  font-size: 32px;
+  margin-top: 50px;
   margin-bottom: 40px;
   font-weight: bold;
 `;

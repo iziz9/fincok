@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import { getCookie } from '../../utils/cookie';
 import { Main, SubmitButton, Div, CategoryTitle } from '../../pages/Auth/SignUp';
@@ -14,13 +14,12 @@ import { requestLogin } from '../../api/api';
 import { IoMailOutline } from 'react-icons/io5';
 import { SlLock } from 'react-icons/sl';
 
-function CertifyUser({setCertify, setPassword}:any) {
+function CertifyUser({ setCertify, setPassword }: any) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userMemberId =
-    useAppSelector((state) => {
-      return state.user.memberId;
-    });
+  const userMemberId = useAppSelector((state) => {
+    return state.user.memberId;
+  });
   const formSchema = yup.object({
     id: yup.string().required('필수 입력란입니다.').email('이메일 형식에 맞지 않습니다.'),
     pw: yup
@@ -52,7 +51,7 @@ function CertifyUser({setCertify, setPassword}:any) {
         });
       } else {
         dispatch(userLogin(formData));
-        setCertify(true)
+        setCertify(true);
       }
     } catch (err) {
       AlertModal({
@@ -63,82 +62,75 @@ function CertifyUser({setCertify, setPassword}:any) {
   };
   return (
     <Main>
-    {getCookie('accessToken') ? (
-      <>
-        <h1 style={{ padding: '30px 0 50px' }}>회원 인증</h1>
-        <form
-          onSubmit={handleSubmit((data) => {
-            onSubmit(data.id, data.pw);
-            setPassword(data.pw)
-          })}
-        >
-          <Div>
-            <div>
-              <CategoryTitle>아이디</CategoryTitle>
-              {errors?.id ? (
-                <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                  {errors.id?.message}
-                </span>
-              ) : null}
-            </div>
-            <div style={{ position: 'relative' }}>
-              <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
-              <input
-                id="id"
-                type="text"
-                defaultValue={userMemberId}
-                style={{ width: '380px', paddingLeft: '45px', cursor: 'default' }}
-                {...register('id')}
-                readOnly
-              />
-            </div>
-          </Div>
-          <Div>
-            <div>
-              <CategoryTitle>비밀번호</CategoryTitle>
-              {errors?.pw ? (
-                <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
-                  {errors.pw?.message}
-                </span>
-              ) : null}
-            </div>
-            <div style={{ position: 'relative' }}>
-              <SlLock style={{ position: 'absolute', top: '20px', left: '20px' }} />
-              <input
-                id="pw"
-                type="password"
-                placeholder="8글자 이상 입력해 주세요"
-                style={{ width: '380px', paddingLeft: '45px' }}
-                {...register('pw')}
-              />
-            </div>
-          </Div>
-          <SubmitButton type="submit">로그인</SubmitButton>
-        </form>
-        <Flexdiv>
-          <NavSpan onClick={() => navigate('/findpassword')}>비밀번호 찾기</NavSpan> /{' '}
-        </Flexdiv>
-      </>
-      ) : (
-      null
-    )}
-  </Main>
-);
-};
+      {getCookie('accessToken') ? (
+        <>
+          <h1 style={{ padding: '30px 0 50px' }}>회원 인증</h1>
+          <div style={{ textAlign: 'end', color: 'var(--color-orange)' }}>
+            회원정보 수정을 위해 다시 로그인 해 주세요.
+          </div>
+          <form
+            onSubmit={handleSubmit((data) => {
+              onSubmit(data.id, data.pw);
+              setPassword(data.pw);
+            })}
+          >
+            <Div>
+              <div>
+                <CategoryTitle>아이디</CategoryTitle>
+                {errors?.id ? (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.id?.message}
+                  </span>
+                ) : null}
+              </div>
+              <div style={{ position: 'relative' }}>
+                <IoMailOutline style={{ position: 'absolute', top: '20px', left: '20px' }} />
+                <input
+                  id="id"
+                  type="text"
+                  defaultValue={userMemberId}
+                  style={{ width: '380px', paddingLeft: '45px', cursor: 'default' }}
+                  {...register('id')}
+                  readOnly
+                />
+              </div>
+            </Div>
+            <Div>
+              <div>
+                <CategoryTitle>비밀번호</CategoryTitle>
+                {errors?.pw ? (
+                  <span className="error" style={{ marginLeft: '10px', color: '#f74440' }}>
+                    {errors.pw?.message}
+                  </span>
+                ) : null}
+              </div>
+              <div style={{ position: 'relative' }}>
+                <SlLock style={{ position: 'absolute', top: '20px', left: '20px' }} />
+                <input
+                  id="pw"
+                  type="password"
+                  placeholder="8글자 이상 입력해 주세요"
+                  style={{ width: '380px', paddingLeft: '45px' }}
+                  {...register('pw')}
+                />
+              </div>
+            </Div>
+            <SubmitButton type="submit">확인</SubmitButton>
+          </form>
+        </>
+      ) : null}
+    </Main>
+  );
+}
 
-const Flexdiv = styled.div`
-display: flex;
-gap: 10px;
-justify-content: center;
-`;
 export const NavSpan = styled.span`
-cursor: pointer;
-font-size: 16px;
-font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 interface LoginForm {
   id: string;
   pw: string;
 }
-export default CertifyUser
+export default CertifyUser;
