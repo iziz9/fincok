@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getProducts, getPurchaseLength } from '../api/api';
-import ProductItem from '../components/product/ProductItem';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
@@ -10,6 +9,7 @@ import 'swiper/css/pagination';
 import { getCookie } from '../utils/cookie';
 import { FaHandPointDown } from 'react-icons/fa';
 import { useAppSelector } from '../hooks/useDispatchHooks';
+import ProductCard from '../components/common/ProductCard';
 
 const Home = () => {
   const [cart, setCart] = useState<String>('0');
@@ -101,7 +101,7 @@ const Home = () => {
               products.map((item, idx) => {
                 return (
                   <SwiperSlide key={idx}>
-                    <ProductItem item={item} key={idx} />
+                    <ProductCard item={item} key={idx} />
                   </SwiperSlide>
                 );
               })

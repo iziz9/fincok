@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getRecommendProducts } from '../api/api';
-import ProductItem from '../components/product/ProductItem';
 import { hideLoading, showLoading } from '../store/loadingSlice';
 import AlertLoginState from '../components/common/AlertLoginState';
 import styled from 'styled-components';
@@ -8,6 +7,7 @@ import { getCookie } from '../utils/cookie';
 import { useAppDispatch, useAppSelector } from '../hooks/useDispatchHooks';
 import { useInView } from 'react-intersection-observer';
 import { NoList } from './Home';
+import ProductCard from '../components/common/ProductCard';
 
 function Recommend() {
   const token = getCookie('accessToken');
@@ -64,7 +64,7 @@ function Recommend() {
           </h4>
           {Array.isArray(products) ? (
             products.map((item, idx) => {
-              return <ProductItem item={item} key={idx} />;
+              return <ProductCard item={item} key={idx} />;
             })
           ) : (
             <NoList>

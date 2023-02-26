@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSavingsList } from '../../api/allProductsApi';
-import ProductCard from '../../components/allProducts/ProductCard';
+import ProductCard from '../../components/common/ProductCard';
 import { useInView } from 'react-intersection-observer';
 import { DataType } from './AllProducts';
 import styled from 'styled-components';
@@ -45,6 +45,9 @@ function SavingsList() {
 }
 const Wrap = styled.div`
   padding: 0 30px;
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
 `;
 
 export default SavingsList;

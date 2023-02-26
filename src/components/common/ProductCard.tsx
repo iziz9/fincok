@@ -73,12 +73,11 @@ const LinkWrap = styled.div`
 const Item = styled.div<{ bankName: string }>`
   position: relative;
   padding: 30px;
-  height: 100px;
+  height: 125px;
   border-radius: 15px;
   display: flex;
   flex-flow: column;
   color: rgba(0, 0, 0, 0.7);
-  margin: 20px auto;
   background-color: ${(props) =>
     props.bankName === '국민은행'
       ? 'var(--color-bank-yellow)'
@@ -115,8 +114,8 @@ const Item = styled.div<{ bankName: string }>`
     }
   }
   h3 {
-    margin: 13px 0 0;
-    font-size: 20px;
+    margin: 20px 0 0;
+    font-size: 23px;
     line-height: 1.2em;
     font-weight: bold;
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDepositList } from '../../api/allProductsApi';
 import { useInView } from 'react-intersection-observer';
-import ProductCard from '../../components/allProducts/ProductCard';
+import ProductCard from '../../components/common/ProductCard';
 import { DataType } from './AllProducts';
 import styled from 'styled-components';
 
@@ -45,6 +45,9 @@ function DepositList() {
 }
 const Wrap = styled.div`
   padding: 0 30px;
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
 `;
 
 export default DepositList;
