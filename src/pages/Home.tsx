@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getProducts, getPurchaseLength } from '../api/api';
-import ProductItem from '../components/product/ProductItem';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
@@ -10,6 +9,7 @@ import 'swiper/css/pagination';
 import { getCookie } from '../utils/cookie';
 import { FaHandPointDown } from 'react-icons/fa';
 import { useAppSelector } from '../hooks/useDispatchHooks';
+import ProductCard from '../components/common/ProductCard';
 
 const Home = () => {
   const [cart, setCart] = useState<String>('0');
@@ -29,7 +29,6 @@ const Home = () => {
           console.log('에러 발생!');
         }
       } else {
-        console.log('토큰 없음');
         return null;
       }
     }
@@ -76,7 +75,7 @@ const Home = () => {
           <Link to={'/purchase'}>가입상품 보러가기</Link>
         </MyPage>
       ) : (
-        <NotUser>
+        <MyPage>
           <Join>
             <p>
               아직 핀콕 회원이 아니라면?
@@ -84,7 +83,7 @@ const Home = () => {
             </p>
           </Join>
           <Link to={'/signup'}>회원가입하기</Link>
-        </NotUser>
+        </MyPage>
       )}
       <Products>
         <h4>추천 상품</h4>
@@ -102,7 +101,7 @@ const Home = () => {
               products.map((item, idx) => {
                 return (
                   <SwiperSlide key={idx}>
-                    <ProductItem item={item} key={idx} />
+                    <ProductCard item={item} key={idx} />
                   </SwiperSlide>
                 );
               })
@@ -199,8 +198,6 @@ const MyPage = styled.div`
     border-top: 1px solid rgba(255, 255, 255, 0.4);
   }
 `;
-
-const NotUser = styled(MyPage)``;
 
 const Cart = styled.div`
   display: flex;

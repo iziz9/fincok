@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSavingsList } from '../../api/allProductsApi';
-import DepositProductCard from '../../components/allProducts/DepositProductCard';
+import ProductCard from '../../components/common/ProductCard';
 import { useInView } from 'react-intersection-observer';
 import { DataType } from './AllProducts';
 import styled from 'styled-components';
@@ -20,10 +20,8 @@ function SavingsList() {
   }, [pageNumber]);
 
   useEffect(() => {
-    // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     if (inView && !loading) {
       if (!lastPage) setPageNumber((prevState) => prevState + 1);
-      // else alert('마지막 상품입니다.')
     }
   }, [inView, loading]);
 
@@ -33,11 +31,11 @@ function SavingsList() {
         <div key={index}>
           {savingsListData.length - 1 == index ? (
             <div ref={ref}>
-              <DepositProductCard item={item} />
+              <ProductCard item={item} />
             </div>
           ) : (
             <div>
-              <DepositProductCard item={item} />
+              <ProductCard item={item} />
             </div>
           )}
         </div>
@@ -47,7 +45,9 @@ function SavingsList() {
 }
 const Wrap = styled.div`
   padding: 0 30px;
-`
-
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
+`;
 
 export default SavingsList;

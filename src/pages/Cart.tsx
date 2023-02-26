@@ -10,6 +10,7 @@ import AlertLoginState from '../components/common/AlertLoginState';
 const Cart = () => {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const [list, setList] = useState(cart);
+  console.log(list);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(list));
@@ -43,7 +44,9 @@ const Cart = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <CartPageCard storage={list} deleteItem={deleteItem} />
+                    {list.map((item: any) => (
+                      <CartPageCard key={item[0]} item={item} deleteItem={deleteItem} />
+                    ))}
                   </tbody>
                 </Table>
                 <div className="spanDiv">
