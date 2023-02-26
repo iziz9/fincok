@@ -3,13 +3,14 @@ import { getDepositPurchase, getLoanPurchase, removePurchase } from '../api/api'
 import { getWishCount } from '../api/wishApi';
 import PurchaseCard from '../components/user/PurchaseCard';
 import styled from 'styled-components';
+import { Button, FlexBox } from './Wish';
 
 function Purchase() {
   const [depositData, setDepositData] = useState([]);
   const [loanData, setLoanData] = useState([]);
   const [allData, setAllData] = useState([]);
   const [count, setCount] = useState([]);
-  const [toggle, setToggle] = useState(true);
+  const [toggleButton, setToggleButton] = useState<boolean>(true);
 
   const getList = async () => {
     try {
@@ -39,9 +40,13 @@ function Purchase() {
   }, []);
 
   useEffect(() => {
+    console.log(depositData, loanData);
     setAllData([...depositData, ...loanData]);
   }, [depositData, loanData]);
-  // allData?.map((item: any) => console.log(item));
+
+  const ButtonToggle = () => {
+    setToggleButton(!toggleButton);
+  };
 
   return (
     <main>
@@ -49,16 +54,70 @@ function Purchase() {
         <h1>가입상품</h1>
         <p>가입(신청)중인 {count}개의 상품이 있습니다.</p>
         <div>
-          {allData?.length ? (
+          <FlexBox>
+            <Button onClick={ButtonToggle} toggleButton={toggleButton}>
+              가입중인 상품
+            </Button>
+            <Button onClick={ButtonToggle} toggleButton={!toggleButton}>
+              신청 취소한 상품
+            </Button>
+          </FlexBox>
+          {/* {toggleButton ? (
+            allData?.length ? (
+              allData?.map((item: any) => {
+                return item.status === '신청완료' ? (
+                  <div key={item.purchaseId}>
+                    <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton} />
+                  </div>
+                ) : null;
+              })
+            ) : (
+              <p>가입중인 상품이 없습니다.</p>
+            )
+          ) : allData?.length ? (
             allData?.map((item: any) => {
-              return item.status === '신청완료' ? (
+              return item.status === '신청취소' ? (
                 <div key={item.purchaseId}>
                   <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton} />
                 </div>
               ) : null;
             })
           ) : (
-            <p>구매 상품이 없습니다.</p>
+            <p>취소한 상품이 없습니다.</p>
+          )} */}
+
+          {toggleButton ? (
+            allData?.length ? (
+              allData?.map((item: any) => {
+                return item.status === '신청완료' ? (
+                  <div key={item.purchaseId}>
+                    <PurchaseCard
+                      item={item}
+                      key={item.purchaseId}
+                      removeButton={removeButton}
+                      canceled={false}
+                    />
+                  </div>
+                ) : null;
+              })
+            ) : (
+              <p>가입중인 상품이 없습니다.</p>
+            )
+          ) : allData?.length ? (
+            allData?.map((item: any) => {
+              return item.status === '신청취소' ? (
+                <div key={item.purchaseId}>
+                  <PurchaseCard
+                    item={item}
+                    key={item.purchaseId}
+                    removeButton={removeButton}
+                    canceled={true}
+                  />
+                </div>
+              ) : null;
+            })
+          ) : (
+            <p>취소한 상품이 없습니다.</p>
           )}
         </div>
       </Wrap>
@@ -67,34 +126,13 @@ function Purchase() {
 }
 const Wrap = styled.div`
   padding: 20px 35px 60px;
-  margin-top: 50px;
-  h1 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
+  margin-top: 20px;
+
   p {
+    margin: 30px 0 30px;
     text-align: right;
     color: var(--color-orange);
     font-size: 16px;
-  }
-  .swiper {
-    height: 280px;
-  }
-  .swiper-pagination {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex;
-    gap: 5px;
-  }
-  .swiper-pagination-bullet {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-dark-grey);
-    color: #fff;
   }
 `;
 export default Purchase;
