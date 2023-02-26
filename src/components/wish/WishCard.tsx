@@ -6,6 +6,46 @@ type Props = { item: DataType; wishClick: Function };
 
 function WishCard({ item, wishClick }: Props) {
   const navigate = useNavigate();
+  let logo = '';
+
+  switch (item.bank) {
+    case '부산은행':
+      logo = 'bank-bs.png';
+      break;
+    case '한국씨티은행':
+      logo = 'bank-ct.png';
+      break;
+    case '대구은행':
+      logo = 'bank-dg.png';
+      break;
+    case '광주은행':
+      logo = 'bank-gj.png';
+      break;
+    case '하나은행':
+      logo = 'bank-hn.png';
+      break;
+    case '중소기업은행':
+      logo = 'bank-ibk.png';
+      break;
+    case '국민은행':
+      logo = 'bank-kb.png';
+      break;
+    case '농협은행':
+      logo = 'bank-nh.png';
+      break;
+    case '한국스탠다드차타드은행':
+      logo = 'bank-sc.png';
+      break;
+    case '신한은행':
+      logo = 'bank-sh.png';
+      break;
+    case '수협은행':
+      logo = 'bank-suh.png';
+      break;
+    case '우리은행':
+      logo = 'bank-wr.png';
+      break;
+  }
 
   return (
     <Wrap>
@@ -26,6 +66,9 @@ function WishCard({ item, wishClick }: Props) {
           <span>
             {item.category} - {item.type}
           </span>
+          <div className="logo">
+            <img src={`/${logo}`} style={{ width: '50px' }} />
+          </div>
         </Item>
       </LinkWrap>
       <Button
@@ -112,6 +155,11 @@ const Item = styled.div<{ bankName: string }>`
   span {
     font-weight: bold;
     margin-top: auto;
+  }
+  .logo {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
   }
 `;
 

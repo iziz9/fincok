@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import styled from 'styled-components';
-import CartPageCard from '../components/cart/CartPageCard';
+import CartPageCard from '../components/common/CartPageCard';
 import { Link } from 'react-router-dom';
 import { EmptyWishBox } from '../components/wish/DepositWishList';
 import { getCookie } from '../utils/cookie';
@@ -10,7 +9,6 @@ import AlertLoginState from '../components/common/AlertLoginState';
 const Cart = () => {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const [list, setList] = useState(cart);
-  console.log(list);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(list));

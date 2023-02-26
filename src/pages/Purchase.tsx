@@ -59,33 +59,9 @@ function Purchase() {
               가입중인 상품
             </Button>
             <Button onClick={ButtonToggle} toggleButton={!toggleButton}>
-              신청 취소한 상품
+              신청 취소 내역
             </Button>
           </FlexBox>
-          {/* {toggleButton ? (
-            allData?.length ? (
-              allData?.map((item: any) => {
-                return item.status === '신청완료' ? (
-                  <div key={item.purchaseId}>
-                    <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton} />
-                  </div>
-                ) : null;
-              })
-            ) : (
-              <p>가입중인 상품이 없습니다.</p>
-            )
-          ) : allData?.length ? (
-            allData?.map((item: any) => {
-              return item.status === '신청취소' ? (
-                <div key={item.purchaseId}>
-                  <PurchaseCard item={item} key={item.purchaseId} removeButton={removeButton} />
-                </div>
-              ) : null;
-            })
-          ) : (
-            <p>취소한 상품이 없습니다.</p>
-          )} */}
-
           {toggleButton ? (
             allData?.length ? (
               allData?.map((item: any) => {

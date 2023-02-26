@@ -136,13 +136,13 @@ export type DataType = {
   bank: string;
   itemName: string;
   type: string;
-  join: string;
-  limit: string;
-  preference: any;
-  target: any;
+  join?: string;
+  limit?: string;
+  preference?: any;
+  target?: any;
   rate: string;
   prefRate?: string;
-  mature: string;
+  mature?: string;
   minRate?: number;
 };
 
