@@ -8,13 +8,10 @@ import Home from './pages/Home';
 import MyPage from './pages/user/MyPage';
 import Search from './pages/Search';
 import Recommend from './pages/Recommend';
-import AllProducts from './pages/allProducts/AllProducts';
+import AllProducts from './pages/AllProducts';
 import FindPassword from './pages/Auth/FindPassword';
 import NotFound from './pages/NotFound';
-import DepositList from './pages/allProducts/DepositList';
-import SavingsList from './pages/allProducts/SavingsList';
-import MortgageLoan from './pages/allProducts/MortgageLoan';
-import CharterLoan from './pages/allProducts/CharterLoan';
+import AllProductList from './components/allProducts/AllProductList';
 import Wish from './pages/Wish';
 import UserInfo from './pages/user/UserInfo';
 import Purchase from './pages/Purchase';
@@ -66,19 +63,19 @@ const router = createBrowserRouter([
       },
       {
         path: 'allproducts/depositlist',
-        element: <DepositList />,
+        element: <AllProductList />,
       },
       {
         path: 'allproducts/savinglist',
-        element: <SavingsList />,
+        element: <AllProductList />,
       },
       {
         path: 'allproducts/mortgageloan',
-        element: <MortgageLoan />,
+        element: <AllProductList />,
       },
       {
         path: 'allproducts/charterloan',
-        element: <CharterLoan />,
+        element: <AllProductList />,
       },
       {
         path: 'wish',

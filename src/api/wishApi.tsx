@@ -1,5 +1,4 @@
-import { instance, authInstance } from './axios';
-import { setCookie, getCookie, removeCookie } from '../utils/cookie';
+import { authInstance } from './axios';
 import { SetStateAction } from 'react';
 import AlertModal from '../utils/AlertModal';
 
@@ -9,7 +8,6 @@ export const requestSetWishList = async (
   setLikeState: React.Dispatch<SetStateAction<boolean>>,
 ) => {
   try {
-    const accessToken = getCookie('accessToken');
     const res = await authInstance.post('wish', formData);
     setLikeState(true);
     if (res.data.resultCode === 'duplicate') {
@@ -18,7 +16,6 @@ export const requestSetWishList = async (
         type: 'alert',
       });
     }
-    console.log(res.data);
   } catch (err) {
     alert(err);
   }
@@ -30,16 +27,12 @@ export const requestDelWishList = async (
   setLikeState: React.Dispatch<SetStateAction<boolean>>,
 ) => {
   try {
-    const accessToken = getCookie('accessToken');
     const res = await authInstance.delete(`wish/delete/${id}`);
     setLikeState(false);
-    console.log('삭제 api 마지막', res.data);
   } catch (err) {
     alert(err);
   }
 };
-
-const accessToken = getCookie('accessToken');
 
 export const getDepositWishList = async (
   page: number,
@@ -54,7 +47,6 @@ export const getDepositWishList = async (
     setResult((prevState: any) => [...prevState, ...data.content]);
     setLastPage(data.last);
     setLoading(false);
-    console.log('상품조회 마지막', data.content);
   } catch (err) {
     alert(err);
   }
@@ -70,7 +62,6 @@ export const getLoanWishList = async (
     setLoading(true);
     const res = await authInstance.get(`wish_list/loan?page=${page}`);
     const data = res.data.resultData;
-    console.log(data);
     setResult(data.content);
     setLastPage(data.last);
     setLoading(false);
