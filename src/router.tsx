@@ -1,12 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import SignIn from './pages/Auth/SignIn';
+import Login from './pages/Auth/Login';
 import SignUp from './pages/Auth/SignUp';
 import Cart from './pages/Cart';
 import Detail from './pages/Detail';
 import Home from './pages/Home';
-import MyPage from './pages/MyPage';
+import MyPage from './pages/user/MyPage';
 import Search from './pages/Search';
+import Recommend from './pages/Recommend';
+import AllProducts from './pages/allProducts/AllProducts';
+import FindPassword from './pages/Auth/FindPassword';
+import NotFound from './pages/NotFound';
+import DepositList from './pages/allProducts/DepositList';
+import SavingsList from './pages/allProducts/SavingsList';
+import MortgageLoan from './pages/allProducts/MortgageLoan';
+import CharterLoan from './pages/allProducts/CharterLoan';
+import Wish from './pages/Wish';
+import UserInfo from './pages/user/UserInfo';
+import Purchase from './pages/Purchase';
 
 const router = createBrowserRouter([
   {
@@ -22,7 +33,7 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
-        path: 'detail/:productId',
+        path: 'detail/:category/:productId',
         element: <Detail />,
       },
       {
@@ -30,16 +41,60 @@ const router = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path: 'auth/signin',
-        element: <SignIn />,
+        path: 'login',
+        element: <Login />,
       },
       {
-        path: 'auth/signup',
+        path: 'findpassword',
+        element: <FindPassword />,
+      },
+      {
+        path: 'signup',
         element: <SignUp />,
       },
       {
-        path: 'mypage',
+        path: 'user',
         element: <MyPage />,
+      },
+      {
+        path: 'recommend',
+        element: <Recommend />,
+      },
+      {
+        path: 'allproducts',
+        element: <AllProducts />,
+      },
+      {
+        path: 'allproducts/depositlist',
+        element: <DepositList />,
+      },
+      {
+        path: 'allproducts/savinglist',
+        element: <SavingsList />,
+      },
+      {
+        path: 'allproducts/mortgageloan',
+        element: <MortgageLoan />,
+      },
+      {
+        path: 'allproducts/charterloan',
+        element: <CharterLoan />,
+      },
+      {
+        path: 'wish',
+        element: <Wish />,
+      },
+      {
+        path: 'user/info',
+        element: <UserInfo />,
+      },
+      {
+        path: 'purchase',
+        element: <Purchase />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },
