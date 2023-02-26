@@ -6,12 +6,12 @@ import * as yup from 'yup';
 import { Main, SubmitButton, Div, CategoryTitle } from './SignUp';
 import { useNavigate } from 'react-router-dom';
 import { IoMailOutline } from 'react-icons/io5';
-import { requestFindPw } from '../../api/api';
+import { requestFindPw } from '../api/api';
 import { BeatLoader } from 'react-spinners';
-import { getCookie } from '../../utils/cookie';
-import AlertLoginState from '../../components/common/AlertLoginState';
-import { instance } from '../../api/axios';
-import AlertModal from '../../utils/AlertModal';
+import { getCookie } from '../utils/cookie';
+import AlertLoginState from '../components/common/AlertLoginState';
+import { instance } from '../api/axios';
+import AlertModal from '../utils/AlertModal';
 
 type findForm = {
   memberId: string;

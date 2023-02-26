@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getDepositPurchase, getLoanPurchase, removePurchase } from '../api/api';
 import { getWishCount } from '../api/wishApi';
 import PurchaseCard from '../components/user/PurchaseCard';
 import styled from 'styled-components';
 import { Button, FlexBox } from './Wish';
+import { EmptyWishBox } from '../components/wish/DepositWishList';
 
 function Purchase() {
   const [depositData, setDepositData] = useState([]);
@@ -40,7 +42,6 @@ function Purchase() {
   }, []);
 
   useEffect(() => {
-    console.log(depositData, loanData);
     setAllData([...depositData, ...loanData]);
   }, [depositData, loanData]);
 
@@ -52,7 +53,9 @@ function Purchase() {
     <main>
       <Wrap>
         <h1>가입상품</h1>
-        <p>가입(신청)중인 {count}개의 상품이 있습니다.</p>
+        <div className="countbox">
+          {allData?.length ? <p>가입(신청)중인 {count}개의 상품이 있습니다.</p> : null}
+        </div>
         <div>
           <FlexBox>
             <Button onClick={ButtonToggle} toggleButton={toggleButton}>
@@ -77,7 +80,13 @@ function Purchase() {
                 ) : null;
               })
             ) : (
-              <p>가입중인 상품이 없습니다.</p>
+              <EmptyWishBox>
+                <img src="/rocket.png" style={{ width: '400px', marginTop: '50px' }} />
+                <p>가입중인 상품이 없습니다.</p>
+                <Link to="/allproducts">
+                  <button>전체 상품 둘러보기</button>
+                </Link>
+              </EmptyWishBox>
             )
           ) : allData?.length ? (
             allData?.map((item: any) => {
@@ -93,7 +102,10 @@ function Purchase() {
               ) : null;
             })
           ) : (
-            <p>취소한 상품이 없습니다.</p>
+            <EmptyWishBox>
+              <img src="/rocket.png" style={{ width: '400px', marginTop: '50px' }} />
+              <p>취소한 상품이 없습니다.</p>
+            </EmptyWishBox>
           )}
         </div>
       </Wrap>
@@ -104,9 +116,11 @@ const Wrap = styled.div`
   padding: 20px 35px 60px;
   margin-top: 20px;
 
-  p {
+  .countbox {
     margin: 30px 0 30px;
     text-align: right;
+  }
+  p {
     color: var(--color-orange);
     font-size: 16px;
   }

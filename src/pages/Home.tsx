@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts, getPurchaseLength } from '../api/api';
+import { getProducts, getPurchaseLength, getRecommendProducts } from '../api/api';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
@@ -14,17 +14,23 @@ import ProductCard from '../components/common/ProductCard';
 const Home = () => {
   const [cart, setCart] = useState<String>('0');
   const [products, setProducts] = useState({});
+  const [alterProduct, setAlterProduct] = useState({});
   const name = useAppSelector((state) => state.user.name);
   const token = getCookie('accessToken');
 
   useEffect(() => {
-    async function getRecommendProducts() {
+    async function getList() {
       if (token) {
         try {
           const products = await getProducts();
           const purchase = await getPurchaseLength();
-          setProducts(products);
           setCart(purchase);
+          if (products.length === 0) {
+            const { content } = await getRecommendProducts(1);
+            setProducts(content);
+          } else {
+            setProducts(products);
+          }
         } catch (error) {
           console.log('에러 발생!');
         }
@@ -32,7 +38,7 @@ const Home = () => {
         return null;
       }
     }
-    getRecommendProducts();
+    getList();
   }, []);
 
   return (

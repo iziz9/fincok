@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { getCookie } from '../../utils/cookie';
-import { Main, SubmitButton, Div, CategoryTitle } from '../../pages/Auth/SignUp';
+import { Main, SubmitButton, Div, CategoryTitle } from '../../pages/SignUp';
 import AlertLoginState from '../common/AlertLoginState';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useDispatchHooks';
