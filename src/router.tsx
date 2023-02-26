@@ -1,19 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Login from './pages/Auth/Login';
-import SignUp from './pages/Auth/SignUp';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import Cart from './pages/Cart';
 import Detail from './pages/Detail';
 import Home from './pages/Home';
-import MyPage from './pages/user/MyPage';
+import MyPage from './pages/MyPage';
 import Search from './pages/Search';
 import Recommend from './pages/Recommend';
 import AllProducts from './pages/AllProducts';
-import FindPassword from './pages/Auth/FindPassword';
+import FindPassword from './pages/FindPassword';
 import NotFound from './pages/NotFound';
 import AllProductList from './components/allProducts/AllProductList';
 import Wish from './pages/Wish';
-import UserInfo from './pages/user/UserInfo';
+import UserInfo from './components/user/UserInfo';
 import Purchase from './pages/Purchase';
 
 const router = createBrowserRouter([

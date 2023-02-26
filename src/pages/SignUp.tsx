@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { productList, jobList, bankList, addressList } from '../../utils/list';
-import { requestSignUp } from '../../api/api';
-import { checkIdAvailable } from '../../api/api';
-import { getCookie } from '../../utils/cookie';
-import AlertLoginState from '../../components/common/AlertLoginState';
-import AlertModal from '../../utils/AlertModal';
-import { Policy1, Policy2 } from '../../components/singup/Policy';
+import { productList, jobList, bankList, addressList } from '../utils/list';
+import { requestSignUp } from '../api/api';
+import { checkIdAvailable } from '../api/api';
+import { getCookie } from '../utils/cookie';
+import AlertLoginState from '../components/common/AlertLoginState';
+import AlertModal from '../utils/AlertModal';
+import { Policy1, Policy2 } from '../components/singup/Policy';
 
 interface SignupForm {
   name: string;

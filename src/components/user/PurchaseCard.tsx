@@ -191,7 +191,7 @@ const Item = styled.div<{ bankName: string }>`
     position: absolute;
     bottom: 20px;
     color: white;
-    text-shadow: 1px 1px 1px var(--color-dark-grey);
+    text-shadow: 1px 1px 1px var(--color-grey);
   }
 `;
 
