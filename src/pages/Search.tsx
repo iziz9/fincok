@@ -4,13 +4,13 @@ import { hideLoading, showLoading } from '../store/loadingSlice';
 import { useAppDispatch } from '../hooks/useDispatchHooks';
 import styled from 'styled-components';
 import { SearchForm } from '../components/common/layout/Navigation';
-import SearchItem from '../components/product/SearchItem';
 import { NoList } from '../pages/Home';
 import { BiSearch } from 'react-icons/bi';
 import { getDeposit, getLoan } from '../api/api';
 import { useInView } from 'react-intersection-observer';
 import { getCookie } from '../utils/cookie';
 import AlertLoginState from '../components/common/AlertLoginState';
+import ProductCard from '../components/common/ProductCard';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -178,7 +178,9 @@ const Search = () => {
             {onProduct === 1 ? (
               deposits.length > 0 ? (
                 deposits.map((item: any, idx) => {
-                  return <SearchItem item={item} key={idx} />;
+                  const category = { category: '예금/적금' };
+                  Object.assign(item, category);
+                  return <ProductCard item={item} key={idx} />;
                 })
               ) : (
                 <span>
@@ -187,7 +189,9 @@ const Search = () => {
               )
             ) : loans.length > 0 ? (
               loans.map((item: any, idx) => {
-                return <SearchItem item={item} key={idx} />;
+                const category = { category: '대출' };
+                Object.assign(item, category);
+                return <ProductCard item={item} key={idx} />;
               })
             ) : (
               <span>

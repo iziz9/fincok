@@ -1,5 +1,4 @@
 import React from 'react';
-import { MdDelete } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AlertModal from '../../utils/AlertModal';
@@ -12,6 +11,8 @@ type PropsType = {
     itemName: string;
     type: string;
     purchaseId: number;
+    purchase_date: string;
+    status: string;
   };
   removeButton: (purchaseId: number, itemName: string) => void;
   canceled: boolean;
@@ -19,15 +20,52 @@ type PropsType = {
 
 function PurchaseCard({ item, removeButton, canceled }: PropsType) {
   const navigate = useNavigate();
+  let logo = '';
+
+  switch (item.bank) {
+    case '부산은행':
+      logo = 'bank-bs.png';
+      break;
+    case '한국씨티은행':
+      logo = 'bank-ct.png';
+      break;
+    case '대구은행':
+      logo = 'bank-dg.png';
+      break;
+    case '광주은행':
+      logo = 'bank-gj.png';
+      break;
+    case '하나은행':
+      logo = 'bank-hn.png';
+      break;
+    case '중소기업은행':
+      logo = 'bank-ibk.png';
+      break;
+    case '국민은행':
+      logo = 'bank-kb.png';
+      break;
+    case '농협은행':
+      logo = 'bank-nh.png';
+      break;
+    case '한국스탠다드차타드은행':
+      logo = 'bank-sc.png';
+      break;
+    case '신한은행':
+      logo = 'bank-sh.png';
+      break;
+    case '수협은행':
+      logo = 'bank-suh.png';
+      break;
+    case '우리은행':
+      logo = 'bank-wr.png';
+      break;
+  }
+
   return (
     <Wrap>
       <LinkWrap
         onClick={() =>
-          navigate(
-            `/detail/${
-              item.category === '적금' || item.category === '정기예금' ? 'deposit' : 'loan'
-            }/${item.itemId}`,
-          )
+          navigate(`/detail/${item.category.includes('대출') ? 'loan' : 'deposit'}/${item.itemId}`)
         }
       >
         <Item bankName={item.bank}>
@@ -38,8 +76,16 @@ function PurchaseCard({ item, removeButton, canceled }: PropsType) {
           <span>
             {item.category} - {item.type}
           </span>
+          <div className="date">
+            {item.status.includes('신청취소') ? '취소' : '신청'}일시 :{' '}
+            {item.purchase_date.replace('T', ' / ')}
+          </div>
+          <div className="logo">
+            <img src={`/${logo}`} style={{ width: '50px' }} />
+          </div>
         </Item>
       </LinkWrap>
+
       {canceled ? null : (
         <Button
           onClick={() => {
@@ -70,7 +116,6 @@ const Button = styled.button`
   position: absolute;
   top: 60%;
   right: 20px;
-  padding: 10px;
   background-color: var(--color-dark-grey);
 
   :hover {
@@ -130,7 +175,23 @@ const Item = styled.div<{ bankName: string }>`
   }
   span {
     font-weight: bold;
-    margin-top: auto;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 30px;
+  }
+  .logo {
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+  }
+  .date {
+    position: absolute;
+    bottom: 20px;
+    color: white;
+    text-shadow: 1px 1px 1px var(--color-dark-grey);
   }
 `;
 
