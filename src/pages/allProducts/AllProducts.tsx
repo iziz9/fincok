@@ -12,9 +12,8 @@ function AllProducts() {
     </AllProductsWrap>
   );
 }
-const Title = styled.h2`
-  margin-top: 40px;
-  font-size: 28px;
+const Title = styled.h1`
+  margin-top: 50px;
   margin-bottom: 30px;
   font-weight: bold;
 `;
