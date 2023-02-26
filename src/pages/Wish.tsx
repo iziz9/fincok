@@ -27,13 +27,12 @@ function Wish() {
   );
 }
 
-const Title = styled.h2`
-  margin-top: 40px;
-  font-size: 32px;
-  margin-bottom: 20px;
+const Title = styled.h1`
+  margin-top: 50px;
+  margin-bottom: 40px;
   font-weight: bold;
 `;
-const FlexBox = styled.div`
+export const FlexBox = styled.div`
   display: flex;
   gap: 5px;
   width: max-content;
@@ -41,7 +40,7 @@ const FlexBox = styled.div`
   border-radius: 8px;
 `;
 
-const Button = styled.button<{ toggleButton: boolean }>`
+export const Button = styled.button<{ toggleButton: boolean }>`
   background-color: ${(props) =>
     props.toggleButton ? 'var(--color-orange)' : 'var(--color-dark-grey)'};
   border-color: none;

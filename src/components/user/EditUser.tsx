@@ -25,7 +25,7 @@ function EditUser({ userPassword }: any) {
   const {
     register,
     handleSubmit,
-    formState: { errors }, // 버전 6라면 errors라고 작성함.
+    formState: { errors },
   } = useForm<SignupForm>({
     mode: 'onChange',
     resolver: yupResolver(formSchema),
@@ -212,7 +212,7 @@ function EditUser({ userPassword }: any) {
                 {errors.checkPw?.message}
               </span>
             )}
-            <CategoryTitle>비밀번호</CategoryTitle>
+            <CategoryTitle>비밀번호 변경</CategoryTitle>
           </div>
           <input
             type="password"
