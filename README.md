@@ -1,12 +1,27 @@
 # 미니프로젝트 - fincok
 
-## 프로젝트 소개
+## <a href='https://fincok.netlify.app/'>✨ fincok - 배포사이트</a>
 
-#### ✨배포사이트 - 🔗 <a href='https://fincok.netlify.app/'>fincok</a>
+## <a href='https://www.notion.so/mini-8/8-32dbb96011384ee9b3e856c3fa996e0e'>📒 팀 노션</a>
+
+---
 
 <br />
 
-## 👩‍💻 팀원 소개
+##b프로젝트 소개
+
+### 💻 프로젝트 설명
+
+- 패스트캠퍼스에서 진행된 핀테크 미니 프로젝트로, 국내 주요 은행의 예금/적금, 대출상품을 조회하고 추천받을 수 있는 사이트 입니다.
+- 상품 목록 조회 외의 기능은 모두 로그인 후 이용 가능합니다.
+  <br/><br/>
+
+### 📆 진행 기간
+
+- 2023.02.13. ~ 2023.02.24.
+  <br/><br/>
+
+### 👩‍💻 팀원 & 역할 소개
 
 <table>
   <tbody>
@@ -19,12 +34,19 @@
   <td align="center"><a href="https://github.com/iziz9">강현주</a></td>
   <td align="center"><a href="https://github.com/iziz9">윤준수</a></td>
   <td align="center"><a href="https://github.com/ddoyun">전소윤</a></td>
-
+ </tr>
+   <tr>
+  <td align="center">
+  회원가입<br>로그인/로그아웃<br>상품 상세조회<br>장바구니<br>관심상품<br>가입(신청)상품<br>
+  </td>
+  <td align="center">전체상품조회<br>관심상품<br>가입(신청)상품<br>회원정보 수정<br></td>
+  <td align="center">메인페이지<br>네비게이션<br>상품검색<br>맞춤추천 <br>유저 정보 저장<br></td>
  </tr>
   </tbody>
 </table>
+<br/><br/>
 
-## ⚙기술 스택
+## 📝 기술 스택
 
 <div>
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
@@ -35,13 +57,12 @@
 <img src="https://img.shields.io/badge/.env-ECD53F?style=for-the-badge&logo=dotenv&logoColor=black">
 <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black">
 <img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white">
+<img src="	https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white">
+<img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">
 <br /><br />
 </div>
-
-## 📆 프로젝트 기간
-
-- 2023.02.13 ~ 2023.02.24.
-  <br/><br/>
 
 ---
 

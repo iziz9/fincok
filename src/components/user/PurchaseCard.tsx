@@ -4,7 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AlertModal from '../../utils/AlertModal';
 
-function PurchaseCard({ item, removeButton, setAllData }: any) {
+type PropsType = {
+  item: {
+    category: string;
+    itemId: string;
+    bank: string;
+    itemName: string;
+    type: string;
+    purchaseId: number;
+  };
+  removeButton: (purchaseId: number, itemName: string) => void;
+  canceled: boolean;
+};
+
+function PurchaseCard({ item, removeButton, canceled }: PropsType) {
   const navigate = useNavigate();
   return (
     <Wrap>
@@ -27,19 +40,21 @@ function PurchaseCard({ item, removeButton, setAllData }: any) {
           </span>
         </Item>
       </LinkWrap>
-      <Button
-        onClick={() => {
-          AlertModal({
-            message: `${item.itemName} 상품의 신청을 취소하시겠습니까?`,
-            action: () => {
-              removeButton(Number(item.purchaseId), item.itemName);
-            },
-            type: 'confirm',
-          });
-        }}
-      >
-        신청취소
-      </Button>
+      {canceled ? null : (
+        <Button
+          onClick={() => {
+            AlertModal({
+              message: `${item.itemName} 상품의 신청을 취소하시겠습니까?`,
+              action: () => {
+                removeButton(Number(item.purchaseId), item.itemName);
+              },
+              type: 'confirm',
+            });
+          }}
+        >
+          신청취소
+        </Button>
+      )}
     </Wrap>
   );
 }
